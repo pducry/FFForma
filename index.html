@@ -926,33 +926,78 @@
     @media (max-width: 900px) {
       .site-layout {
         grid-template-columns: 1fr;
-        grid-template-rows: auto 70vh;
+        grid-template-rows: 45vh auto;
+      }
+
+      .panel-right {
+        position: relative;
+        height: 45vh;
+        order: -1;
       }
 
       .panel-left {
         max-height: none;
         overflow: visible;
-        padding: 2rem 1.5rem;
-      }
-
-      .panel-right {
-        position: relative;
-        height: 70vh;
+        padding: 2rem 1.5rem 3rem;
       }
 
       .hero-logo {
         height: 40px;
       }
+
+      .hero-showcase img {
+        max-width: 90%;
+        max-height: 80%;
+      }
+
+      .corner-accent { display: none; }
+
+      .intro-text,
+      .about-bio,
+      .about-quote {
+        max-width: 100%;
+      }
+
+      .about-list-block {
+        max-width: 100%;
+      }
+
+      .modal {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+      }
     }
 
     @media (max-width: 500px) {
       .site-layout {
-        grid-template-rows: auto 50vh;
+        grid-template-rows: 35vh auto;
+      }
+
+      .panel-left {
+        padding: 1.5rem 1.2rem 3rem;
+      }
+
+      .top-bar {
+        margin-bottom: 1.2rem;
       }
 
       .nav-bar {
         width: 100%;
         justify-content: center;
+        margin-bottom: 1.8rem;
+      }
+
+      .nav-link {
+        font-size: 0.72rem;
+        padding: 0.35rem 0.8rem;
+      }
+
+      .intro-text {
+        font-size: 0.82rem;
+      }
+
+      .panel-content {
+        gap: 1.8rem;
       }
 
       .cta-buttons {
@@ -961,10 +1006,77 @@
 
       .btn {
         justify-content: center;
+        width: 100%;
+      }
+
+      .pricing-row {
+        font-size: 0.78rem;
+      }
+
+      .pricing-row .price {
+        font-size: 0.78rem;
+      }
+
+      .clients-grid {
+        gap: 0.1rem 1.5rem;
+      }
+
+      /* Process mobile */
+      .step-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+      }
+
+      .step-desc {
+        font-size: 0.72rem;
+      }
+
+      .step-agent {
+        font-size: 0.72rem;
+      }
+
+      /* About mobile */
+      .about-bio {
+        font-size: 0.78rem;
+      }
+
+      .about-quote {
+        font-size: 0.74rem;
+      }
+
+      .about-list-row {
+        font-size: 0.7rem;
+        flex-direction: column;
+        gap: 0.1rem;
+      }
+
+      .about-list-label {
+        min-width: auto;
       }
 
       .hero-logo {
-        height: 32px;
+        height: 28px;
+      }
+
+      .hero-showcase img {
+        max-width: 95%;
+        max-height: 85%;
+      }
+
+      /* Modal mobile */
+      .modal {
+        padding: 1.5rem 1.2rem;
+        border-radius: 10px;
+      }
+
+      .modal-title {
+        font-size: 1rem;
+      }
+
+      .chip {
+        font-size: 0.7rem;
+        padding: 0.35rem 0.8rem;
       }
     }
   </style>
