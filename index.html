@@ -391,7 +391,7 @@
     }
 
     .process-step:last-child {
-      border-bottom: none;
+      border-bottom: 1px solid var(--border);
     }
 
     .step-header {
@@ -454,8 +454,69 @@
       color: var(--text-muted);
       line-height: 1.6;
       padding-top: 0.8rem;
-      border-top: 1px solid var(--border);
       margin-top: 0.4rem;
+    }
+
+    /* ─── About Section ─── */
+    .about-content {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .about-bio {
+      font-size: 0.82rem;
+      line-height: 1.75;
+      color: var(--text-primary);
+      max-width: 380px;
+    }
+
+    .about-bio strong {
+      font-weight: 500;
+    }
+
+    .about-bio .highlight {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .about-quote {
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      border-left: 2px solid var(--border);
+      padding-left: 1rem;
+      font-style: italic;
+      max-width: 380px;
+    }
+
+    .about-list-block {
+      max-width: 380px;
+    }
+
+    .about-list-row {
+      display: flex;
+      gap: 0.6rem;
+      padding: 0.3rem 0;
+      font-size: 0.74rem;
+      line-height: 1.6;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-list-row:last-child {
+      border-bottom: none;
+    }
+
+    .about-list-label {
+      color: var(--text-muted);
+      white-space: nowrap;
+      min-width: 90px;
+      flex-shrink: 0;
+    }
+
+    .about-list-value {
+      color: var(--text-secondary);
     }
 
     /* ─── Footer ─── */
@@ -1066,6 +1127,27 @@
 
     </div>
 
+    <!-- About -->
+    <div class="about-content">
+
+      <p class="about-bio">
+        <strong>Pedro Julien</strong> — Brazilian/Swiss designer and creative director with 18+ years shaping digital products and brand experiences. Early adopter of generative AI since 2022, now building full AI-based creative workflows as standard practice.
+      </p>
+
+      <p class="about-bio">
+        Plays a central, strategic role across every stage — from business strategy to final delivery. Experienced in leading creative teams, designing user-centered products, and architecting AI agent frameworks that multiply creative output without losing craft.
+      </p>
+
+      <p class="about-bio">
+        Founded <strong>FFForma</strong> as a studio built on a new premise: design through collaboration with GenAI. Not AI as a shortcut — AI as a creative partner. Agent flows for exploration, trained skills for execution, custom models for consistency. Every project ships with its own adapted framework.
+      </p>
+
+      <blockquote class="about-quote">
+        "Creative relevance at the speed of AI. Infinite possibilities, sharp curation, right pacing. We don't choose between speed and quality — we ship both. Incredible results in a fraction of the time, because craft and intelligence were never opposites."
+      </blockquote>
+
+    </div>
+
     <!-- Footer -->
     <div class="panel-footer">
       &copy; 2026 FFForma Studio. All rights reserved.
@@ -1338,12 +1420,13 @@ Cal("ui", {
       showcaseImgs[current].classList.remove('is-active');
       current = (current + 1) % showcaseImgs.length;
       showcaseImgs[current].classList.add('is-active');
-    }, 900);
+    }, 500);
   }
 
   // Nav link switching
   const panelContent = document.querySelector('.panel-content');
   const processContent = document.querySelector('.process-content');
+  const aboutContent = document.querySelector('.about-content');
 
   document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
@@ -1351,12 +1434,16 @@ Cal("ui", {
       link.classList.add('active');
 
       const page = link.dataset.page;
+      panelContent.style.display = 'none';
+      processContent.style.display = 'none';
+      aboutContent.style.display = 'none';
+
       if (page === 'process') {
-        panelContent.style.display = 'none';
         processContent.style.display = 'flex';
+      } else if (page === 'about') {
+        aboutContent.style.display = 'flex';
       } else {
         panelContent.style.display = '';
-        processContent.style.display = 'none';
       }
     });
   });
