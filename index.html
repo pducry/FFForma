@@ -1328,10 +1328,22 @@ Cal("ui", {
   }
 
   // Nav link switching
+  const panelContent = document.querySelector('.panel-content');
+  const processContent = document.querySelector('.process-content');
+
   document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
       document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
       link.classList.add('active');
+
+      const page = link.dataset.page;
+      if (page === 'process') {
+        panelContent.style.display = 'none';
+        processContent.style.display = 'flex';
+      } else {
+        panelContent.style.display = '';
+        processContent.style.display = 'none';
+      }
     });
   });
 
