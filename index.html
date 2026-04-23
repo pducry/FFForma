@@ -945,27 +945,20 @@
         height: 40px;
       }
 
-      .panel-right {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .hero-canvas {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
       .hero-showcase {
+        position: absolute;
+        inset: 0;
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
       .hero-showcase img {
-        max-width: 90%;
+        position: static;
+        transform: none;
+        max-width: 85%;
         max-height: 80%;
+        margin: auto;
       }
 
       .corner-accent { display: none; }
