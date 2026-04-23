@@ -1,0 +1,23 @@
+index.html
+  adad417b4b00bfdf 1-1294
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "54087d03c1ce6c05ae619fe8032b4b293fa5e2a9",
+  "prompts": {
+    "adad417b4b00bfdf": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab60f9a9-1c98-4c17-9371-6988d17e0c42",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Pedro Julien",
+      "messages": [],
+      "total_additions": 68,
+      "total_deletions": 0,
+      "accepted_lines": 1532,
+      "overriden_lines": 0
+    }
+  }
+}
