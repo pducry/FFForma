@@ -1,0 +1,23 @@
+index.html
+  d2ee205d43a638ea 1009,1011,1013-1014,1021,1023,1025-1026,1033,1035,1037-1038,1045,1047,1049-1050,1057,1059,1061-1062,1065
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "3beadb79a182e8e7b91466521030d1fc007b1ab8",
+  "prompts": {
+    "d2ee205d43a638ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "75c9b4ab-9570-45bb-b101-8c06b9deb61e",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Pedro Julien",
+      "messages": [],
+      "total_additions": 21,
+      "total_deletions": 21,
+      "accepted_lines": 21,
+      "overriden_lines": 0
+    }
+  }
+}
