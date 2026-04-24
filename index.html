@@ -519,6 +519,56 @@
       color: var(--text-secondary);
     }
 
+    /* ─── Learning Section ─── */
+    .learning-content {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .learning-text {
+      font-size: 0.82rem;
+      line-height: 1.75;
+      color: var(--text-primary);
+      max-width: 380px;
+    }
+
+    .learning-text strong {
+      font-weight: 500;
+    }
+
+    .learning-topics {
+      max-width: 380px;
+    }
+
+    .learning-topic-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .learning-topic-row:last-child {
+      border-bottom: none;
+    }
+
+    .learning-topic-number {
+      font-size: 0.63rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    .learning-audience {
+      max-width: 380px;
+    }
+
     /* ─── Footer ─── */
     .panel-footer {
       margin-top: auto;
@@ -954,11 +1004,14 @@
 
       .intro-text,
       .about-bio,
-      .about-quote {
+      .about-quote,
+      .learning-text {
         max-width: 100%;
       }
 
-      .about-list-block {
+      .about-list-block,
+      .learning-topics,
+      .learning-audience {
         max-width: 100%;
       }
 
@@ -1033,6 +1086,21 @@
       }
 
       .step-agent {
+        font-size: 0.72rem;
+      }
+
+      /* Learning mobile */
+      .learning-text {
+        max-width: 100%;
+        font-size: 0.78rem;
+      }
+
+      .learning-topics,
+      .learning-audience {
+        max-width: 100%;
+      }
+
+      .learning-topic-row {
         font-size: 0.72rem;
       }
 
@@ -1114,6 +1182,7 @@
     <nav class="nav-bar">
       <a class="nav-link active" data-page="home">Home</a>
       <a class="nav-link" data-page="process">Process</a>
+      <a class="nav-link" data-page="learning">Learning</a>
       <a class="nav-link" data-page="about">About</a>
     </nav>
 
@@ -1244,6 +1313,57 @@
       </div>
 
       <p class="process-disclaimer">Every project gets an adapted framework — agents, skills, and models configured to its specific needs. No two processes are identical.</p>
+
+    </div>
+
+    <!-- Learning -->
+    <div class="learning-content">
+
+      <p class="learning-text">
+        <strong>FFForma Learning</strong> — a program designed for creative professionals who want to master the intersection of design craft and AI systems. Not a generic AI course — this is the real framework we use to deliver at the studio, adapted into a structured learning experience.
+      </p>
+
+      <div class="learning-topics">
+        <div class="section-label">What you'll learn</div>
+        <div class="learning-topic-row">
+          <span class="learning-topic-number">01</span>
+          <span>Agent flows for massive creative exploration — generating 30-50+ directions in hours</span>
+        </div>
+        <div class="learning-topic-row">
+          <span class="learning-topic-number">02</span>
+          <span>Building custom skills that automate repetitive design and delivery tasks</span>
+        </div>
+        <div class="learning-topic-row">
+          <span class="learning-topic-number">03</span>
+          <span>Sharp curation — selecting and refining from generative volume without losing craft</span>
+        </div>
+        <div class="learning-topic-row">
+          <span class="learning-topic-number">04</span>
+          <span>Adapting frameworks per project — agents, models, and skills configured to each brief</span>
+        </div>
+        <div class="learning-topic-row">
+          <span class="learning-topic-number">05</span>
+          <span>End-to-end AI-native workflow — from strategy to final delivery</span>
+        </div>
+      </div>
+
+      <div class="learning-audience">
+        <div class="section-label">For</div>
+        <span class="service-tag">UX Designers</span>
+        <span class="service-tag">Art Directors</span>
+        <span class="service-tag">Brand Designers</span>
+        <span class="service-tag">Creative Leads</span>
+        <span class="service-tag">Product Designers</span>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:0;">
+      <div class="cta-block">
+        <div class="cta-heading">Interested?</div>
+        <div class="cta-sub">Get in touch and we'll share details about the next class.</div>
+        <div class="cta-buttons">
+          <button class="btn btn-primary" id="openFormBtnLearning">Get in touch</button>
+        </div>
+      </div>
 
     </div>
 
@@ -1534,6 +1654,7 @@ Cal("ui", {
   // Nav link switching
   const panelContent = document.querySelector('.panel-content');
   const processContent = document.querySelector('.process-content');
+  const learningContent = document.querySelector('.learning-content');
   const aboutContent = document.querySelector('.about-content');
 
   document.querySelectorAll('.nav-link').forEach(link => {
@@ -1544,16 +1665,24 @@ Cal("ui", {
       const page = link.dataset.page;
       panelContent.style.display = 'none';
       processContent.style.display = 'none';
+      learningContent.style.display = 'none';
       aboutContent.style.display = 'none';
 
       if (page === 'process') {
         processContent.style.display = 'flex';
+      } else if (page === 'learning') {
+        learningContent.style.display = 'flex';
       } else if (page === 'about') {
         aboutContent.style.display = 'flex';
       } else {
         panelContent.style.display = '';
       }
     });
+  });
+
+  // Learning CTA opens same form modal
+  document.getElementById('openFormBtnLearning').addEventListener('click', () => {
+    formModal.classList.add('is-open');
   });
 
   // Subtle parallax on hero logo
