@@ -1,0 +1,36 @@
+index.html
+  d2ee205d43a638ea 1455
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "9cae61b2c9fda89f4f687b87eb7404e135727313",
+  "prompts": {
+    "755ac996f2434fad": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b373fca4-e0ca-4fba-a6dd-6cd8666b001e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Pedro Julien",
+      "messages": [],
+      "total_additions": 8,
+      "total_deletions": 0,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    },
+    "d2ee205d43a638ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "75c9b4ab-9570-45bb-b101-8c06b9deb61e",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Pedro Julien",
+      "messages": [],
+      "total_additions": 260,
+      "total_deletions": 0,
+      "accepted_lines": 260,
+      "overriden_lines": 0
+    }
+  }
+}
