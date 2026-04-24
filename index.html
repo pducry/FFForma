@@ -1483,6 +1483,55 @@
   </div>
 </div>
 
+<!-- ═══ LEARNING FORM MODAL ═══ -->
+<div class="modal-overlay" id="learningModal">
+  <div class="modal">
+    <button class="modal-close" id="closeLearningBtn">&times;</button>
+
+    <form id="learningForm" action="https://formsubmit.co/ajax/pducry@gmail.com" method="POST">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_subject" value="Learning program inquiry — FFForma">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="#">
+      <input type="text" name="_honey" style="display:none">
+
+      <div class="modal-title">Join FFForma Learning.</div>
+      <div class="modal-subtitle">AI-native creative framework for designers. Leave your info and we'll reach out with details.</div>
+
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input class="form-input" type="text" name="name" placeholder="Your name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" name="email" placeholder="Your email" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">What do you do?</label>
+        <div class="chip-group" data-field="learning-role">
+          <button type="button" class="chip" data-value="UX Designer">UX Designer</button>
+          <button type="button" class="chip" data-value="Art Director">Art Director</button>
+          <button type="button" class="chip" data-value="Brand Designer">Brand Designer</button>
+          <button type="button" class="chip" data-value="Product Designer">Product Designer</button>
+          <button type="button" class="chip" data-value="Creative Lead">Creative Lead</button>
+          <button type="button" class="chip" data-value="Other">Other</button>
+        </div>
+        <input type="hidden" name="role" id="learningRole">
+      </div>
+
+      <button type="submit" class="form-submit">I'm interested</button>
+    </form>
+
+    <div class="form-success" id="learningSuccess">
+      <div class="form-success-icon">&#10003;</div>
+      <div class="form-success-title">You're on the list!</div>
+      <div class="form-success-text">We'll reach out soon with program details.</div>
+    </div>
+  </div>
+</div>
+
 <!-- Cal.com Embed -->
 <script type="text/javascript">
 (function (C, A, L) {
@@ -1569,7 +1618,10 @@ Cal("ui", {
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') formModal.classList.remove('is-open');
+    if (e.key === 'Escape') {
+      formModal.classList.remove('is-open');
+      document.getElementById('learningModal').classList.remove('is-open');
+    }
   });
 
   // Chip selection (toggle)
@@ -1680,9 +1732,64 @@ Cal("ui", {
     });
   });
 
-  // Learning CTA opens same form modal
+  // ─── Learning Form Modal ───
+  const learningModal = document.getElementById('learningModal');
+  const closeLearningBtn = document.getElementById('closeLearningBtn');
+  const learningForm = document.getElementById('learningForm');
+  const learningSuccess = document.getElementById('learningSuccess');
+
   document.getElementById('openFormBtnLearning').addEventListener('click', () => {
-    formModal.classList.add('is-open');
+    learningModal.classList.add('is-open');
+  });
+
+  closeLearningBtn.addEventListener('click', () => {
+    learningModal.classList.remove('is-open');
+  });
+
+  learningModal.addEventListener('click', (e) => {
+    if (e.target === learningModal) learningModal.classList.remove('is-open');
+  });
+
+  // Learning role chip selection
+  const learningRoleGroup = document.querySelector('[data-field="learning-role"]');
+  const learningRoleHidden = document.getElementById('learningRole');
+  learningRoleGroup.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('selected');
+      const selected = [...learningRoleGroup.querySelectorAll('.chip.selected')].map(c => c.dataset.value);
+      learningRoleHidden.value = selected.join(', ');
+    });
+  });
+
+  // Learning form submission
+  learningForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(learningForm);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      await fetch(learningForm.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch (err) {
+      console.error('Learning form error:', err);
+    }
+
+    learningForm.style.display = 'none';
+    learningSuccess.classList.add('is-visible');
+
+    setTimeout(() => {
+      learningModal.classList.remove('is-open');
+      setTimeout(() => {
+        learningForm.style.display = '';
+        learningSuccess.classList.remove('is-visible');
+        learningForm.reset();
+        learningRoleGroup.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+        learningRoleHidden.value = '';
+      }, 300);
+    }, 3000);
   });
 
   // Subtle parallax on hero logo
