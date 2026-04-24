@@ -180,6 +180,48 @@
     [data-theme="dark"] .toggle-icon--sun { opacity: 0.3; }
     [data-theme="dark"] .toggle-icon--moon { opacity: 0.8; }
 
+    /* ─── Language Toggle ─── */
+    .top-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.2rem 0.3rem;
+      transition: color 0.2s ease;
+    }
+
+    .lang-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .lang-btn.active {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .lang-sep {
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      user-select: none;
+    }
+
     /* ─── Navigation ─── */
     .nav-bar {
       display: flex;
@@ -1165,6 +1207,12 @@
         <img src="assets/logo-light.png" alt="FFForma" class="logo-on-dark">
       </div>
 
+      <div class="top-controls">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="lang-sep">/</span>
+        <button class="lang-btn" data-lang="pt">PT</button>
+      </div>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <span class="toggle-icons">
           <svg class="toggle-icon toggle-icon--sun" viewBox="0 0 20 20" fill="none">
@@ -1176,66 +1224,67 @@
           </svg>
         </span>
       </button>
+      </div>
     </div>
 
     <!-- Navigation -->
     <nav class="nav-bar">
-      <a class="nav-link active" data-page="home">Home</a>
-      <a class="nav-link" data-page="process">Process</a>
-      <a class="nav-link" data-page="learning">Learning</a>
-      <a class="nav-link" data-page="about">About</a>
+      <a class="nav-link active" data-page="home" data-i18n="nav.home">Home</a>
+      <a class="nav-link" data-page="process" data-i18n="nav.process">Process</a>
+      <a class="nav-link" data-page="learning" data-i18n="nav.learning">Learning</a>
+      <a class="nav-link" data-page="about" data-i18n="nav.about">About</a>
     </nav>
 
     <!-- Content -->
     <div class="panel-content">
 
-      <p class="intro-text">
+      <p class="intro-text" data-i18n="home.intro">
         <strong>FFForma</strong> is a design studio 100% fluent and born inside AI Era. We don't just use AI as a tool — it's in our foundation. We shape brands, websites, and digital products with the precision of craft and the speed of intelligence.
       </p>
 
       <!-- Pricing -->
       <div class="pricing-block">
-        <div class="section-label">Investment</div>
+        <div class="section-label" data-i18n="home.investment">Investment</div>
         <div class="pricing-row">
           <span>Brand Identity</span>
-          <span class="price">from $4.000,00</span>
+          <span class="price" data-i18n="home.price.brand">from $4.000,00</span>
         </div>
         <div class="pricing-row">
           <span>Web Design & Dev</span>
-          <span class="price">from $5.000,00</span>
+          <span class="price" data-i18n="home.price.web">from $5.000,00</span>
         </div>
         <div class="pricing-row">
           <span>Brand + Web</span>
-          <span class="price">from $9.000,00</span>
+          <span class="price" data-i18n="home.price.brandweb">from $9.000,00</span>
         </div>
         <div class="pricing-row">
           <span>Visuals</span>
-          <span class="price">from $1.000,00</span>
+          <span class="price" data-i18n="home.price.visuals">from $1.000,00</span>
         </div>
         <div class="pricing-row">
           <span>App</span>
-          <span class="price">from $10.000,00</span>
+          <span class="price" data-i18n="home.price.app">from $10.000,00</span>
         </div>
         <div class="pricing-row">
           <span>Design Partner</span>
-          <span class="price">from $4.500,00/m</span>
+          <span class="price" data-i18n="home.price.partner">from $4.500,00/m</span>
         </div>
       </div>
 
       <!-- CTA -->
       <hr style="border:none;border-top:1px solid var(--border);margin:0;">
       <div class="cta-block">
-        <div class="cta-heading">Ready to give your idea a form?</div>
-        <div class="cta-sub">Fill out the form or book a call, whichever you prefer.</div>
+        <div class="cta-heading" data-i18n="home.cta.heading">Ready to give your idea a form?</div>
+        <div class="cta-sub" data-i18n="home.cta.sub">Fill out the form or book a call, whichever you prefer.</div>
         <div class="cta-buttons">
-          <button class="btn btn-primary" id="openFormBtn">Start a project</button>
-          <button class="btn btn-secondary" data-cal-link="pedro-julien" data-cal-config='{"layout":"month_view"}'>Book a call</button>
+          <button class="btn btn-primary" id="openFormBtn" data-i18n="home.cta.start">Start a project</button>
+          <button class="btn btn-secondary" data-cal-link="pedro-julien" data-cal-config='{"layout":"month_view"}' data-i18n="home.cta.call">Book a call</button>
         </div>
       </div>
 
       <!-- Clients -->
       <div class="clients-block">
-        <div class="section-label">Past clients include</div>
+        <div class="section-label" data-i18n="home.clients">Past clients include</div>
         <div class="clients-grid">
           <span class="client-name">Rise</span>
           <span class="client-name">Landscape</span>
@@ -1256,112 +1305,110 @@
         <div class="step-header">
           <div class="step-header-left">
             <span class="step-number">01</span>
-            <span class="step-title">Decode</span>
+            <span class="step-title" data-i18n="process.01.title">Decode</span>
           </div>
           <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Agent Flow</span>
         </div>
-        <p class="step-desc">Before a single pixel, a research agent crawls your market, competitors, and audience signals — building a structured intelligence brief with positioning gaps and opportunity maps.</p>
-        <p class="step-agent">You get a sharp, data-backed brief before our first call. No guessing.</p>
+        <p class="step-desc" data-i18n="process.01.desc">Before a single pixel, a research agent crawls your market, competitors, and audience signals — building a structured intelligence brief with positioning gaps and opportunity maps.</p>
+        <p class="step-agent" data-i18n="process.01.agent">You get a sharp, data-backed brief before our first call. No guessing.</p>
       </div>
 
       <div class="process-step">
         <div class="step-header">
           <div class="step-header-left">
             <span class="step-number">02</span>
-            <span class="step-title">Frame</span>
+            <span class="step-title" data-i18n="process.02.title">Frame</span>
           </div>
           <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> Skill-Based</span>
         </div>
-        <p class="step-desc">We lock direction, scope, and success criteria in one call. Custom skills auto-generate timelines, deliverable specs, and review cadences from the brief — zero admin overhead.</p>
-        <p class="step-agent">The project framework adapts to your scope. Not a template — a trained configuration.</p>
+        <p class="step-desc" data-i18n="process.02.desc">We lock direction, scope, and success criteria in one call. Custom skills auto-generate timelines, deliverable specs, and review cadences from the brief — zero admin overhead.</p>
+        <p class="step-agent" data-i18n="process.02.agent">The project framework adapts to your scope. Not a template — a trained configuration.</p>
       </div>
 
       <div class="process-step">
         <div class="step-header">
           <div class="step-header-left">
             <span class="step-number">03</span>
-            <span class="step-title">Explore</span>
+            <span class="step-title" data-i18n="process.03.title">Explore</span>
           </div>
           <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Agent Flow</span>
         </div>
-        <p class="step-desc">This is where AI changes everything. Parallel agents generate 30-50+ creative directions — naming systems, visual concepts, layout variations, type pairings — in hours, not weeks. We curate, combine, and push the best forward.</p>
-        <p class="step-agent">Massive creative exploration. Human taste selects. AI volume enables.</p>
+        <p class="step-desc" data-i18n="process.03.desc">This is where AI changes everything. Parallel agents generate 30-50+ creative directions — naming systems, visual concepts, layout variations, type pairings — in hours, not weeks. We curate, combine, and push the best forward.</p>
+        <p class="step-agent" data-i18n="process.03.agent">Massive creative exploration. Human taste selects. AI volume enables.</p>
       </div>
 
       <div class="process-step">
         <div class="step-header">
           <div class="step-header-left">
             <span class="step-number">04</span>
-            <span class="step-title">Sharpen</span>
+            <span class="step-title" data-i18n="process.04.title">Sharpen</span>
           </div>
           <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> Skill-Based</span>
         </div>
-        <p class="step-desc">Feedback flows through structured review skills — every comment logged, every revision tracked, every decision documented. No thread-chasing, no lost context.</p>
-        <p class="step-agent">Trained review loops that learn your preferences and accelerate convergence.</p>
+        <p class="step-desc" data-i18n="process.04.desc">Feedback flows through structured review skills — every comment logged, every revision tracked, every decision documented. No thread-chasing, no lost context.</p>
+        <p class="step-agent" data-i18n="process.04.agent">Trained review loops that learn your preferences and accelerate convergence.</p>
       </div>
 
       <div class="process-step">
         <div class="step-header">
           <div class="step-header-left">
             <span class="step-number">05</span>
-            <span class="step-title">Ship</span>
+            <span class="step-title" data-i18n="process.05.title">Ship</span>
           </div>
           <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Agent Flow</span>
         </div>
-        <p class="step-desc">A delivery agent compiles production-ready assets, generates brand guidelines, builds component libraries, and packages everything into a handoff system your team can actually use.</p>
-        <p class="step-agent">Not a zip file. A living framework ready for your next move.</p>
+        <p class="step-desc" data-i18n="process.05.desc">A delivery agent compiles production-ready assets, generates brand guidelines, builds component libraries, and packages everything into a handoff system your team can actually use.</p>
+        <p class="step-agent" data-i18n="process.05.agent">Not a zip file. A living framework ready for your next move.</p>
       </div>
 
-      <p class="process-disclaimer">Every project gets an adapted framework — agents, skills, and models configured to its specific needs. No two processes are identical.</p>
+      <p class="process-disclaimer" data-i18n="process.disclaimer">Every project gets an adapted framework — agents, skills, and models configured to its specific needs. No two processes are identical.</p>
 
     </div>
 
     <!-- Learning -->
     <div class="learning-content">
 
-      <p class="learning-text">
-        <strong>FFForma Learning</strong> — a program designed for creative professionals who want to master the intersection of design craft and AI systems. Not a generic AI course — this is the real framework we use to deliver at the studio, adapted into a structured learning experience.
-      </p>
+      <p class="learning-text" data-i18n="learning.intro"><strong>FFForma Learning</strong> — a program designed for creative professionals who want to master the intersection of design craft and AI systems. Not a generic AI course — this is the real framework we use to deliver at the studio, adapted into a structured learning experience.</p>
 
       <div class="learning-topics">
-        <div class="section-label">What you'll learn</div>
+        <div class="section-label" data-i18n="learning.whatyoulearn">What you'll learn</div>
         <div class="learning-topic-row">
           <span class="learning-topic-number">01</span>
-          <span>Agent flows for massive creative exploration — generating 30-50+ directions in hours</span>
+          <span data-i18n="learning.t1">Agent flows for massive creative exploration — generating 30-50+ directions in hours</span>
         </div>
         <div class="learning-topic-row">
           <span class="learning-topic-number">02</span>
-          <span>Building custom skills that automate repetitive design and delivery tasks</span>
+          <span data-i18n="learning.t2">Building custom skills that automate repetitive design and delivery tasks</span>
         </div>
         <div class="learning-topic-row">
           <span class="learning-topic-number">03</span>
-          <span>Sharp curation — selecting and refining from generative volume without losing craft</span>
+          <span data-i18n="learning.t3">Sharp curation — selecting and refining from generative volume without losing craft</span>
         </div>
         <div class="learning-topic-row">
           <span class="learning-topic-number">04</span>
-          <span>Adapting frameworks per project — agents, models, and skills configured to each brief</span>
+          <span data-i18n="learning.t4">Adapting frameworks per project — agents, models, and skills configured to each brief</span>
         </div>
         <div class="learning-topic-row">
           <span class="learning-topic-number">05</span>
-          <span>End-to-end AI-native workflow — from strategy to final delivery</span>
+          <span data-i18n="learning.t5">End-to-end AI-native workflow — from strategy to final delivery</span>
         </div>
       </div>
 
       <div class="learning-audience">
-        <div class="section-label">For</div>
-        <span class="service-tag">UX Designers</span>
-        <span class="service-tag">Art Directors</span>
-        <span class="service-tag">Brand Designers</span>
-        <span class="service-tag">Creative Leads</span>
-        <span class="service-tag">Product Designers</span>
+        <div class="section-label" data-i18n="learning.for">For</div>
+        <span class="service-tag" data-i18n="learning.tag1">UX Designers</span>
+        <span class="service-tag" data-i18n="learning.tag2">Art Directors</span>
+        <span class="service-tag" data-i18n="learning.tag3">Brand Designers</span>
+        <span class="service-tag" data-i18n="learning.tag4">Creative Leads</span>
+        <span class="service-tag" data-i18n="learning.tag5">Product Designers</span>
       </div>
 
       <hr style="border:none;border-top:1px solid var(--border);margin:0;">
       <div class="cta-block">
-        <div class="cta-heading">Interested?</div>
-        <div class="cta-sub">Get in touch and we'll share details about the next class.</div>
+        <div class="cta-heading" data-i18n="learning.cta.heading">Interested?</div>
+        <div class="cta-sub" data-i18n="learning.cta.sub">Get in touch and we'll share details about the next class.</div>
         <div class="cta-buttons">
-          <button class="btn btn-primary" id="openFormBtnLearning">Get in touch</button>
+          <button class="btn btn-primary" id="openFormBtnLearning" data-i18n="learning.cta.btn">Get in touch</button>
         </div>
       </div>
 
@@ -1370,23 +1417,17 @@
     <!-- About -->
     <div class="about-content">
 
-      <p class="about-bio">
-        <strong>Pedro Julien</strong> is the founder of FFForma — a design studio built for high-level creativity driven by AI. With 18+ years in digital products and branding, Pedro now channels that craft into a new model: massive creative quality at unprecedented speed, powered by agent flows, trained skills, and generative systems that work as hard as the ideas behind them.
-      </p>
+      <p class="about-bio" data-i18n="about.bio1"><strong>Pedro Julien</strong> is the founder of FFForma — a design studio built for high-level creativity driven by AI. With 18+ years in digital products and branding, Pedro now channels that craft into a new model: massive creative quality at unprecedented speed, powered by agent flows, trained skills, and generative systems that work as hard as the ideas behind them.</p>
 
-      <p class="about-bio">
-        Founded <strong>FFForma</strong> as a studio built on a new premise: design through collaboration with GenAI. Not AI as a shortcut — AI as a creative partner. Agent flows for exploration, trained skills for execution, custom models for consistency. Every project ships with its own adapted framework.
-      </p>
+      <p class="about-bio" data-i18n="about.bio2">Founded <strong>FFForma</strong> as a studio built on a new premise: design through collaboration with GenAI. Not AI as a shortcut — AI as a creative partner. Agent flows for exploration, trained skills for execution, custom models for consistency. Every project ships with its own adapted framework.</p>
 
-      <blockquote class="about-quote">
-        "Creative relevance at the speed of AI. Infinite possibilities, sharp curation, right pacing. We don't choose between speed and quality — we ship both. Incredible results in a fraction of the time, because craft and intelligence were never opposites."
-      </blockquote>
+      <blockquote class="about-quote" data-i18n="about.quote">"Creative relevance at the speed of AI. Infinite possibilities, sharp curation, right pacing. We don't choose between speed and quality — we ship both. Incredible results in a fraction of the time, because craft and intelligence were never opposites."</blockquote>
 
     </div>
 
     <!-- Footer -->
     <div class="panel-footer">
-      &copy; 2026 FFForma Studio. All rights reserved.
+      <span data-i18n="footer">&copy; 2026 FFForma Studio. All rights reserved.</span>
     </div>
 
   </div>
@@ -1436,26 +1477,26 @@
       <input type="hidden" name="_next" value="#">
       <input type="text" name="_honey" style="display:none">
 
-      <div class="modal-title">Let's give your idea a form.</div>
-      <div class="modal-subtitle">Fill out the form and we'll get back to you within 24 hours.</div>
+      <div class="modal-title" data-i18n="form.title">Let's give your idea a form.</div>
+      <div class="modal-subtitle" data-i18n="form.subtitle">Fill out the form and we'll get back to you within 24 hours.</div>
 
       <div class="form-group">
-        <label class="form-label">Name</label>
-        <input class="form-input" type="text" name="name" placeholder="Your name" required>
+        <label class="form-label" data-i18n="form.name">Name</label>
+        <input class="form-input" type="text" name="name" data-i18n-placeholder="form.name.ph" placeholder="Your name" required>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Email</label>
-        <input class="form-input" type="email" name="email" placeholder="Your email" required>
+        <label class="form-label" data-i18n="form.email">Email</label>
+        <input class="form-input" type="email" name="email" data-i18n-placeholder="form.email.ph" placeholder="Your email" required>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Tell us about your project</label>
-        <textarea class="form-textarea" name="message" placeholder="What are you building and what do you need help with?"></textarea>
+        <label class="form-label" data-i18n="form.message">Tell us about your project</label>
+        <textarea class="form-textarea" name="message" data-i18n-placeholder="form.message.ph" placeholder="What are you building and what do you need help with?"></textarea>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Type of work</label>
+        <label class="form-label" data-i18n="form.type">Type of work</label>
         <div class="chip-group" data-field="type">
           <button type="button" class="chip" data-value="Branding">Branding</button>
           <button type="button" class="chip" data-value="Website">Website</button>
@@ -1467,18 +1508,16 @@
         <input type="hidden" name="type_of_work" id="typeOfWork">
       </div>
 
-      <button type="submit" class="form-submit">Send message</button>
+      <button type="submit" class="form-submit" data-i18n="form.send">Send message</button>
 
-      <div class="form-footer">
-        Terms of Service | Privacy Policy
-      </div>
+      <div class="form-footer" data-i18n="form.footer">Terms of Service | Privacy Policy</div>
     </form>
 
     <!-- Success -->
     <div class="form-success" id="formSuccess">
       <div class="form-success-icon">&#10003;</div>
-      <div class="form-success-title">Message sent!</div>
-      <div class="form-success-text">We'll get back to you within 24 hours.</div>
+      <div class="form-success-title" data-i18n="form.success.title">Message sent!</div>
+      <div class="form-success-text" data-i18n="form.success.text">We'll get back to you within 24 hours.</div>
     </div>
   </div>
 </div>
@@ -1495,21 +1534,21 @@
       <input type="hidden" name="_next" value="#">
       <input type="text" name="_honey" style="display:none">
 
-      <div class="modal-title">Join FFForma Learning.</div>
-      <div class="modal-subtitle">AI-native creative framework for designers. Leave your info and we'll reach out with details.</div>
+      <div class="modal-title" data-i18n="lform.title">Join FFForma Learning.</div>
+      <div class="modal-subtitle" data-i18n="lform.subtitle">AI-native creative framework for designers. Leave your info and we'll reach out with details.</div>
 
       <div class="form-group">
-        <label class="form-label">Name</label>
-        <input class="form-input" type="text" name="name" placeholder="Your name" required>
+        <label class="form-label" data-i18n="lform.name">Name</label>
+        <input class="form-input" type="text" name="name" data-i18n-placeholder="lform.name.ph" placeholder="Your name" required>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Email</label>
-        <input class="form-input" type="email" name="email" placeholder="Your email" required>
+        <label class="form-label" data-i18n="lform.email">Email</label>
+        <input class="form-input" type="email" name="email" data-i18n-placeholder="lform.email.ph" placeholder="Your email" required>
       </div>
 
       <div class="form-group">
-        <label class="form-label">What do you do?</label>
+        <label class="form-label" data-i18n="lform.role">What do you do?</label>
         <div class="chip-group" data-field="learning-role">
           <button type="button" class="chip" data-value="UX Designer">UX Designer</button>
           <button type="button" class="chip" data-value="Art Director">Art Director</button>
@@ -1521,13 +1560,13 @@
         <input type="hidden" name="role" id="learningRole">
       </div>
 
-      <button type="submit" class="form-submit">I'm interested</button>
+      <button type="submit" class="form-submit" data-i18n="lform.send">I'm interested</button>
     </form>
 
     <div class="form-success" id="learningSuccess">
       <div class="form-success-icon">&#10003;</div>
-      <div class="form-success-title">You're on the list!</div>
-      <div class="form-success-text">We'll reach out soon with program details.</div>
+      <div class="form-success-title" data-i18n="lform.success.title">You're on the list!</div>
+      <div class="form-success-text" data-i18n="lform.success.text">We'll reach out soon with program details.</div>
     </div>
   </div>
 </div>
@@ -1572,6 +1611,193 @@ Cal("ui", {
 </script>
 
 <script>
+  // ─── i18n System ───
+  const translations = {
+    en: {
+      'nav.home': 'Home',
+      'nav.process': 'Process',
+      'nav.learning': 'Learning',
+      'nav.about': 'About',
+      'home.intro': '<strong>FFForma</strong> is a design studio 100% fluent and born inside AI Era. We don\'t just use AI as a tool — it\'s in our foundation. We shape brands, websites, and digital products with the precision of craft and the speed of intelligence.',
+      'home.investment': 'Investment',
+      'home.price.brand': 'from $4.000,00',
+      'home.price.web': 'from $5.000,00',
+      'home.price.brandweb': 'from $9.000,00',
+      'home.price.visuals': 'from $1.000,00',
+      'home.price.app': 'from $10.000,00',
+      'home.price.partner': 'from $4.500,00/m',
+      'home.cta.heading': 'Ready to give your idea a form?',
+      'home.cta.sub': 'Fill out the form or book a call, whichever you prefer.',
+      'home.cta.start': 'Start a project',
+      'home.cta.call': 'Book a call',
+      'home.clients': 'Past clients include',
+      'process.01.title': 'Decode',
+      'process.01.desc': 'Before a single pixel, a research agent crawls your market, competitors, and audience signals — building a structured intelligence brief with positioning gaps and opportunity maps.',
+      'process.01.agent': 'You get a sharp, data-backed brief before our first call. No guessing.',
+      'process.02.title': 'Frame',
+      'process.02.desc': 'We lock direction, scope, and success criteria in one call. Custom skills auto-generate timelines, deliverable specs, and review cadences from the brief — zero admin overhead.',
+      'process.02.agent': 'The project framework adapts to your scope. Not a template — a trained configuration.',
+      'process.03.title': 'Explore',
+      'process.03.desc': 'This is where AI changes everything. Parallel agents generate 30-50+ creative directions — naming systems, visual concepts, layout variations, type pairings — in hours, not weeks. We curate, combine, and push the best forward.',
+      'process.03.agent': 'Massive creative exploration. Human taste selects. AI volume enables.',
+      'process.04.title': 'Sharpen',
+      'process.04.desc': 'Feedback flows through structured review skills — every comment logged, every revision tracked, every decision documented. No thread-chasing, no lost context.',
+      'process.04.agent': 'Trained review loops that learn your preferences and accelerate convergence.',
+      'process.05.title': 'Ship',
+      'process.05.desc': 'A delivery agent compiles production-ready assets, generates brand guidelines, builds component libraries, and packages everything into a handoff system your team can actually use.',
+      'process.05.agent': 'Not a zip file. A living framework ready for your next move.',
+      'process.disclaimer': 'Every project gets an adapted framework — agents, skills, and models configured to its specific needs. No two processes are identical.',
+      'learning.intro': '<strong>FFForma Learning</strong> — a program designed for creative professionals who want to master the intersection of design craft and AI systems. Not a generic AI course — this is the real framework we use to deliver at the studio, adapted into a structured learning experience.',
+      'learning.whatyoulearn': 'What you\'ll learn',
+      'learning.t1': 'Agent flows for massive creative exploration — generating 30-50+ directions in hours',
+      'learning.t2': 'Building custom skills that automate repetitive design and delivery tasks',
+      'learning.t3': 'Sharp curation — selecting and refining from generative volume without losing craft',
+      'learning.t4': 'Adapting frameworks per project — agents, models, and skills configured to each brief',
+      'learning.t5': 'End-to-end AI-native workflow — from strategy to final delivery',
+      'learning.for': 'For',
+      'learning.tag1': 'UX Designers',
+      'learning.tag2': 'Art Directors',
+      'learning.tag3': 'Brand Designers',
+      'learning.tag4': 'Creative Leads',
+      'learning.tag5': 'Product Designers',
+      'learning.cta.heading': 'Interested?',
+      'learning.cta.sub': 'Get in touch and we\'ll share details about the next class.',
+      'learning.cta.btn': 'Get in touch',
+      'about.bio1': '<strong>Pedro Julien</strong> is the founder of FFForma — a design studio built for high-level creativity driven by AI. With 18+ years in digital products and branding, Pedro now channels that craft into a new model: massive creative quality at unprecedented speed, powered by agent flows, trained skills, and generative systems that work as hard as the ideas behind them.',
+      'about.bio2': 'Founded <strong>FFForma</strong> as a studio built on a new premise: design through collaboration with GenAI. Not AI as a shortcut — AI as a creative partner. Agent flows for exploration, trained skills for execution, custom models for consistency. Every project ships with its own adapted framework.',
+      'about.quote': '"Creative relevance at the speed of AI. Infinite possibilities, sharp curation, right pacing. We don\'t choose between speed and quality — we ship both. Incredible results in a fraction of the time, because craft and intelligence were never opposites."',
+      'footer': '&copy; 2026 FFForma Studio. All rights reserved.',
+      'form.title': 'Let\'s give your idea a form.',
+      'form.subtitle': 'Fill out the form and we\'ll get back to you within 24 hours.',
+      'form.name': 'Name',
+      'form.name.ph': 'Your name',
+      'form.email': 'Email',
+      'form.email.ph': 'Your email',
+      'form.message': 'Tell us about your project',
+      'form.message.ph': 'What are you building and what do you need help with?',
+      'form.type': 'Type of work',
+      'form.send': 'Send message',
+      'form.footer': 'Terms of Service | Privacy Policy',
+      'form.success.title': 'Message sent!',
+      'form.success.text': 'We\'ll get back to you within 24 hours.',
+      'lform.title': 'Join FFForma Learning.',
+      'lform.subtitle': 'AI-native creative framework for designers. Leave your info and we\'ll reach out with details.',
+      'lform.name': 'Name',
+      'lform.name.ph': 'Your name',
+      'lform.email': 'Email',
+      'lform.email.ph': 'Your email',
+      'lform.role': 'What do you do?',
+      'lform.send': 'I\'m interested',
+      'lform.success.title': 'You\'re on the list!',
+      'lform.success.text': 'We\'ll reach out soon with program details.'
+    },
+    pt: {
+      'nav.home': 'Home',
+      'nav.process': 'Processo',
+      'nav.learning': 'Learning',
+      'nav.about': 'Sobre',
+      'home.intro': '<strong>FFForma</strong> é um estúdio de design 100% fluente e nascido na era da AI. Não usamos AI como ferramenta — ela está na nossa fundação. Moldamos marcas, sites e produtos digitais com a precisão do craft e a velocidade da inteligência.',
+      'home.investment': 'Investimento',
+      'home.price.brand': 'a partir de R$20.000',
+      'home.price.web': 'a partir de R$25.000',
+      'home.price.brandweb': 'a partir de R$45.000',
+      'home.price.visuals': 'a partir de R$5.000',
+      'home.price.app': 'a partir de R$50.000',
+      'home.price.partner': 'a partir de R$22.000/m',
+      'home.cta.heading': 'Pronto para dar forma à sua ideia?',
+      'home.cta.sub': 'Preencha o formulário ou agende uma call, como preferir.',
+      'home.cta.start': 'Iniciar projeto',
+      'home.cta.call': 'Agendar call',
+      'home.clients': 'Clientes anteriores incluem',
+      'process.01.title': 'Decodificar',
+      'process.01.desc': 'Antes de um único pixel, um agente de pesquisa mapeia seu mercado, concorrentes e sinais de audiência — construindo um brief de inteligência estruturado com gaps de posicionamento e mapas de oportunidade.',
+      'process.01.agent': 'Você recebe um brief afiado e baseado em dados antes da primeira call. Sem achismos.',
+      'process.02.title': 'Estruturar',
+      'process.02.desc': 'Travamos direção, escopo e critérios de sucesso em uma call. Skills customizadas geram automaticamente timelines, specs de entregáveis e cadências de revisão a partir do brief — zero overhead administrativo.',
+      'process.02.agent': 'O framework do projeto se adapta ao seu escopo. Não é template — é uma configuração treinada.',
+      'process.03.title': 'Explorar',
+      'process.03.desc': 'Aqui é onde AI muda tudo. Agentes paralelos geram 30-50+ direções criativas — sistemas de naming, conceitos visuais, variações de layout, combinações tipográficas — em horas, não semanas. Curamos, combinamos e levamos as melhores adiante.',
+      'process.03.agent': 'Exploração criativa massiva. O gosto humano seleciona. O volume da AI viabiliza.',
+      'process.04.title': 'Refinar',
+      'process.04.desc': 'Feedback flui por skills de revisão estruturadas — cada comentário registrado, cada revisão rastreada, cada decisão documentada. Sem perseguir threads, sem perder contexto.',
+      'process.04.agent': 'Loops de revisão treinados que aprendem suas preferências e aceleram a convergência.',
+      'process.05.title': 'Entregar',
+      'process.05.desc': 'Um agente de entrega compila assets prontos para produção, gera guidelines de marca, constrói bibliotecas de componentes e empacota tudo em um sistema de handoff que sua equipe realmente consegue usar.',
+      'process.05.agent': 'Não é um zip. É um framework vivo pronto para o seu próximo passo.',
+      'process.disclaimer': 'Cada projeto recebe um framework adaptado — agentes, skills e modelos configurados para suas necessidades específicas. Nenhum processo é igual.',
+      'learning.intro': '<strong>FFForma Learning</strong> — um programa desenhado para profissionais criativos que querem dominar a intersecção entre craft de design e sistemas de AI. Não é um curso genérico de AI — é o framework real que usamos no estúdio, adaptado em uma experiência de aprendizado estruturada.',
+      'learning.whatyoulearn': 'O que você vai aprender',
+      'learning.t1': 'Fluxos de agentes para exploração criativa massiva — gerando 30-50+ direções em horas',
+      'learning.t2': 'Construção de skills customizadas que automatizam tarefas repetitivas de design e entrega',
+      'learning.t3': 'Curadoria afiada — selecionar e refinar a partir do volume generativo sem perder o craft',
+      'learning.t4': 'Adaptação de frameworks por projeto — agentes, modelos e skills configurados para cada brief',
+      'learning.t5': 'Workflow AI-native de ponta a ponta — da estratégia à entrega final',
+      'learning.for': 'Para',
+      'learning.tag1': 'UX Designers',
+      'learning.tag2': 'Diretores de Arte',
+      'learning.tag3': 'Brand Designers',
+      'learning.tag4': 'Líderes Criativos',
+      'learning.tag5': 'Product Designers',
+      'learning.cta.heading': 'Interessado?',
+      'learning.cta.sub': 'Entre em contato e compartilhamos os detalhes da próxima turma.',
+      'learning.cta.btn': 'Entrar em contato',
+      'about.bio1': '<strong>Pedro Julien</strong> é o fundador da FFForma — um estúdio de design construído para criatividade de alto nível impulsionada por AI. Com 18+ anos em produtos digitais e branding, Pedro agora canaliza esse craft em um novo modelo: qualidade criativa massiva em velocidade sem precedentes, alimentado por fluxos de agentes, skills treinadas e sistemas generativos que trabalham tão duro quanto as ideias por trás deles.',
+      'about.bio2': 'Fundou a <strong>FFForma</strong> como um estúdio construído sobre uma nova premissa: design através da colaboração com GenAI. Não AI como atalho — AI como parceiro criativo. Fluxos de agentes para exploração, skills treinadas para execução, modelos customizados para consistência. Cada projeto é entregue com seu próprio framework adaptado.',
+      'about.quote': '"Relevância criativa na velocidade da AI. Possibilidades infinitas, curadoria afiada, ritmo certo. Não escolhemos entre velocidade e qualidade — entregamos as duas. Resultados incríveis em uma fração do tempo, porque craft e inteligência nunca foram opostos."',
+      'footer': '&copy; 2026 FFForma Studio. Todos os direitos reservados.',
+      'form.title': 'Vamos dar forma à sua ideia.',
+      'form.subtitle': 'Preencha o formulário e retornamos em até 24 horas.',
+      'form.name': 'Nome',
+      'form.name.ph': 'Seu nome',
+      'form.email': 'Email',
+      'form.email.ph': 'Seu email',
+      'form.message': 'Conte sobre seu projeto',
+      'form.message.ph': 'O que você está construindo e como podemos ajudar?',
+      'form.type': 'Tipo de trabalho',
+      'form.send': 'Enviar mensagem',
+      'form.footer': 'Termos de Uso | Política de Privacidade',
+      'form.success.title': 'Mensagem enviada!',
+      'form.success.text': 'Retornamos em até 24 horas.',
+      'lform.title': 'Participe do FFForma Learning.',
+      'lform.subtitle': 'Framework criativo AI-native para designers. Deixe seus dados e entramos em contato com os detalhes.',
+      'lform.name': 'Nome',
+      'lform.name.ph': 'Seu nome',
+      'lform.email': 'Email',
+      'lform.email.ph': 'Seu email',
+      'lform.role': 'O que você faz?',
+      'lform.send': 'Tenho interesse',
+      'lform.success.title': 'Você está na lista!',
+      'lform.success.text': 'Entraremos em contato em breve com os detalhes do programa.'
+    }
+  };
+
+  let currentLang = localStorage.getItem('ffforma-lang') || 'en';
+
+  function applyLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('ffforma-lang', lang);
+    document.documentElement.setAttribute('lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    const t = translations[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key]) el.innerHTML = t[key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (t[key]) el.placeholder = t[key];
+    });
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+  });
+
+  // Apply saved language on load
+  if (currentLang !== 'en') applyLang(currentLang);
+
   // Theme toggle — instant, no transitions
   const toggle = document.getElementById('themeToggle');
   const html = document.documentElement;
