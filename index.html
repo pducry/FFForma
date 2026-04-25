@@ -1550,13 +1550,13 @@
 
       <div class="form-group">
         <label class="form-label" data-i18n="lform.role">What do you do?</label>
-        <div class="chip-group" data-field="learning-role">
-          <button type="button" class="chip" data-value="UX Designer">UX Designer</button>
-          <button type="button" class="chip" data-value="Art Director">Art Director</button>
-          <button type="button" class="chip" data-value="Brand Designer">Brand Designer</button>
-          <button type="button" class="chip" data-value="Product Designer">Product Designer</button>
-          <button type="button" class="chip" data-value="Creative Lead">Creative Lead</button>
-          <button type="button" class="chip" data-value="Other">Other</button>
+        <div class="chip-group" id="learningChips">
+          <span class="chip" data-value="UX Designer">UX Designer</span>
+          <span class="chip" data-value="Art Director">Art Director</span>
+          <span class="chip" data-value="Brand Designer">Brand Designer</span>
+          <span class="chip" data-value="Product Designer">Product Designer</span>
+          <span class="chip" data-value="Creative Lead">Creative Lead</span>
+          <span class="chip" data-value="Other">Other</span>
         </div>
         <input type="hidden" name="role" id="learningRole">
       </div>
@@ -1963,14 +1963,14 @@ Cal("ui", {
   });
 
   // Learning role chip selection
-  const learningRoleGroup = document.querySelector('[data-field="learning-role"]');
+  const learningChips = document.getElementById('learningChips');
   const learningRoleHidden = document.getElementById('learningRole');
-  learningRoleGroup.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      chip.classList.toggle('selected');
-      const selected = [...learningRoleGroup.querySelectorAll('.chip.selected')].map(c => c.dataset.value);
-      learningRoleHidden.value = selected.join(', ');
-    });
+  learningChips.addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    chip.classList.toggle('selected');
+    const selected = [...learningChips.querySelectorAll('.chip.selected')].map(c => c.dataset.value);
+    learningRoleHidden.value = selected.join(', ');
   });
 
   // Learning form submission
@@ -1998,7 +1998,7 @@ Cal("ui", {
         learningForm.style.display = '';
         learningSuccess.classList.remove('is-visible');
         learningForm.reset();
-        learningRoleGroup.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+        learningChips.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
         learningRoleHidden.value = '';
       }, 300);
     }, 3000);
