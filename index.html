@@ -334,7 +334,7 @@
       cursor: default;
     }
 
-    .service-tag:hover {
+    .service-tag:not(.no-hover):hover {
       border-color: var(--text-primary);
       color: var(--text-primary);
       background: var(--tag-hover-bg);
@@ -1396,11 +1396,11 @@
 
       <div class="learning-audience">
         <div class="section-label" data-i18n="learning.for">For</div>
-        <span class="service-tag" data-i18n="learning.tag1">UX Designers</span>
-        <span class="service-tag" data-i18n="learning.tag2">Art Directors</span>
-        <span class="service-tag" data-i18n="learning.tag3">Brand Designers</span>
-        <span class="service-tag" data-i18n="learning.tag4">Creative Leads</span>
-        <span class="service-tag" data-i18n="learning.tag5">Product Designers</span>
+        <span class="service-tag no-hover" data-i18n="learning.tag1">UX Designers</span>
+        <span class="service-tag no-hover" data-i18n="learning.tag2">Art Directors</span>
+        <span class="service-tag no-hover" data-i18n="learning.tag3">Brand Designers</span>
+        <span class="service-tag no-hover" data-i18n="learning.tag4">Creative Leads</span>
+        <span class="service-tag no-hover" data-i18n="learning.tag5">Product Designers</span>
       </div>
 
       <hr style="border:none;border-top:1px solid var(--border);margin:0;">
