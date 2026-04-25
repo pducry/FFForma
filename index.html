@@ -1025,6 +1025,36 @@
         position: relative;
         height: 45vh;
         order: -1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero-canvas {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero-showcase {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hero-showcase img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 85%;
+        max-height: 85%;
+        object-fit: contain;
       }
 
       .panel-left {
@@ -1035,12 +1065,6 @@
 
       .hero-logo {
         height: 40px;
-      }
-
-      .hero-showcase img {
-        max-width: 70%;
-        max-height: 60%;
-        object-fit: contain;
       }
 
       .corner-accent { display: none; }
@@ -1171,9 +1195,8 @@
       }
 
       .hero-showcase img {
-        max-width: 65%;
-        max-height: 55%;
-        object-fit: contain;
+        max-width: 80%;
+        max-height: 80%;
       }
 
       /* Modal mobile */
