@@ -1049,24 +1049,24 @@
       .hero-showcase {
         position: absolute;
         inset: 0;
-      }
-
-      .hero-showcase {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .hero-showcase img {
-        position: static !important;
-        transform: none !important;
+        position: static;
+        transform: none;
         max-width: 90%;
         max-height: 90%;
         width: auto;
         height: auto;
         object-fit: contain;
-        padding: 0;
-        margin: auto;
+        display: none;
+      }
+
+      .hero-showcase img.is-active {
+        display: block;
       }
 
       .panel-left {
