@@ -1851,33 +1851,18 @@ Cal("ui", {
     }
   });
 
-  // Chip selection (toggle)
-  document.querySelectorAll('.chip-group').forEach(group => {
-    const field = group.dataset.field;
-    const hidden = field === 'type'
-      ? document.getElementById('typeOfWork')
-      : document.getElementById('budgetField');
-    const multiSelect = field === 'type';
-
-    group.querySelectorAll('.chip').forEach(chip => {
+  // Chip selection (toggle) — project form only
+  const typeGroup = document.querySelector('[data-field="type"]');
+  const typeHidden = document.getElementById('typeOfWork');
+  if (typeGroup && typeHidden) {
+    typeGroup.querySelectorAll('.chip').forEach(chip => {
       chip.addEventListener('click', () => {
-        if (multiSelect) {
-          chip.classList.toggle('selected');
-          const selected = [...group.querySelectorAll('.chip.selected')].map(c => c.dataset.value);
-          hidden.value = selected.join(', ');
-        } else {
-          const wasSelected = chip.classList.contains('selected');
-          group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-          if (!wasSelected) {
-            chip.classList.add('selected');
-            hidden.value = chip.dataset.value;
-          } else {
-            hidden.value = '';
-          }
-        }
+        chip.classList.toggle('selected');
+        const selected = [...typeGroup.querySelectorAll('.chip.selected')].map(c => c.dataset.value);
+        typeHidden.value = selected.join(', ');
       });
     });
-  });
+  }
 
   // Form submission via fetch (no redirect)
   projectForm.addEventListener('submit', async (e) => {
