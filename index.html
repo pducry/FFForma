@@ -1927,8 +1927,8 @@ Cal("ui", {
         formSuccess.classList.remove('is-visible');
         projectForm.reset();
         document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-        document.getElementById('typeOfWork').value = '';
-        document.getElementById('budgetField').value = '';
+        const typeField = document.getElementById('typeOfWork');
+        if (typeField) typeField.value = '';
       }, 300);
     }, 3000);
   });
