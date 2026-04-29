@@ -1854,14 +1854,16 @@ Cal("ui", {
 
   // ─── Project Form Modal ───
   const formModal = document.getElementById('formModal');
-  const openFormBtn = document.getElementById('openFormBtn');
+  const openFormBtn = document.getElementById('openFormBtn') || null;
   const closeFormBtn = document.getElementById('closeFormBtn');
   const projectForm = document.getElementById('projectForm');
   const formSuccess = document.getElementById('formSuccess');
 
-  openFormBtn.addEventListener('click', () => {
-    formModal.classList.add('is-open');
-  });
+  if (openFormBtn) {
+    openFormBtn.addEventListener('click', () => {
+      formModal.classList.add('is-open');
+    });
+  }
 
   closeFormBtn.addEventListener('click', () => {
     formModal.classList.remove('is-open');
