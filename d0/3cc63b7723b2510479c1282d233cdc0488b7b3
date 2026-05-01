@@ -1,0 +1,23 @@
+index.html
+  73461c37f0eb5ac6 1899
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "d03cc63b7723b2510479c1282d233cdc0488b7b3",
+  "prompts": {
+    "73461c37f0eb5ac6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "85ddfe72-bf42-4886-a597-8d9f74519f99",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Pedro Julien",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
