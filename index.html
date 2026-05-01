@@ -111,6 +111,7 @@
       height: 22px;
       display: flex;
       align-items: center;
+      cursor: pointer;
     }
 
     .logo-mark img {
@@ -1238,7 +1239,7 @@
       }
     }
 
-    body, body *, body *::before, body *::after { font-size: 12.2px !important; }
+    body, body *, body *::before, body *::after { font-size: 12px !important; }
   </style>
 </head>
 <body>
@@ -1914,6 +1915,14 @@ Cal("ui", {
   // Nav link switching
   const panelContent = document.querySelector('.panel-content');
   const learningContent = document.querySelector('.learning-content');
+
+  const logoMark = document.querySelector('.logo-mark');
+  if (logoMark) {
+    logoMark.addEventListener('click', () => {
+      const homeLink = document.querySelector('.nav-link[data-page="home"]');
+      if (homeLink) homeLink.click();
+    });
+  }
 
   document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
