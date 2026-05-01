@@ -1281,6 +1281,7 @@
     <!-- Navigation -->
     <nav class="nav-bar">
       <a class="nav-link active" data-page="home" data-i18n="nav.home">Home</a>
+      <a class="nav-link" data-page="process" data-i18n="nav.process">Creative Process</a>
       <a class="nav-link" data-page="learning" data-i18n="nav.learning">Learning Process</a>
     </nav>
 
@@ -1320,6 +1321,75 @@
           <span class="client-name">Globosat</span>
         </div>
       </div>
+
+    </div>
+
+    <!-- Creative Process -->
+    <div class="process-content">
+
+      <p class="learning-text" data-i18n="process.intro">Five steps. How a brief becomes a delivered project — agents, skills, and craft working together.</p>
+
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-header-left">
+            <span class="step-number">01</span>
+            <span class="step-title" data-i18n="process.01.title">Decode</span>
+          </div>
+          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Agent Flow</span>
+        </div>
+        <p class="step-desc" data-i18n="process.01.desc">Before a single pixel, a research agent crawls market, competitors, and audience signals — building a structured intelligence brief with positioning gaps and opportunity maps.</p>
+        <p class="step-agent" data-i18n="process.01.agent">A sharp, data-backed brief before the first call. No guessing.</p>
+      </div>
+
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-header-left">
+            <span class="step-number">02</span>
+            <span class="step-title" data-i18n="process.02.title">Frame</span>
+          </div>
+          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> Skill-Based</span>
+        </div>
+        <p class="step-desc" data-i18n="process.02.desc">Direction, scope, and success criteria locked in one call. Custom skills auto-generate timelines, deliverable specs, and review cadences from the brief — zero admin overhead.</p>
+        <p class="step-agent" data-i18n="process.02.agent">The project framework adapts to scope. Not a template — a trained configuration.</p>
+      </div>
+
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-header-left">
+            <span class="step-number">03</span>
+            <span class="step-title" data-i18n="process.03.title">Explore</span>
+          </div>
+          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Agent Flow</span>
+        </div>
+        <p class="step-desc" data-i18n="process.03.desc">Where AI changes everything. Parallel agents generate 30-50+ creative directions — naming systems, visual concepts, layout variations, type pairings — in hours, not weeks. The best ideas are curated, combined, and pushed forward.</p>
+        <p class="step-agent" data-i18n="process.03.agent">Massive creative exploration. Human taste selects. AI volume enables.</p>
+      </div>
+
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-header-left">
+            <span class="step-number">04</span>
+            <span class="step-title" data-i18n="process.04.title">Sharpen</span>
+          </div>
+          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> Skill-Based</span>
+        </div>
+        <p class="step-desc" data-i18n="process.04.desc">Feedback flows through structured review skills — every comment logged, every revision tracked, every decision documented. No thread-chasing, no lost context.</p>
+        <p class="step-agent" data-i18n="process.04.agent">Trained review loops that learn preferences and accelerate convergence.</p>
+      </div>
+
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-header-left">
+            <span class="step-number">05</span>
+            <span class="step-title" data-i18n="process.05.title">Ship</span>
+          </div>
+          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Agent Flow</span>
+        </div>
+        <p class="step-desc" data-i18n="process.05.desc">A delivery agent compiles production-ready assets, generates brand guidelines, builds component libraries, and packages everything into a handoff system the team can actually use.</p>
+        <p class="step-agent" data-i18n="process.05.agent">Not a zip file. A living framework ready for the next move.</p>
+      </div>
+
+      <p class="process-disclaimer" data-i18n="process.disclaimer">Every project gets an adapted framework — agents, skills, and models configured to its specific needs. No two processes are identical.</p>
 
     </div>
 
@@ -1621,6 +1691,7 @@ Cal("ui", {
   const translations = {
     en: {
       'nav.home': 'Home',
+      'nav.process': 'Creative Process',
       'nav.learning': 'Learning Process',
       'nav.about': 'About',
       'home.intro1': '<strong>FFForma</strong> is a creative side project by <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\">Pedro Julien</a> — a design practice focused on the creative integration between humans and artificial intelligence. Two fronts: delivering innovative projects with maximum personality, and bringing AI into the creative industry for real through education.',
@@ -1637,6 +1708,23 @@ Cal("ui", {
       'home.cta.start': 'Start a project',
       'home.cta.call': 'Book a call',
       'home.clients': 'Clients and Brands',
+      'process.intro': 'Five steps. How a brief becomes a delivered project — agents, skills, and craft working together.',
+      'process.01.title': 'Decode',
+      'process.01.desc': 'Before a single pixel, a research agent crawls market, competitors, and audience signals — building a structured intelligence brief with positioning gaps and opportunity maps.',
+      'process.01.agent': 'A sharp, data-backed brief before the first call. No guessing.',
+      'process.02.title': 'Frame',
+      'process.02.desc': 'Direction, scope, and success criteria locked in one call. Custom skills auto-generate timelines, deliverable specs, and review cadences from the brief — zero admin overhead.',
+      'process.02.agent': 'The project framework adapts to scope. Not a template — a trained configuration.',
+      'process.03.title': 'Explore',
+      'process.03.desc': 'Where AI changes everything. Parallel agents generate 30-50+ creative directions — naming systems, visual concepts, layout variations, type pairings — in hours, not weeks. The best ideas are curated, combined, and pushed forward.',
+      'process.03.agent': 'Massive creative exploration. Human taste selects. AI volume enables.',
+      'process.04.title': 'Sharpen',
+      'process.04.desc': 'Feedback flows through structured review skills — every comment logged, every revision tracked, every decision documented. No thread-chasing, no lost context.',
+      'process.04.agent': 'Trained review loops that learn preferences and accelerate convergence.',
+      'process.05.title': 'Ship',
+      'process.05.desc': 'A delivery agent compiles production-ready assets, generates brand guidelines, builds component libraries, and packages everything into a handoff system the team can actually use.',
+      'process.05.agent': 'Not a zip file. A living framework ready for the next move.',
+      'process.disclaimer': 'Every project gets an adapted framework — agents, skills, and models configured to its specific needs. No two processes are identical.',
       'learning.intro': '<strong>FFForma Learning Process</strong> — for designers, creative professionals, and teams who want to work with AI for real. Not a generic course — a hands-on program built from the same frameworks used to deliver creative projects. Learn by doing, with real briefs and real tools — expanding what you can create, compressing how long it takes, and evolving the way you design.',
       'learning.s1.title': 'Understand',
       'learning.s1.desc': 'Starts by mapping where you are — tools, process, gaps. Then the fundamentals: how agents work, what skills are, and where GenAI actually fits in a creative workflow.',
@@ -1694,6 +1782,7 @@ Cal("ui", {
     },
     pt: {
       'nav.home': 'Home',
+      'nav.process': 'Creative Process',
       'nav.learning': 'Learning Process',
       'nav.about': 'Sobre',
       'home.intro1': '<strong>FFForma</strong> é um creative side project de <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\">Pedro Julien</a> — uma design practice focada na integração criativa entre humanos e inteligência artificial. Duas frentes: entregar projetos inovadores com máxima personalidade, e trazer AI para a indústria criativa de verdade através da educação.',
@@ -1710,6 +1799,23 @@ Cal("ui", {
       'home.cta.start': 'Iniciar projeto',
       'home.cta.call': 'Agendar call',
       'home.clients': 'Clientes e Marcas',
+      'process.intro': 'Cinco passos. Como um brief vira projeto entregue — agentes, skills e craft trabalhando juntos.',
+      'process.01.title': 'Decodificar',
+      'process.01.desc': 'Antes de um único pixel, um agente de pesquisa mapeia mercado, concorrentes e sinais de audiência — construindo um brief de inteligência estruturado com gaps de posicionamento e mapas de oportunidade.',
+      'process.01.agent': 'Um brief afiado e baseado em dados antes da primeira call. Sem achismos.',
+      'process.02.title': 'Estruturar',
+      'process.02.desc': 'Direção, escopo e critérios de sucesso travados em uma call. Skills customizadas geram automaticamente timelines, specs de entregáveis e cadências de revisão a partir do brief — zero overhead administrativo.',
+      'process.02.agent': 'O framework do projeto se adapta ao escopo. Não é template — é uma configuração treinada.',
+      'process.03.title': 'Explorar',
+      'process.03.desc': 'Aqui é onde AI muda tudo. Agentes paralelos geram 30-50+ direções criativas — sistemas de naming, conceitos visuais, variações de layout, combinações tipográficas — em horas, não semanas. As melhores ideias são curadas, combinadas e levadas adiante.',
+      'process.03.agent': 'Exploração criativa massiva. O gosto humano seleciona. O volume da AI viabiliza.',
+      'process.04.title': 'Refinar',
+      'process.04.desc': 'Feedback flui por skills de revisão estruturadas — cada comentário registrado, cada revisão rastreada, cada decisão documentada. Sem perseguir threads, sem perder contexto.',
+      'process.04.agent': 'Loops de revisão treinados que aprendem preferências e aceleram a convergência.',
+      'process.05.title': 'Entregar',
+      'process.05.desc': 'Um agente de entrega compila assets prontos para produção, gera guidelines de marca, constrói bibliotecas de componentes e empacota tudo em um sistema de handoff que a equipe realmente consegue usar.',
+      'process.05.agent': 'Não é um zip. É um framework vivo pronto para o próximo passo.',
+      'process.disclaimer': 'Cada projeto recebe um framework adaptado — agentes, skills e modelos configurados para suas necessidades específicas. Nenhum processo é igual.',
       'learning.intro': '<strong>FFForma Learning Process</strong> — para designers, profissionais criativos e equipes que querem trabalhar com AI de verdade. Não é um curso genérico — é um programa prático construído com os mesmos frameworks usados para entregar projetos criativos reais. Aprender fazendo, com briefs reais e ferramentas reais — ampliando o que você cria, comprimindo o tempo que leva, e evoluindo a forma como você projeta.',
       'learning.s1.title': 'Entender',
       'learning.s1.desc': 'Começa mapeando onde você está — ferramentas, processo, gaps. Depois os fundamentos: como agentes funcionam, o que são skills, e onde GenAI realmente se encaixa num fluxo criativo.',
@@ -1915,6 +2021,7 @@ Cal("ui", {
   // Nav link switching
   const panelContent = document.querySelector('.panel-content');
   const learningContent = document.querySelector('.learning-content');
+  const processContent = document.querySelector('.process-content');
 
   const logoMark = document.querySelector('.logo-mark');
   if (logoMark) {
@@ -1930,11 +2037,12 @@ Cal("ui", {
       link.classList.add('active');
 
       const page = link.dataset.page;
-      const sections = [panelContent, learningContent];
-      sections.forEach(s => { s.style.display = 'none'; s.classList.remove('animate-in'); });
+      const sections = [panelContent, learningContent, processContent];
+      sections.forEach(s => { if (s) { s.style.display = 'none'; s.classList.remove('animate-in'); } });
 
       let active;
       if (page === 'learning') active = learningContent;
+      else if (page === 'process') active = processContent;
       else active = panelContent;
 
       active.style.display = page === 'home' ? '' : 'flex';
