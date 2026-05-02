@@ -1,0 +1,23 @@
+index.html
+  73461c37f0eb5ac6 80,276,516,535,539,578,586,613
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "f53f8a142a2de256e191a802e010695018dab6ed",
+  "prompts": {
+    "73461c37f0eb5ac6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "85ddfe72-bf42-4886-a597-8d9f74519f99",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Pedro Julien",
+      "messages": [],
+      "total_additions": 8,
+      "total_deletions": 8,
+      "accepted_lines": 8,
+      "overriden_lines": 0
+    }
+  }
+}
