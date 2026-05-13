@@ -1,0 +1,32 @@
+index.html
+  s_2bc54f8efefc23::t_38e01b8c82c00a 1504,1517,1519,1521-1527
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "b8d4bdfa495609642c6d075f89339ac3c85387f1",
+  "prompts": {
+    "73461c37f0eb5ac6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "85ddfe72-bf42-4886-a597-8d9f74519f99",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Pedro Julien <pducry@gmail.com>",
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  },
+  "sessions": {
+    "s_2bc54f8efefc23": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1f23cdd9-d64b-4cb6-ab11-456a1c060993",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Pedro Julien <pducry@gmail.com>"
+    }
+  }
+}
