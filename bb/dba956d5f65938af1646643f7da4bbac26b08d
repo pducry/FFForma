@@ -1,0 +1,20 @@
+index.html
+  s_2bc54f8efefc23::t_68ca14e77e26b1 1525
+  s_2bc54f8efefc23::t_0da0d686f2c513 2003,2007-2010
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "bbdba956d5f65938af1646643f7da4bbac26b08d",
+  "prompts": {},
+  "sessions": {
+    "s_2bc54f8efefc23": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1f23cdd9-d64b-4cb6-ab11-456a1c060993",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Pedro Julien <pducry@gmail.com>"
+    }
+  }
+}
