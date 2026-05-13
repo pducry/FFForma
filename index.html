@@ -1522,6 +1522,7 @@
         <img src="Imagens/Mudethumb.png" alt="FFForma">
         <img src="Imagens/combustion1.png" alt="FFForma">
         <img src="Imagens/combustion6.png" alt="FFForma">
+        <img src="Imagens/orb01.gif" alt="FFForma">
       </div>
 
 
@@ -1999,11 +2000,14 @@ Cal("ui", {
   const showcaseImgs = document.querySelectorAll('#heroShowcase img');
   if (showcaseImgs.length > 1) {
     let current = 0;
-    setInterval(() => {
+    function nextSlide() {
       showcaseImgs[current].classList.remove('is-active');
       current = (current + 1) % showcaseImgs.length;
       showcaseImgs[current].classList.add('is-active');
-    }, 450);
+      const delay = showcaseImgs[current].src.endsWith('.gif') ? 1000 : 450;
+      setTimeout(nextSlide, delay);
+    }
+    setTimeout(nextSlide, 450);
   }
 
   // Nav link switching
