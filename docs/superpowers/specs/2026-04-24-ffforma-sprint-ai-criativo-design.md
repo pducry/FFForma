@@ -1,5 +1,5 @@
 # FFForma Sprint — AI no Processo Criativo
-## Spec de Design | 2026-04-24
+## Spec de Design | 2026-04-24 · Atualizado 2026-05-20
 
 ---
 
@@ -7,9 +7,9 @@
 
 **Produto:** Workshop ao vivo — sprint de 3 dias consecutivos
 **Nome:** FFForma Sprint — AI no Processo Criativo
-**Subtítulo:** *3 dias para mudar como você cria para sempre*
+**Subtítulo:** *3 dias trabalhando como a FFForma trabalha.*
 **Idioma:** Português (mercado brasileiro)
-**Público:** Designers e criativos (nível técnico misto — do zero ao intermediário)
+**Público:** Designers e criativos que preferem entregar do que assistir tutorial — nível misto (do zero ao intermediário)
 **Stack:** Claude Code + ferramentas visuais de AI (Midjourney, Adobe Firefly, Runway)
 
 ---
@@ -20,15 +20,19 @@ Ao final do sprint, cada participante sai com três coisas concretas:
 
 1. **Mindset** — pensa em Human x AI, não em "usar AI como ferramenta"
 2. **Sistema próprio** — agentes, skills e prompts configurados para o seu processo criativo
-3. **Projeto real** — um trabalho concreto de branding ou visual produzido durante os 3 dias
+3. **Projeto real** — um trabalho concreto de branding ou visual produzido e **entregue** durante os 3 dias
 
 ---
 
-## Abordagem Pedagógica
+## Filosofia Metodológica (atualizada)
 
-**Híbrido A+B:** O Dia 1 constrói a base conceitual e técnica (Framework-First). Os Dias 2 e 3 mergulham no processo real da FFForma — Decode, Explore, Sharpen, Ship — com um projeto pessoal como trilho (Process-Led).
+Inspirado no princípio maker *"ship > watch tutorials"*: cada sessão tem um brief de entrada e um entregável de saída. O participante não assiste — faz. Não estuda fluxos — configura e quebra. O conteúdo é o veículo; o projeto entregue é a prova.
 
-**Princípio central:** O participante aprende fazendo o projeto dele, não um exemplo genérico. O conteúdo é o veículo; o projeto é o destino.
+**Cadência Drop → Build → Ship:** Cada dia funciona como um mini-sprint com ritmo próprio — o brief cai, o participante constrói, e ao final há algo concreto para mostrar. Sem exercícios genéricos. Sem demos que o facilitador conduz enquanto o aluno observa.
+
+**Abordagem Híbrida A+B:** O Dia 1 constrói a base conceitual e técnica (Framework-First). Os Dias 2 e 3 mergulham no processo real da FFForma — Decode, Explore, Sharpen, Ship — com um projeto pessoal como trilho (Process-Led).
+
+**Princípio central:** O participante aprende fazendo o projeto dele, não um exemplo genérico. O conteúdo é o veículo; o projeto entregue é o destino.
 
 **Para turma mista:** O projeto pessoal ancora todos no mesmo fluxo independente do nível técnico. Quem é iniciante aprende os fundamentos no Dia 1. Quem já usa AI percebe a diferença entre uso isolado e sistema integrado a partir do Dia 2.
 
@@ -142,6 +146,14 @@ Ao final do sprint, cada participante sai com três coisas concretas:
 Este sprint não é um curso sobre AI. É uma imersão no modo de trabalho da FFForma — o mesmo processo que o estúdio usa com clientes reais. O participante não aprende sobre o processo. Ele vive o processo.
 
 **Linha de comunicação:** *"3 dias trabalhando como a FFForma trabalha."*
+
+---
+
+## Decisões em Aberto
+
+- **Formato de entrega:** Presencial ou online (Zoom/Meet)? Impacta dinâmica dos blocos hands-on.
+- **Tamanho da turma:** Número máximo de participantes por edição.
+- **Pricing:** A definir antes da página de vendas.
 
 ---
 
