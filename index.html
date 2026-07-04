@@ -1408,6 +1408,7 @@
         <img src="Imagens/Frame3.png" alt="FFForma">
         <img src="Imagens/Frame2.png" alt="FFForma">
         <img src="Imagens/Frame1.png" alt="FFForma">
+        <img src="Imagens/Frame6.png" alt="FFForma">
         <img src="Imagens/0001.png" alt="FFForma">
         <img src="Imagens/Desktop HD Copy.jpg" alt="FFForma">
         <img src="Imagens/FFForma10.png" alt="FFForma">
@@ -1779,15 +1780,34 @@ Cal("ui", {
     }, 3000);
   });
 
-  // ─── Hero Showcase Slideshow ───
+  // ─── Hero Showcase (mouse-scrub, no autoplay on desktop) ───
   const showcaseImgs = document.querySelectorAll('#heroShowcase img');
+  const heroArea = document.querySelector('.panel-right');
+  const noHover = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
   if (showcaseImgs.length > 1) {
     let current = 0;
-    setInterval(() => {
+    const setActive = (i) => {
+      if (i === current) return;
       showcaseImgs[current].classList.remove('is-active');
-      current = (current + 1) % showcaseImgs.length;
+      current = i;
       showcaseImgs[current].classList.add('is-active');
-    }, 450);
+    };
+
+    if (noHover) {
+      // Touch / no-hover devices: fall back to autoplay
+      setInterval(() => setActive((current + 1) % showcaseImgs.length), 900);
+    } else if (heroArea) {
+      // Desktop: horizontal mouse position scrubs through the images
+      const n = showcaseImgs.length;
+      heroArea.addEventListener('mousemove', (e) => {
+        const rect = heroArea.getBoundingClientRect();
+        let ratio = (e.clientX - rect.left) / rect.width;
+        ratio = Math.max(0, Math.min(0.9999, ratio));
+        setActive(Math.floor(ratio * n));
+      });
+      heroArea.addEventListener('mouseleave', () => setActive(0));
+    }
   }
 
   // Nav link switching
