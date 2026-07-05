@@ -1780,34 +1780,15 @@ Cal("ui", {
     }, 3000);
   });
 
-  // ─── Hero Showcase (mouse-scrub, no autoplay on desktop) ───
+  // ─── Hero Showcase Slideshow ───
   const showcaseImgs = document.querySelectorAll('#heroShowcase img');
-  const heroArea = document.querySelector('.panel-right');
-  const noHover = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-
   if (showcaseImgs.length > 1) {
     let current = 0;
-    const setActive = (i) => {
-      if (i === current) return;
+    setInterval(() => {
       showcaseImgs[current].classList.remove('is-active');
-      current = i;
+      current = (current + 1) % showcaseImgs.length;
       showcaseImgs[current].classList.add('is-active');
-    };
-
-    if (noHover) {
-      // Touch / no-hover devices: fall back to autoplay
-      setInterval(() => setActive((current + 1) % showcaseImgs.length), 900);
-    } else if (heroArea) {
-      // Desktop: horizontal mouse position scrubs through the images
-      const n = showcaseImgs.length;
-      heroArea.addEventListener('mousemove', (e) => {
-        const rect = heroArea.getBoundingClientRect();
-        let ratio = (e.clientX - rect.left) / rect.width;
-        ratio = Math.max(0, Math.min(0.9999, ratio));
-        setActive(Math.floor(ratio * n));
-      });
-      heroArea.addEventListener('mouseleave', () => setActive(0));
-    }
+    }, 450);
   }
 
   // Nav link switching
