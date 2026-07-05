@@ -1,0 +1,19 @@
+index.html
+  s_372a965f32c554::t_623b45a1a059e6 1783,1787,1789,1791
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "1e21e9bb814af8b1b5b59693b8ceead88f73e68d",
+  "prompts": {},
+  "sessions": {
+    "s_372a965f32c554": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7ad501e7-596a-4da8-8723-ae06beb1ab27",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Pedro Julien <pducry@gmail.com>"
+    }
+  }
+}
