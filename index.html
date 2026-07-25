@@ -509,19 +509,78 @@
       gap: 0;
     }
 
-    .grupos-cta {
+    .tiers-section {
       display: flex;
       flex-direction: column;
       gap: 0.8rem;
       padding-top: 0.4rem;
     }
 
-    .grupos-apply-btn {
-      display: inline-block;
-      text-decoration: none;
-      width: fit-content;
-      padding: 0.55rem 1.2rem;
-      font-size: 0.78rem;
+    .tier-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .tier-card--highlight {
+      border-color: var(--text-primary);
+    }
+
+    .tier-name {
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+
+    .tier-price {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .tier-price-period {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .tier-desc {
+      font-size: 0.76rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    .tier-benefits {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .tier-benefits li {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.45rem;
+      line-height: 1.5;
+    }
+
+    .tier-benefits li::before {
+      content: '—';
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .tier-btn {
+      width: 100%;
+      margin-top: 0.2rem;
     }
 
     /* ─── About Section ─── */
@@ -1412,10 +1471,47 @@
 
       <hr style="border:none;border-top:1px solid var(--border);margin:0;">
 
-      <div class="grupos-cta">
-        <div class="section-label" data-i18n="grupos.cta.label">Next cycle</div>
-        <p class="learning-text" data-i18n="grupos.cta.text">Groups are small by design. If this is the practice you've been looking for, apply for the next cycle.</p>
-        <button class="btn btn-primary grupos-apply-btn" id="openTeachFormBtn" data-i18n="grupos.cta.btn">Sign up</button>
+      <div class="tiers-section">
+        <div class="section-label" data-i18n="tiers.label">Models</div>
+
+        <!-- Tier 1: Grupo + Prática -->
+        <div class="tier-card">
+          <div>
+            <div class="tier-name" data-i18n="tier1.name">Group + Accompanied Practice</div>
+            <div class="tier-price">R$ 897</div>
+            <div class="tier-price-period" data-i18n="tier1.period">per cycle · 6 weeks</div>
+          </div>
+          <p class="tier-desc" data-i18n="tier1.desc">Small groups of up to 8 designers. Live online sessions, hands-on briefs and group critique through the full 5-step methodology.</p>
+          <ul class="tier-benefits">
+            <li data-i18n="tier1.b1">Up to 8 designers per group</li>
+            <li data-i18n="tier1.b2">Live online sessions</li>
+            <li data-i18n="tier1.b3">Hands-on briefs with feedback</li>
+            <li data-i18n="tier1.b4">Group critique each cycle</li>
+            <li data-i18n="tier1.b5">6-week structured program</li>
+            <li data-i18n="tier1.b6">Group communication channel</li>
+          </ul>
+          <button class="btn btn-primary tier-btn open-teach-form" data-tier="Grupo + Prática" data-i18n="tiers.cta">Sign up</button>
+        </div>
+
+        <!-- Tier 2: Individual 1:1 -->
+        <div class="tier-card tier-card--highlight">
+          <div>
+            <div class="tier-name" data-i18n="tier2.name">Individual · 1:1</div>
+            <div class="tier-price">R$ 2.500</div>
+            <div class="tier-price-period" data-i18n="tier2.period">per month</div>
+          </div>
+          <p class="tier-desc" data-i18n="tier2.desc">Direct access to Pedro Julien. Work reviewed with advanced criteria, program fully adapted to your creative practice and goals.</p>
+          <ul class="tier-benefits">
+            <li data-i18n="tier2.b1">Individual sessions with Pedro</li>
+            <li data-i18n="tier2.b2">Advanced critique on your work</li>
+            <li data-i18n="tier2.b3">Program adapted to your project</li>
+            <li data-i18n="tier2.b4">Monthly accompaniment</li>
+            <li data-i18n="tier2.b5">Priority access and response</li>
+            <li data-i18n="tier2.b6">Direct feedback on every piece</li>
+          </ul>
+          <button class="btn btn-primary tier-btn open-teach-form" data-tier="Individual 1:1" data-i18n="tiers.cta">Sign up</button>
+        </div>
+
       </div>
 
     </div>
@@ -1537,6 +1633,7 @@
     <form id="teachForm" action="https://formsubmit.co/ajax/pducry@gmail.com" method="POST">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_subject" value="FFF-Teach — Nova inscrição">
+      <input type="hidden" name="modelo" id="teachTier" value="">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_next" value="#">
       <input type="text" name="_honey" style="display:none">
@@ -1637,9 +1734,26 @@ Cal("ui", {
       'grupos.05.title': 'Iterate',
       'grupos.05.desc': 'Group critique in practice. Collaborative creative frameworks to give and receive feedback. Work evolves through honest collective pressure.',
       'grupos.05.agent': 'Better work through honest eyes.',
-      'grupos.cta.label': 'Next cycle',
-      'grupos.cta.text': 'Groups are small by design. If this is the practice you\'ve been looking for, apply for the next cycle.',
-      'grupos.cta.btn': 'Sign up',
+      'tiers.label': 'Models',
+      'tiers.cta': 'Sign up',
+      'tier1.name': 'Group + Accompanied Practice',
+      'tier1.period': 'per cycle · 6 weeks',
+      'tier1.desc': 'Small groups of up to 8 designers. Live online sessions, hands-on briefs and group critique through the full 5-step methodology.',
+      'tier1.b1': 'Up to 8 designers per group',
+      'tier1.b2': 'Live online sessions',
+      'tier1.b3': 'Hands-on briefs with feedback',
+      'tier1.b4': 'Group critique each cycle',
+      'tier1.b5': '6-week structured program',
+      'tier1.b6': 'Group communication channel',
+      'tier2.name': 'Individual · 1:1',
+      'tier2.period': 'per month',
+      'tier2.desc': 'Direct access to Pedro Julien. Work reviewed with advanced criteria, program fully adapted to your creative practice and goals.',
+      'tier2.b1': 'Individual sessions with Pedro',
+      'tier2.b2': 'Advanced critique on your work',
+      'tier2.b3': 'Program adapted to your project',
+      'tier2.b4': 'Monthly accompaniment',
+      'tier2.b5': 'Priority access and response',
+      'tier2.b6': 'Direct feedback on every piece',
       'teach.form.title': 'FFF-Teach',
       'teach.form.subtitle': 'Leave your email and we\'ll reach out when the next cycle opens.',
       'teach.form.email': 'Email',
@@ -1699,9 +1813,26 @@ Cal("ui", {
       'grupos.05.title': 'Iterar',
       'grupos.05.desc': 'Crítica em grupo na prática. Frameworks criativos colaborativos para dar e receber feedback. O trabalho evolui pela pressão coletiva honesta.',
       'grupos.05.agent': 'Trabalho melhor por olhos honestos.',
-      'grupos.cta.label': 'Próximo ciclo',
-      'grupos.cta.text': 'Os grupos são pequenos por escolha. Se essa é a prática que você procurava, candidate-se para o próximo ciclo.',
-      'grupos.cta.btn': 'Inscrever',
+      'tiers.label': 'Modelos',
+      'tiers.cta': 'Inscrever',
+      'tier1.name': 'Grupo + Prática Acompanhada',
+      'tier1.period': 'por ciclo · 6 semanas',
+      'tier1.desc': 'Grupos de até 8 designers. Sessões online ao vivo, briefs práticos e critique em grupo ao longo da metodologia completa de 5 passos.',
+      'tier1.b1': 'Até 8 designers por grupo',
+      'tier1.b2': 'Sessões online ao vivo',
+      'tier1.b3': 'Briefs práticos com feedback',
+      'tier1.b4': 'Critique em grupo a cada ciclo',
+      'tier1.b5': 'Programa estruturado de 6 semanas',
+      'tier1.b6': 'Canal de comunicação do grupo',
+      'tier2.name': 'Individual · 1:1',
+      'tier2.period': 'por mês',
+      'tier2.desc': 'Acesso direto ao Pedro Julien. Trabalho revisado com critério avançado, programa adaptado à sua prática criativa e objetivos.',
+      'tier2.b1': 'Sessões individuais com Pedro',
+      'tier2.b2': 'Critério avançado no seu trabalho',
+      'tier2.b3': 'Programa adaptado ao seu projeto',
+      'tier2.b4': 'Acompanhamento mensal',
+      'tier2.b5': 'Acesso e resposta prioritários',
+      'tier2.b6': 'Feedback direto em cada peça',
       'teach.form.title': 'FFF-Teach',
       'teach.form.subtitle': 'Deixe seu email e avisamos quando o próximo ciclo abrir.',
       'teach.form.email': 'Email',
@@ -1863,13 +1994,16 @@ Cal("ui", {
 
   // ─── FFF-Teach Signup Modal ───
   const teachModal = document.getElementById('teachModal');
-  const openTeachFormBtn = document.getElementById('openTeachFormBtn');
   const closeTeachFormBtn = document.getElementById('closeTeachFormBtn');
   const teachForm = document.getElementById('teachForm');
   const teachFormSuccess = document.getElementById('teachFormSuccess');
+  const teachTierInput = document.getElementById('teachTier');
 
-  openTeachFormBtn.addEventListener('click', () => {
-    teachModal.classList.add('is-open');
+  document.querySelectorAll('.open-teach-form').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (teachTierInput) teachTierInput.value = btn.dataset.tier || '';
+      teachModal.classList.add('is-open');
+    });
   });
 
   closeTeachFormBtn.addEventListener('click', () => {
