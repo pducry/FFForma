@@ -501,6 +501,29 @@
       margin-top: 0.4rem;
     }
 
+    /* ─── Grupos Section ─── */
+    .grupos-content {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .grupos-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      padding-top: 0.4rem;
+    }
+
+    .grupos-apply-btn {
+      display: inline-block;
+      text-decoration: none;
+      width: fit-content;
+      padding: 0.55rem 1.2rem;
+      font-size: 0.78rem;
+    }
+
     /* ─── About Section ─── */
     .about-content {
       display: none;
@@ -1281,7 +1304,7 @@
     <!-- Navigation -->
     <nav class="nav-bar">
       <a class="nav-link active" data-page="home" data-i18n="nav.home">Home</a>
-      <a class="nav-link" data-page="process" data-i18n="nav.process">Creative Process</a>
+      <a class="nav-link" data-page="grupos" data-i18n="nav.grupos">Grupos</a>
     </nav>
 
     <!-- Content -->
@@ -1321,72 +1344,79 @@
 
     </div>
 
-    <!-- Creative Process -->
-    <div class="process-content">
+    <!-- Grupos de Monitoramento -->
+    <div class="grupos-content">
 
-      <p class="learning-text" data-i18n="process.intro">Five steps. How a brief becomes a finished piece — research, direction and craft, worked by hand.</p>
+      <div class="section-label" data-i18n="grupos.label">Monitoring Groups</div>
+      <p class="learning-text" data-i18n="grupos.intro">Small groups of designers and creatives working with AI as a creative collaborator. Each cycle covers design fundamentals, reference building, creative systems and frameworks for using AI without losing the human edge. The creative capacity stays yours. AI amplifies it.</p>
 
       <div class="process-step">
         <div class="step-header">
           <div class="step-header-left">
             <span class="step-number">01</span>
-            <span class="step-title" data-i18n="process.01.title">Decode</span>
+            <span class="step-title" data-i18n="grupos.01.title">Look</span>
           </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Research</span>
+          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> References</span>
         </div>
-        <p class="step-desc" data-i18n="process.01.desc">Before a single pixel, deep research into market, competitors and audience — references pulled, patterns mapped, a sharp point of view formed. The brief gets a spine.</p>
-        <p class="step-agent" data-i18n="process.01.agent">A brief with a spine. No guessing.</p>
+        <p class="step-desc" data-i18n="grupos.01.desc">Build your creative eye before you touch any tool. References pulled, influences mapped, a visual point of view that's yours — not borrowed from the last thing you liked online.</p>
+        <p class="step-agent" data-i18n="grupos.01.agent">Gaze before gesture.</p>
       </div>
 
       <div class="process-step">
         <div class="step-header">
           <div class="step-header-left">
             <span class="step-number">02</span>
-            <span class="step-title" data-i18n="process.02.title">Frame</span>
+            <span class="step-title" data-i18n="grupos.02.title">Make</span>
           </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> Direction</span>
+          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> Practice</span>
         </div>
-        <p class="step-desc" data-i18n="process.02.desc">Direction, scope and success criteria locked in one call. A clear creative territory where every later decision has something to answer to.</p>
-        <p class="step-agent" data-i18n="process.02.agent">Not a template — a direction.</p>
+        <p class="step-desc" data-i18n="grupos.02.desc">Design as daily discipline. Hands-on briefs worked by hand — logos, type, layout, identity. Volume builds instinct. The work teaches what theory doesn't.</p>
+        <p class="step-agent" data-i18n="grupos.02.agent">Learning by making, not watching.</p>
       </div>
 
       <div class="process-step">
         <div class="step-header">
           <div class="step-header-left">
             <span class="step-number">03</span>
-            <span class="step-title" data-i18n="process.03.title">Explore</span>
+            <span class="step-title" data-i18n="grupos.03.title">Systematize</span>
           </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Exploration</span>
+          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Systems</span>
         </div>
-        <p class="step-desc" data-i18n="process.03.desc">The widest part. Dozens of directions drawn out by hand — naming, visual concepts, layouts, type pairings. Then the edit: the strongest ideas curated, combined and pushed forward. Taste does the selecting.</p>
-        <p class="step-agent" data-i18n="process.03.agent">Volume for options. Taste for the cut.</p>
+        <p class="step-desc" data-i18n="grupos.03.desc">Turn instincts into repeatable creative systems. Naming conventions, visual logic, decision frameworks. The point where taste becomes method.</p>
+        <p class="step-agent" data-i18n="grupos.03.agent">Instinct with structure.</p>
       </div>
 
       <div class="process-step">
         <div class="step-header">
           <div class="step-header-left">
             <span class="step-number">04</span>
-            <span class="step-title" data-i18n="process.04.title">Sharpen</span>
+            <span class="step-title" data-i18n="grupos.04.title">Amplify</span>
           </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> Refine</span>
+          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> AI</span>
         </div>
-        <p class="step-desc" data-i18n="process.04.desc">Where craft lives. Spacing, weight, rhythm, contrast — every element tuned until it feels inevitable. The unglamorous polishing most work skips and clients feel.</p>
-        <p class="step-agent" data-i18n="process.04.agent">The last 10% nobody sees but everyone feels.</p>
+        <p class="step-desc" data-i18n="grupos.04.desc">Where AI enters the process — as instrument, not author. Generate territory, accelerate exploration, stress-test ideas. Human vision sets the direction. AI expands the reach.</p>
+        <p class="step-agent" data-i18n="grupos.04.agent">Your creative capacity, wider.</p>
       </div>
 
       <div class="process-step">
         <div class="step-header">
           <div class="step-header-left">
             <span class="step-number">05</span>
-            <span class="step-title" data-i18n="process.05.title">Ship</span>
+            <span class="step-title" data-i18n="grupos.05.title">Iterate</span>
           </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Delivery</span>
+          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Critique</span>
         </div>
-        <p class="step-desc" data-i18n="process.05.desc">Production-ready assets, brand guidelines and component libraries, packaged into a handoff the team can actually use.</p>
-        <p class="step-agent" data-i18n="process.05.agent">Not a zip file. A system built to last.</p>
+        <p class="step-desc" data-i18n="grupos.05.desc">Group critique in practice. Collaborative creative frameworks to give and receive feedback. Work evolves through honest collective pressure.</p>
+        <p class="step-agent" data-i18n="grupos.05.agent">Better work through honest eyes.</p>
       </div>
 
-      <p class="process-disclaimer" data-i18n="process.disclaimer">Every project is shaped to its own needs. No two processes are identical — but craft is the constant.</p>
+      <hr style="border:none;border-top:1px solid var(--border);margin:0;">
+
+      <div class="grupos-cta">
+        <div class="section-label" data-i18n="grupos.cta.label">Next cycle</div>
+        <p class="learning-text" data-i18n="grupos.cta.text">Groups are small by design. If this is the practice you've been looking for, apply for the next cycle.</p>
+        <a class="btn btn-primary grupos-apply-btn" href="mailto:pedro@ffforma.design" data-i18n="grupos.cta.btn">Apply</a>
+      </div>
 
     </div>
 
@@ -1543,7 +1573,7 @@ Cal("ui", {
   const translations = {
     en: {
       'nav.home': 'Home',
-      'nav.process': 'Creative Process',
+      'nav.grupos': 'Grupos',
       'nav.about': 'About',
       'home.intro1': '<strong>FFForma</strong> is a creative side project by <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\">Pedro Julien</a> — a parallel design practice built on craft. Brands, visuals and interfaces made by hand, refined until every detail earns its place.',
       'home.intro2': 'For agencies, studios, teams and independent creatives who care about how things are made — not just what ships. Work driven by taste, obsessive polishing, and the slow decisions that turn good enough into finished. No templates. No shortcuts. Craft.',
@@ -1559,23 +1589,26 @@ Cal("ui", {
       'home.cta.start': 'Start a project',
       'home.cta.call': 'Book a call',
       'home.clients': 'Clients and Brands',
-      'process.intro': 'Five steps. How a brief becomes a finished piece — research, direction and craft, worked by hand.',
-      'process.01.title': 'Decode',
-      'process.01.desc': 'Before a single pixel, deep research into market, competitors and audience — references pulled, patterns mapped, a sharp point of view formed. The brief gets a spine.',
-      'process.01.agent': 'A brief with a spine. No guessing.',
-      'process.02.title': 'Frame',
-      'process.02.desc': 'Direction, scope and success criteria locked in one call. A clear creative territory where every later decision has something to answer to.',
-      'process.02.agent': 'Not a template — a direction.',
-      'process.03.title': 'Explore',
-      'process.03.desc': 'The widest part. Dozens of directions drawn out by hand — naming, visual concepts, layouts, type pairings. Then the edit: the strongest ideas curated, combined and pushed forward. Taste does the selecting.',
-      'process.03.agent': 'Volume for options. Taste for the cut.',
-      'process.04.title': 'Sharpen',
-      'process.04.desc': 'Where craft lives. Spacing, weight, rhythm, contrast — every element tuned until it feels inevitable. The unglamorous polishing most work skips and clients feel.',
-      'process.04.agent': 'The last 10% nobody sees but everyone feels.',
-      'process.05.title': 'Ship',
-      'process.05.desc': 'Production-ready assets, brand guidelines and component libraries, packaged into a handoff the team can actually use.',
-      'process.05.agent': 'Not a zip file. A system built to last.',
-      'process.disclaimer': 'Every project is shaped to its own needs. No two processes are identical — but craft is the constant.',
+      'grupos.label': 'Monitoring Groups',
+      'grupos.intro': 'Small groups of designers and creatives working with AI as a creative collaborator. Each cycle covers design fundamentals, reference building, creative systems and frameworks for using AI without losing the human edge. The creative capacity stays yours. AI amplifies it.',
+      'grupos.01.title': 'Look',
+      'grupos.01.desc': 'Build your creative eye before you touch any tool. References pulled, influences mapped, a visual point of view that\'s yours — not borrowed from the last thing you liked online.',
+      'grupos.01.agent': 'Gaze before gesture.',
+      'grupos.02.title': 'Make',
+      'grupos.02.desc': 'Design as daily discipline. Hands-on briefs worked by hand — logos, type, layout, identity. Volume builds instinct. The work teaches what theory doesn\'t.',
+      'grupos.02.agent': 'Learning by making, not watching.',
+      'grupos.03.title': 'Systematize',
+      'grupos.03.desc': 'Turn instincts into repeatable creative systems. Naming conventions, visual logic, decision frameworks. The point where taste becomes method.',
+      'grupos.03.agent': 'Instinct with structure.',
+      'grupos.04.title': 'Amplify',
+      'grupos.04.desc': 'Where AI enters the process — as instrument, not author. Generate territory, accelerate exploration, stress-test ideas. Human vision sets the direction. AI expands the reach.',
+      'grupos.04.agent': 'Your creative capacity, wider.',
+      'grupos.05.title': 'Iterate',
+      'grupos.05.desc': 'Group critique in practice. Collaborative creative frameworks to give and receive feedback. Work evolves through honest collective pressure.',
+      'grupos.05.agent': 'Better work through honest eyes.',
+      'grupos.cta.label': 'Next cycle',
+      'grupos.cta.text': 'Groups are small by design. If this is the practice you\'ve been looking for, apply for the next cycle.',
+      'grupos.cta.btn': 'Apply',
       'about.bio1': '<strong>FFForma</strong> is a creative side project by <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\"><strong>Pedro Julien</strong></a> — a practice exploring how far craft can push a piece. Brands, visuals and interfaces refined by hand, until every detail earns its place.',
       'about.bio2': 'The impact is practical. Work that\'s obsessed over reads differently — it earns trust, it lasts, and the craft itself becomes the advantage.',
       'footer': '&copy; 2026 FFForma. All rights reserved.',
@@ -1595,7 +1628,7 @@ Cal("ui", {
     },
     pt: {
       'nav.home': 'Home',
-      'nav.process': 'Creative Process',
+      'nav.grupos': 'Grupos',
       'nav.about': 'Sobre',
       'home.intro1': '<strong>FFForma</strong> é um creative side project de <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\">Pedro Julien</a> — uma design practice paralela feita de craft. Marcas, visuais e interfaces feitos à mão, refinados até cada detalhe merecer seu lugar.',
       'home.intro2': 'Para agências, estúdios, equipes e criativos independentes que se importam com como as coisas são feitas — não só com o que é entregue. Trabalho movido por gosto, polimento obsessivo e as decisões lentas que transformam bom o bastante em finalizado. Sem templates. Sem atalhos. Craft.',
@@ -1611,23 +1644,26 @@ Cal("ui", {
       'home.cta.start': 'Iniciar projeto',
       'home.cta.call': 'Agendar call',
       'home.clients': 'Clientes e Marcas',
-      'process.intro': 'Cinco passos. Como um brief vira uma peça finalizada — pesquisa, direção e craft, trabalhados à mão.',
-      'process.01.title': 'Decodificar',
-      'process.01.desc': 'Antes de um único pixel, pesquisa profunda de mercado, concorrentes e audiência — referências reunidas, padrões mapeados, um ponto de vista afiado formado. O brief ganha espinha.',
-      'process.01.agent': 'Um brief com espinha. Sem achismo.',
-      'process.02.title': 'Estruturar',
-      'process.02.desc': 'Direção, escopo e critérios de sucesso travados em uma call. Um território criativo claro onde cada decisão seguinte tem a quem responder.',
-      'process.02.agent': 'Não é template — é direção.',
-      'process.03.title': 'Explorar',
-      'process.03.desc': 'A parte mais aberta. Dezenas de direções desenhadas à mão — sistemas de naming, conceitos visuais, layouts, combinações tipográficas. Depois a edição: as ideias mais fortes curadas, combinadas e levadas adiante. O gosto faz a seleção.',
-      'process.03.agent': 'Volume pras opções. Gosto pro corte.',
-      'process.04.title': 'Refinar',
-      'process.04.desc': 'Onde o craft vive. Espaçamento, peso, ritmo, contraste — cada elemento ajustado até parecer inevitável. O polimento sem glamour que a maioria pula e o cliente sente.',
-      'process.04.agent': 'Os últimos 10% que ninguém vê mas todo mundo sente.',
-      'process.05.title': 'Entregar',
-      'process.05.desc': 'Assets prontos para produção, guidelines de marca e bibliotecas de componentes, empacotados em um handoff que a equipe realmente consegue usar.',
-      'process.05.agent': 'Não é um zip. É um sistema feito pra durar.',
-      'process.disclaimer': 'Cada projeto é moldado às próprias necessidades. Nenhum processo é igual — mas o craft é a constante.',
+      'grupos.label': 'Grupos de Monitoramento',
+      'grupos.intro': 'Grupos pequenos de designers e criativos que trabalham com AI como colaboradora criativa. Cada ciclo cobre fundamentos de design, construção de referências, sistemas criativos e frameworks para usar AI sem perder a voz humana. A capacidade criativa é sua. A AI amplifica.',
+      'grupos.01.title': 'Olhar',
+      'grupos.01.desc': 'Construa seu olhar criativo antes de tocar em qualquer ferramenta. Referências reunidas, influências mapeadas, um ponto de vista visual que é seu — não emprestado da última coisa que você curtiu online.',
+      'grupos.01.agent': 'Olhar antes do gesto.',
+      'grupos.02.title': 'Fazer',
+      'grupos.02.desc': 'Design como disciplina diária. Briefs práticos trabalhados à mão — logos, tipografia, layout, identidade. Volume constrói instinto. O trabalho ensina o que a teoria não ensina.',
+      'grupos.02.agent': 'Aprender fazendo, não assistindo.',
+      'grupos.03.title': 'Sistematizar',
+      'grupos.03.desc': 'Transforme instintos em sistemas criativos repetíveis. Convenções de naming, lógica visual, frameworks de decisão. O ponto onde o gosto vira método.',
+      'grupos.03.agent': 'Instinto com estrutura.',
+      'grupos.04.title': 'Ampliar',
+      'grupos.04.desc': 'Onde a AI entra no processo — como instrumento, não como autora. Gere território, acelere exploração, teste ideias sob pressão. A visão humana define a direção. A AI expande o alcance.',
+      'grupos.04.agent': 'Sua capacidade criativa, mais ampla.',
+      'grupos.05.title': 'Iterar',
+      'grupos.05.desc': 'Crítica em grupo na prática. Frameworks criativos colaborativos para dar e receber feedback. O trabalho evolui pela pressão coletiva honesta.',
+      'grupos.05.agent': 'Trabalho melhor por olhos honestos.',
+      'grupos.cta.label': 'Próximo ciclo',
+      'grupos.cta.text': 'Os grupos são pequenos por escolha. Se essa é a prática que você procurava, candidate-se para o próximo ciclo.',
+      'grupos.cta.btn': 'Candidatar-se',
       'about.bio1': '<strong>FFForma</strong> é um creative side project de <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\"><strong>Pedro Julien</strong></a> — uma prática que explora até onde o craft pode levar uma peça. Marcas, visuais e interfaces refinados à mão, até cada detalhe merecer seu lugar.',
       'about.bio2': 'O impacto é prático. Um trabalho obsessivamente cuidado se lê diferente — gera confiança, dura, e o próprio craft vira a vantagem.',
       'footer': '&copy; 2026 FFForma. Todos os direitos reservados.',
@@ -1793,7 +1829,7 @@ Cal("ui", {
 
   // Nav link switching
   const panelContent = document.querySelector('.panel-content');
-  const processContent = document.querySelector('.process-content');
+  const gruposContent = document.querySelector('.grupos-content');
 
   const logoMark = document.querySelector('.logo-mark');
   if (logoMark) {
@@ -1809,14 +1845,14 @@ Cal("ui", {
       link.classList.add('active');
 
       const page = link.dataset.page;
-      const sections = [panelContent, processContent];
+      const sections = [panelContent, gruposContent];
       sections.forEach(s => { if (s) { s.style.display = 'none'; s.classList.remove('animate-in'); } });
 
       let active;
-      if (page === 'process') active = processContent;
+      if (page === 'grupos') active = gruposContent;
       else active = panelContent;
 
-      active.style.display = page === 'home' ? '' : 'flex';
+      active.style.display = 'flex';
       void active.offsetWidth;
       active.classList.add('animate-in');
     });
