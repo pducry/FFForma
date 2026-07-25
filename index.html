@@ -1415,7 +1415,7 @@
       <div class="grupos-cta">
         <div class="section-label" data-i18n="grupos.cta.label">Next cycle</div>
         <p class="learning-text" data-i18n="grupos.cta.text">Groups are small by design. If this is the practice you've been looking for, apply for the next cycle.</p>
-        <a class="btn btn-primary grupos-apply-btn" href="mailto:pedro@ffforma.design" data-i18n="grupos.cta.btn">Apply</a>
+        <button class="btn btn-primary grupos-apply-btn" id="openTeachFormBtn" data-i18n="grupos.cta.btn">Sign up</button>
       </div>
 
     </div>
@@ -1529,6 +1529,37 @@
   </div>
 </div>
 
+<!-- FFF-Teach Signup Modal -->
+<div class="modal-overlay" id="teachModal">
+  <div class="modal">
+    <button class="modal-close" id="closeTeachFormBtn">&times;</button>
+
+    <form id="teachForm" action="https://formsubmit.co/ajax/pducry@gmail.com" method="POST">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_subject" value="FFF-Teach — Nova inscrição">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="#">
+      <input type="text" name="_honey" style="display:none">
+
+      <div class="modal-title" data-i18n="teach.form.title">FFF-Teach</div>
+      <div class="modal-subtitle" data-i18n="teach.form.subtitle">Leave your email and we'll reach out when the next cycle opens.</div>
+
+      <div class="form-group">
+        <label class="form-label" data-i18n="teach.form.email">Email</label>
+        <input class="form-input" type="email" name="email" data-i18n-placeholder="teach.form.email.ph" placeholder="Your email" required>
+      </div>
+
+      <button type="submit" class="form-submit" data-i18n="teach.form.send">Sign up</button>
+    </form>
+
+    <div class="form-success" id="teachFormSuccess">
+      <div class="form-success-icon">&#10003;</div>
+      <div class="form-success-title" data-i18n="teach.form.success.title">You're in!</div>
+      <div class="form-success-text" data-i18n="teach.form.success.text">We'll reach out when the next cycle opens.</div>
+    </div>
+  </div>
+</div>
+
 <!-- Cal.com Embed -->
 <script type="text/javascript">
 (function (C, A, L) {
@@ -1608,7 +1639,14 @@ Cal("ui", {
       'grupos.05.agent': 'Better work through honest eyes.',
       'grupos.cta.label': 'Next cycle',
       'grupos.cta.text': 'Groups are small by design. If this is the practice you\'ve been looking for, apply for the next cycle.',
-      'grupos.cta.btn': 'Apply',
+      'grupos.cta.btn': 'Sign up',
+      'teach.form.title': 'FFF-Teach',
+      'teach.form.subtitle': 'Leave your email and we\'ll reach out when the next cycle opens.',
+      'teach.form.email': 'Email',
+      'teach.form.email.ph': 'Your email',
+      'teach.form.send': 'Sign up',
+      'teach.form.success.title': 'You\'re in!',
+      'teach.form.success.text': 'We\'ll reach out when the next cycle opens.',
       'about.bio1': '<strong>FFForma</strong> is a creative side project by <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\"><strong>Pedro Julien</strong></a> — a practice exploring how far craft can push a piece. Brands, visuals and interfaces refined by hand, until every detail earns its place.',
       'about.bio2': 'The impact is practical. Work that\'s obsessed over reads differently — it earns trust, it lasts, and the craft itself becomes the advantage.',
       'footer': '&copy; 2026 FFForma. All rights reserved.',
@@ -1663,7 +1701,14 @@ Cal("ui", {
       'grupos.05.agent': 'Trabalho melhor por olhos honestos.',
       'grupos.cta.label': 'Próximo ciclo',
       'grupos.cta.text': 'Os grupos são pequenos por escolha. Se essa é a prática que você procurava, candidate-se para o próximo ciclo.',
-      'grupos.cta.btn': 'Candidatar-se',
+      'grupos.cta.btn': 'Inscrever',
+      'teach.form.title': 'FFF-Teach',
+      'teach.form.subtitle': 'Deixe seu email e avisamos quando o próximo ciclo abrir.',
+      'teach.form.email': 'Email',
+      'teach.form.email.ph': 'Seu email',
+      'teach.form.send': 'Inscrever',
+      'teach.form.success.title': 'Inscrição feita!',
+      'teach.form.success.text': 'Avisamos quando o próximo ciclo abrir.',
       'about.bio1': '<strong>FFForma</strong> é um creative side project de <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\"><strong>Pedro Julien</strong></a> — uma prática que explora até onde o craft pode levar uma peça. Marcas, visuais e interfaces refinados à mão, até cada detalhe merecer seu lugar.',
       'about.bio2': 'O impacto é prático. Um trabalho obsessivamente cuidado se lê diferente — gera confiança, dura, e o próprio craft vira a vantagem.',
       'footer': '&copy; 2026 FFForma. Todos os direitos reservados.',
@@ -1812,6 +1857,57 @@ Cal("ui", {
         document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
         const typeField = document.getElementById('typeOfWork');
         if (typeField) typeField.value = '';
+      }, 300);
+    }, 3000);
+  });
+
+  // ─── FFF-Teach Signup Modal ───
+  const teachModal = document.getElementById('teachModal');
+  const openTeachFormBtn = document.getElementById('openTeachFormBtn');
+  const closeTeachFormBtn = document.getElementById('closeTeachFormBtn');
+  const teachForm = document.getElementById('teachForm');
+  const teachFormSuccess = document.getElementById('teachFormSuccess');
+
+  openTeachFormBtn.addEventListener('click', () => {
+    teachModal.classList.add('is-open');
+  });
+
+  closeTeachFormBtn.addEventListener('click', () => {
+    teachModal.classList.remove('is-open');
+  });
+
+  teachModal.addEventListener('click', (e) => {
+    if (e.target === teachModal) teachModal.classList.remove('is-open');
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') teachModal.classList.remove('is-open');
+  });
+
+  teachForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(teachForm);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      await fetch(teachForm.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch (err) {
+      console.error('FFF-Teach form error:', err);
+    }
+
+    teachForm.style.display = 'none';
+    teachFormSuccess.classList.add('is-visible');
+
+    setTimeout(() => {
+      teachModal.classList.remove('is-open');
+      setTimeout(() => {
+        teachForm.style.display = '';
+        teachFormSuccess.classList.remove('is-visible');
+        teachForm.reset();
       }, 300);
     }, 3000);
   });
