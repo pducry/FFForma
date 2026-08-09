@@ -509,6 +509,64 @@
       gap: 0;
     }
 
+    /* ─── Talos Section ─── */
+    .talos-content {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .talos-status {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.5rem;
+      border-radius: 100px;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+
+    .talos-header-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .talos-header-row .section-label {
+      margin-bottom: 0;
+    }
+
+    .talos-principles {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      max-width: 460px;
+      padding: 0.8rem 0 0.2rem;
+    }
+
+    .talos-principles li {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .talos-principles li::before {
+      content: '→';
+      color: var(--text-muted);
+      flex-shrink: 0;
+      font-size: 0.65rem;
+      margin-top: 0.1rem;
+    }
+
     .tiers-section {
       display: flex;
       flex-direction: column;
@@ -1415,6 +1473,7 @@
     <nav class="nav-bar">
       <a class="nav-link active" data-page="home" data-i18n="nav.home">Home</a>
       <a class="nav-link" data-page="grupos" data-i18n="nav.grupos">FFF-Teach</a>
+      <a class="nav-link" data-page="talos" data-i18n="nav.talos">FFF-Talos</a>
     </nav>
 
     <!-- Content -->
@@ -1579,6 +1638,99 @@
           </div>
         </div>
 
+      </div>
+
+    </div>
+
+    <!-- FFF-Talos -->
+    <div class="talos-content">
+
+      <div class="talos-header-row">
+        <div class="section-label" data-i18n="talos.label">Brand Consistency Orchestrator</div>
+        <span class="talos-status" data-i18n="talos.status">In development</span>
+      </div>
+
+      <p class="learning-text" data-i18n="talos.intro1">A brand expresses itself across dozens or hundreds of pieces — posts, ads, videos, packaging, decks — made by different hands, under tight deadlines. The known result is brand drift: pieces that look fine alone but reveal inconsistency side by side. The brandbook exists to prevent this, yet it's a static document nobody consults at production speed.</p>
+
+      <p class="learning-text" style="margin-top:0.8rem;" data-i18n="talos.intro2"><strong>FFF-Talos</strong> turns the brandbook into a living verification system: an orchestration of AI agents, running in a harness with quality loops, that evaluates every piece against the brand — and proposes evolutions without breaking the identity. Named after Talos, the bronze automaton that patrolled Crete: a tireless guardian, now for brands.</p>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;">
+
+      <div class="section-label" data-i18n="talos.pipeline.label">The Pipeline · 5 Agents</div>
+
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-header-left">
+            <span class="step-number">01</span>
+            <span class="step-title" data-i18n="talos.01.title">Brandbook Guardian</span>
+          </div>
+          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> <span data-i18n="talos.01.tag">Onboarding</span></span>
+        </div>
+        <p class="step-desc" data-i18n="talos.01.desc">Reads and internalizes each client's brandbook, converting it into a verifiable brand contract — the normative source every other agent answers to. Runs once per brand, revisited when the brandbook changes.</p>
+        <p class="step-agent" data-i18n="talos.01.agent">The brandbook, made executable.</p>
+      </div>
+
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-header-left">
+            <span class="step-number">02</span>
+            <span class="step-title" data-i18n="talos.02.title">Piece Categorizer</span>
+          </div>
+          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> <span data-i18n="talos.02.tag">Ingestion</span></span>
+        </div>
+        <p class="step-desc" data-i18n="talos.02.desc">Every new piece produced enters the system, gets classified — format, channel, campaign, function — and is positioned within the brand's body of work.</p>
+        <p class="step-agent" data-i18n="talos.02.agent">Every piece knows its place.</p>
+      </div>
+
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-header-left">
+            <span class="step-number">03</span>
+            <span class="step-title" data-i18n="talos.03.title">Consistency Analyst</span>
+          </div>
+          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> <span data-i18n="talos.03.tag">Analysis</span></span>
+        </div>
+        <p class="step-desc" data-i18n="talos.03.desc">Measures how much the piece converses with the brand contract and with the pieces that already exist. Does the new work belong to the same brand, side by side?</p>
+        <p class="step-agent" data-i18n="talos.03.agent">Consistency, measured — not guessed.</p>
+      </div>
+
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-header-left">
+            <span class="step-number">04</span>
+            <span class="step-title" data-i18n="talos.04.title">Creative Evaluator</span>
+          </div>
+          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> <span data-i18n="talos.04.tag">Evaluation</span></span>
+        </div>
+        <p class="step-desc" data-i18n="talos.04.desc">Score and grounded verdict, criterion by criterion, before the work reaches the client. Never a binary pass/fail: every evaluation cites the brandbook criterion behind it.</p>
+        <p class="step-agent" data-i18n="talos.04.agent">Every verdict comes with its why.</p>
+      </div>
+
+      <div class="process-step">
+        <div class="step-header">
+          <div class="step-header-left">
+            <span class="step-number">05</span>
+            <span class="step-title" data-i18n="talos.05.title">Evolution Proposer</span>
+          </div>
+          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> <span data-i18n="talos.05.tag">Evolution</span></span>
+        </div>
+        <p class="step-desc" data-i18n="talos.05.desc">Proposes creative improvements, in text and in visual, that elevate the work without breaking the identity. The agency receives a consolidated report — and decides.</p>
+        <p class="step-agent" data-i18n="talos.05.agent">Better, still on brand.</p>
+      </div>
+
+      <ul class="talos-principles">
+        <li data-i18n="talos.p1">Not a piece generator that replaces the creative: it evaluates, points and proposes. Final decision is human.</li>
+        <li data-i18n="talos.p2">Agents never invent criteria — a gap in the brandbook is flagged, not filled by assumption.</li>
+        <li data-i18n="talos.p3">Quality loops with limits: work that doesn't meet the bar escalates to human review, never gets approved by fatigue.</li>
+      </ul>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:0.6rem 0 1.4rem;">
+
+      <div class="cta-block" style="opacity:1;animation:none;">
+        <div class="cta-sub" data-i18n="talos.cta.sub">For agencies and studios that need brand quality at scale. Want to follow the project or talk about it?</div>
+        <div class="cta-buttons">
+          <button class="btn btn-primary" data-cal-link="pedro-julien" data-cal-config='{"layout":"month_view"}' data-i18n="talos.cta.call">Book a call</button>
+        </div>
       </div>
 
     </div>
@@ -1822,6 +1974,37 @@ Cal("ui", {
       'tier2.b4': 'Monthly accompaniment',
       'tier2.b5': 'Priority access and response',
       'tier2.b6': 'Direct feedback on every piece',
+      'nav.talos': 'FFF-Talos',
+      'talos.label': 'Brand Consistency Orchestrator',
+      'talos.status': 'In development',
+      'talos.intro1': 'A brand expresses itself across dozens or hundreds of pieces — posts, ads, videos, packaging, decks — made by different hands, under tight deadlines. The known result is brand drift: pieces that look fine alone but reveal inconsistency side by side. The brandbook exists to prevent this, yet it\'s a static document nobody consults at production speed.',
+      'talos.intro2': '<strong>FFF-Talos</strong> turns the brandbook into a living verification system: an orchestration of AI agents, running in a harness with quality loops, that evaluates every piece against the brand — and proposes evolutions without breaking the identity. Named after Talos, the bronze automaton that patrolled Crete: a tireless guardian, now for brands.',
+      'talos.pipeline.label': 'The Pipeline · 5 Agents',
+      'talos.01.title': 'Brandbook Guardian',
+      'talos.01.tag': 'Onboarding',
+      'talos.01.desc': 'Reads and internalizes each client\'s brandbook, converting it into a verifiable brand contract — the normative source every other agent answers to. Runs once per brand, revisited when the brandbook changes.',
+      'talos.01.agent': 'The brandbook, made executable.',
+      'talos.02.title': 'Piece Categorizer',
+      'talos.02.tag': 'Ingestion',
+      'talos.02.desc': 'Every new piece produced enters the system, gets classified — format, channel, campaign, function — and is positioned within the brand\'s body of work.',
+      'talos.02.agent': 'Every piece knows its place.',
+      'talos.03.title': 'Consistency Analyst',
+      'talos.03.tag': 'Analysis',
+      'talos.03.desc': 'Measures how much the piece converses with the brand contract and with the pieces that already exist. Does the new work belong to the same brand, side by side?',
+      'talos.03.agent': 'Consistency, measured — not guessed.',
+      'talos.04.title': 'Creative Evaluator',
+      'talos.04.tag': 'Evaluation',
+      'talos.04.desc': 'Score and grounded verdict, criterion by criterion, before the work reaches the client. Never a binary pass/fail: every evaluation cites the brandbook criterion behind it.',
+      'talos.04.agent': 'Every verdict comes with its why.',
+      'talos.05.title': 'Evolution Proposer',
+      'talos.05.tag': 'Evolution',
+      'talos.05.desc': 'Proposes creative improvements, in text and in visual, that elevate the work without breaking the identity. The agency receives a consolidated report — and decides.',
+      'talos.05.agent': 'Better, still on brand.',
+      'talos.p1': 'Not a piece generator that replaces the creative: it evaluates, points and proposes. Final decision is human.',
+      'talos.p2': 'Agents never invent criteria — a gap in the brandbook is flagged, not filled by assumption.',
+      'talos.p3': 'Quality loops with limits: work that doesn\'t meet the bar escalates to human review, never gets approved by fatigue.',
+      'talos.cta.sub': 'For agencies and studios that need brand quality at scale. Want to follow the project or talk about it?',
+      'talos.cta.call': 'Book a call',
       'teach.form.title': 'FFF-Teach',
       'teach.form.subtitle': 'Leave your email and we\'ll reach out when the next cycle opens.',
       'teach.form.email': 'Email',
@@ -1902,6 +2085,37 @@ Cal("ui", {
       'tier2.b4': 'Acompanhamento mensal',
       'tier2.b5': 'Acesso e resposta prioritários',
       'tier2.b6': 'Feedback direto em cada peça',
+      'nav.talos': 'FFF-Talos',
+      'talos.label': 'Orquestrador de Consistência de Marca',
+      'talos.status': 'Em desenvolvimento',
+      'talos.intro1': 'Uma marca se expressa em dezenas ou centenas de peças — posts, anúncios, vídeos, embalagens, apresentações — feitas por mãos diferentes, sob prazos apertados. O resultado conhecido é o drift de marca: peças que parecem boas sozinhas, mas que lado a lado revelam inconsistência. O brandbook existe para evitar isso — mas é um documento estático que ninguém consulta na velocidade da produção.',
+      'talos.intro2': 'O <strong>FFF-Talos</strong> transforma o brandbook em um sistema vivo de verificação: uma orquestração de agentes de IA, rodando em harness com loops de qualidade, que avalia cada peça contra a marca — e propõe evoluções sem romper a identidade. O nome vem de Talos, o autômato de bronze que patrulhava Creta: um guardião incansável, agora para marcas.',
+      'talos.pipeline.label': 'O Pipeline · 5 Agentes',
+      'talos.01.title': 'Guardião do Brandbook',
+      'talos.01.tag': 'Onboarding',
+      'talos.01.desc': 'Lê e internaliza o brandbook de cada cliente, convertendo-o em um contrato de marca verificável — a fonte normativa que rege os demais agentes. Roda uma vez por marca, revisitado quando o brandbook muda.',
+      'talos.01.agent': 'O brandbook, executável.',
+      'talos.02.title': 'Categorizador de Peças',
+      'talos.02.tag': 'Ingestão',
+      'talos.02.desc': 'Cada peça nova produzida entra no sistema, é classificada — formato, canal, campanha, função — e posicionada no conjunto da marca.',
+      'talos.02.agent': 'Cada peça sabe seu lugar.',
+      'talos.03.title': 'Analista de Consistência',
+      'talos.03.tag': 'Análise',
+      'talos.03.desc': 'Mede o quanto a peça conversa com o contrato de marca e com as peças que já existem. O trabalho novo pertence à mesma marca, lado a lado?',
+      'talos.03.agent': 'Consistência medida — não chutada.',
+      'talos.04.title': 'Avaliador de Criativos',
+      'talos.04.tag': 'Avaliação',
+      'talos.04.desc': 'Score e parecer fundamentado, critério a critério, antes do trabalho chegar ao cliente. Nunca um aprovado/reprovado binário: toda avaliação cita o critério do brandbook que a fundamenta.',
+      'talos.04.agent': 'Todo parecer vem com o porquê.',
+      'talos.05.title': 'Propositor de Evoluções',
+      'talos.05.tag': 'Evolução',
+      'talos.05.desc': 'Propõe melhorias criativas, em texto e em visual, que elevam o trabalho sem romper a identidade. A agência recebe um parecer consolidado — e decide.',
+      'talos.05.agent': 'Melhor, ainda dentro da marca.',
+      'talos.p1': 'Não é um gerador de peças que substitui o criativo: ele avalia, aponta e propõe. A decisão final é humana.',
+      'talos.p2': 'Agentes não inventam critério — lacuna no brandbook é sinalizada, não preenchida por suposição.',
+      'talos.p3': 'Loops de qualidade com limite: trabalho abaixo do padrão escala para revisão humana, nunca é aprovado por cansaço.',
+      'talos.cta.sub': 'Para agências e estúdios que precisam de qualidade de marca em escala. Quer acompanhar o projeto ou conversar sobre ele?',
+      'talos.cta.call': 'Agendar call',
       'teach.form.title': 'FFF-Teach',
       'teach.form.subtitle': 'Deixe seu email e avisamos quando o próximo ciclo abrir.',
       'teach.form.email': 'Email',
@@ -2129,6 +2343,7 @@ Cal("ui", {
   // Nav link switching
   const panelContent = document.querySelector('.panel-content');
   const gruposContent = document.querySelector('.grupos-content');
+  const talosContent = document.querySelector('.talos-content');
 
   const logoMark = document.querySelector('.logo-mark');
   if (logoMark) {
@@ -2144,11 +2359,12 @@ Cal("ui", {
       link.classList.add('active');
 
       const page = link.dataset.page;
-      const sections = [panelContent, gruposContent];
+      const sections = [panelContent, gruposContent, talosContent];
       sections.forEach(s => { if (s) { s.style.display = 'none'; s.classList.remove('animate-in'); } });
 
       let active;
       if (page === 'grupos') active = gruposContent;
+      else if (page === 'talos') active = talosContent;
       else active = panelContent;
 
       active.style.display = 'flex';
