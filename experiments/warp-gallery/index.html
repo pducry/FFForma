@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warp Gallery — FFForma Experiments</title>
+  <meta name="description" content="FFForma Experiment 006 — an infinite gallery that bends with your scroll velocity.">
+  <meta name="theme-color" content="#0b0a09">
+  <link rel="icon" type="image/png" href="../../img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0a09;
+      --fg: #e8e6e2;
+      --subtle: #a3a09b;
+      --subtler: #6f6c67;
+      --line: #262421;
+      --accent: #c8ff00;
+      --font-mono: 'Geist Mono', 'Courier New', monospace;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--fg);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    a {
+      color: var(--subtle);
+      text-decoration: underline dotted;
+      text-decoration-color: var(--subtler);
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+
+    a:hover { color: var(--accent); }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 1px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    header { padding: 56px 0 0; }
+
+    .exp-eyebrow {
+      font-size: 0.72rem;
+      color: var(--subtler);
+      margin: 40px 0 6px;
+    }
+
+    h1 { font-size: 0.95rem; font-weight: 500; }
+
+    .exp-sub { color: var(--subtle); margin-top: 6px; }
+
+    /* ─── Tabs ─── */
+    .tabs {
+      display: flex;
+      gap: 1.4em;
+      margin-top: 36px;
+      font-size: 0.78rem;
+    }
+
+    .tab {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: var(--subtler);
+      transition: color 0.2s ease;
+    }
+
+    .tab:hover { color: var(--fg); }
+
+    .tab.active { color: var(--accent); }
+
+    .panel { display: none; }
+
+    .panel.active { display: block; }
+
+    /* ─── Stage ─── */
+    .stage {
+      position: relative;
+      margin-top: 30px;
+      height: 560px;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: grab;
+      touch-action: none;
+      background: #080706;
+    }
+
+    .stage:active { cursor: grabbing; }
+
+    .stage canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Soft fades at the edges of the strip */
+    .stage::before,
+    .stage::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 70px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .stage::before {
+      top: 0;
+      background: linear-gradient(#080706, transparent);
+    }
+
+    .stage::after {
+      bottom: 0;
+      background: linear-gradient(transparent, #080706);
+    }
+
+    .stage-hint {
+      font-size: 0.72rem;
+      color: var(--subtler);
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    /* ─── Controls ─── */
+    .controls {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 36px;
+    }
+
+    @media (max-width: 560px) {
+      .controls { grid-template-columns: 1fr; }
+    }
+
+    .ctl label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--subtle);
+      margin-bottom: 6px;
+    }
+
+    .ctl .val {
+      color: var(--subtler);
+      font-variant-numeric: tabular-nums;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      height: 16px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track { height: 1px; background: var(--line); }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--fg);
+      margin-top: -5.5px;
+      transition: background 0.15s ease;
+    }
+
+    input[type="range"]:hover::-webkit-slider-thumb,
+    input[type="range"]:active::-webkit-slider-thumb { background: var(--accent); }
+
+    input[type="range"]::-moz-range-track { height: 1px; background: var(--line); }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border: none;
+      border-radius: 50%;
+      background: var(--fg);
+    }
+
+    input[type="range"]:hover::-moz-range-thumb { background: var(--accent); }
+
+    /* ─── Code panels ─── */
+    .code-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin: 28px 0 8px;
+    }
+
+    .code-label { font-size: 0.72rem; color: var(--subtler); }
+
+    .copy-btn {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: var(--subtle);
+      text-decoration: underline dotted;
+      text-decoration-color: var(--subtler);
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+
+    .copy-btn:hover { color: var(--accent); }
+
+    .toast {
+      font-size: 0.72rem;
+      color: var(--accent);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      margin-left: 0.8em;
+    }
+
+    .toast.is-visible { opacity: 1; }
+
+    pre.code {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      line-height: 1.6;
+      color: var(--subtle);
+      background: #100f0d;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      white-space: pre;
+      max-height: 480px;
+      overflow-y: auto;
+    }
+
+    footer {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--subtler);
+      text-align: center;
+      padding: 56px 0 32px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <a href="../../">&larr; FFForma</a>
+    <p class="exp-eyebrow">FFForma Experiments · UI · 006</p>
+    <h1>Warp Gallery</h1>
+    <p class="exp-sub">An infinite strip of work that bends with your scroll velocity.</p>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="preview" role="tab">Preview</button>
+    <button class="tab" data-tab="css" role="tab">CSS</button>
+    <button class="tab" data-tab="react" role="tab">React</button>
+  </div>
+
+  <!-- ─── Preview ─── -->
+  <div class="panel active" id="panel-preview">
+    <div class="stage" id="stage">
+      <canvas id="warpCanvas"></canvas>
+    </div>
+    <p class="stage-hint">( scroll or drag — the strip never ends )</p>
+
+    <div class="controls">
+      <div class="ctl">
+        <label>Warp <span class="val" data-val="warp">1.00</span></label>
+        <input type="range" data-param="warp" min="0" max="3" step="0.1" value="1">
+      </div>
+      <div class="ctl">
+        <label>Stretch <span class="val" data-val="stretch">0.60</span></label>
+        <input type="range" data-param="stretch" min="0" max="2" step="0.1" value="0.6">
+      </div>
+      <div class="ctl">
+        <label>Flow <span class="val" data-val="flow">0.40</span></label>
+        <input type="range" data-param="flow" min="0" max="2" step="0.1" value="0.4">
+      </div>
+      <div class="ctl">
+        <label>Gap <span class="val" data-val="gap">22px</span></label>
+        <input type="range" data-param="gap" min="0" max="80" step="2" value="22">
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── CSS ─── -->
+  <div class="panel" id="panel-css">
+    <div class="code-head">
+      <span class="code-label">The shell — the warp itself lives in the React engine.</span>
+      <span>
+        <button class="copy-btn" data-copy="css">Copy CSS</button>
+        <span class="toast" data-toast="css">Copied</span>
+      </span>
+    </div>
+    <pre class="code" id="cssCode"></pre>
+  </div>
+
+  <!-- ─── React ─── -->
+  <div class="panel" id="panel-react">
+    <div class="code-head">
+      <span class="code-label">Complete component — canvas warp engine, no dependencies.</span>
+      <span>
+        <button class="copy-btn" data-copy="react">Copy JSX</button>
+        <span class="toast" data-toast="react">Copied</span>
+      </span>
+    </div>
+    <pre class="code" id="reactCode"></pre>
+  </div>
+
+  <footer>Form Follows Function.</footer>
+</div>
+
+<script>
+  const IMAGES = Array.from({ length: 11 }, (_, i) => 'img/warp-' + (i + 1) + '.jpg');
+  const DEFAULTS = { warp: 1, stretch: 0.6, flow: 0.4, gap: 22 };
+  const params = { ...DEFAULTS };
+
+  const stage = document.getElementById('stage');
+  const canvas = document.getElementById('warpCanvas');
+  const ctx = canvas.getContext('2d');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const STRIPS = 36;      // vertical slices per image — the bend resolution
+  const RATIO = 0.66;     // cell height = column width * ratio
+
+  let W = 0, H = 0, colW = 0, colX = 0;
+  let offset = 0, vel = 0;
+  let dragging = null;
+  const imgs = [];
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = stage.clientWidth;
+    H = stage.clientHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    colW = Math.min(430, W * 0.74);
+    colX = (W - colW) / 2;
+  }
+
+  // The heart: draw one image in vertical strips, each strip offset by a
+  // sine curve scaled by velocity — the picture bends like fabric in motion
+  function warpDraw(img, x, y, w, h, bendPx) {
+    const ir = img.width / img.height;
+    const cr = w / h;
+    let sw, sh, sx0, sy0;
+    if (ir > cr) { sh = img.height; sw = sh * cr; sx0 = (img.width - sw) / 2; sy0 = 0; }
+    else { sw = img.width; sh = sw / cr; sx0 = 0; sy0 = (img.height - sh) / 2; }
+
+    const stripSw = sw / STRIPS;
+    const stripW = w / STRIPS;
+    for (let s = 0; s < STRIPS; s++) {
+      const t = (s + 0.5) / STRIPS;
+      const bend = Math.sin(t * Math.PI) * bendPx;
+      ctx.drawImage(
+        img,
+        sx0 + s * stripSw, sy0, stripSw, sh,
+        x + s * stripW, y + bend, stripW + 1, h
+      );
+    }
+  }
+
+  function frame() {
+    // Idle flow keeps the strip breathing; velocity decays back to it
+    if (!dragging) {
+      offset += vel + params.flow;
+      vel *= 0.93;
+    }
+
+    const cellH = colW * RATIO;
+    const step = cellH + params.gap;
+    const total = IMAGES.length * step;
+    const bendPx = Math.max(-60, Math.min(60, vel * params.warp * 1.6));
+    const stretch = 1 + Math.min(0.35, Math.abs(vel) * params.stretch * 0.004);
+
+    ctx.clearRect(0, 0, W, H);
+
+    const first = Math.floor(((offset % total) + total) % total / step) - 1;
+    const startY = -((((offset % total) + total) % total) % step) - step;
+
+    let y = startY;
+    let idx = first;
+    while (y < H + step) {
+      const i = ((idx % IMAGES.length) + IMAGES.length) % IMAGES.length;
+      const img = imgs[i];
+      if (img && img.complete && img.naturalWidth) {
+        const hh = cellH * stretch;
+        warpDraw(img, colX, y - (hh - cellH) / 2, colW, hh, bendPx);
+      }
+      y += step;
+      idx++;
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  // Input: wheel, drag
+  stage.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    vel += e.deltaY * 0.06;
+  }, { passive: false });
+
+  stage.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    try { stage.setPointerCapture(e.pointerId); } catch (_) {}
+    dragging = { y: e.clientY, last: e.clientY };
+  });
+
+  stage.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    const dy = e.clientY - dragging.last;
+    dragging.last = e.clientY;
+    offset -= dy;
+    vel = -dy * 0.9;
+  });
+
+  const endDrag = () => { dragging = null; };
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+
+  // Controls
+  function apply() {
+    document.querySelectorAll('.val').forEach(v => {
+      const k = v.dataset.val;
+      v.textContent = k === 'gap' ? params.gap + 'px' : Number(params[k]).toFixed(2);
+    });
+    document.getElementById('cssCode').textContent = cssCode();
+    document.getElementById('reactCode').textContent = reactCode();
+  }
+
+  document.querySelectorAll('input[type="range"]').forEach(input => {
+    input.addEventListener('input', () => {
+      params[input.dataset.param] = parseFloat(input.value);
+      apply();
+    });
+  });
+
+  // Tabs
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Copy
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = btn.dataset.copy === 'css'
+        ? document.getElementById('cssCode').textContent
+        : document.getElementById('reactCode').textContent;
+      const toastEl = document.querySelector('[data-toast="' + btn.dataset.copy + '"]');
+      navigator.clipboard.writeText(text).then(() => {
+        toastEl.classList.add('is-visible');
+        setTimeout(() => toastEl.classList.remove('is-visible'), 2000);
+      });
+    });
+  });
+
+  // Boot
+  IMAGES.forEach(src => {
+    const img = new Image();
+    img.src = src;
+    imgs.push(img);
+  });
+
+  window.addEventListener('resize', resize);
+  resize();
+  apply();
+  if (!reduced) {
+    requestAnimationFrame(frame);
+  } else {
+    // Reduced motion: a still frame, no flow, no bend
+    imgs[0].addEventListener('load', () => {
+      const cellH = colW * RATIO;
+      let y = 10;
+      for (let i = 0; i < 3 && y < H; i++) {
+        warpDraw(imgs[i], colX, y, colW, cellH, 0);
+        y += cellH + params.gap;
+      }
+    });
+  }
+
+  // ─── Generated code ───
+  function cssCode() {
+    return [
+      '.warp-gallery {',
+      '  position: relative;',
+      '  height: 560px;',
+      '  overflow: hidden;',
+      '  border-radius: 8px;',
+      '  background: #080706;',
+      '  cursor: grab;',
+      '  touch-action: none;',
+      '}',
+      '',
+      '.warp-gallery:active { cursor: grabbing; }',
+      '',
+      '.warp-gallery canvas {',
+      '  display: block;',
+      '  width: 100%;',
+      '  height: 100%;',
+      '}',
+      '',
+      '/* Soft fades at the edges of the strip */',
+      '.warp-gallery::before,',
+      '.warp-gallery::after {',
+      "  content: '';",
+      '  position: absolute;',
+      '  left: 0;',
+      '  right: 0;',
+      '  height: 70px;',
+      '  pointer-events: none;',
+      '}',
+      '',
+      '.warp-gallery::before { top: 0; background: linear-gradient(#080706, transparent); }',
+      '.warp-gallery::after { bottom: 0; background: linear-gradient(transparent, #080706); }'
+    ].join('\n');
+  }
+
+  function reactCode() {
+    return [
+      'import { useEffect, useRef } from "react";',
+      '',
+      'export function WarpGallery({',
+      '  images = [],        // array of image URLs (your CMS collection)',
+      '  warp = ' + params.warp + ',         // bend per unit of velocity',
+      '  stretch = ' + params.stretch + ',      // vertical stretch per velocity',
+      '  flow = ' + params.flow + ',         // idle auto-scroll, px per frame',
+      '  gap = ' + params.gap + ',           // px between cells',
+      '  ratio = 0.66,       // cell height = column width * ratio',
+      '  strips = 36,        // bend resolution',
+      '}) {',
+      '  const stageRef = useRef(null);',
+      '  const canvasRef = useRef(null);',
+      '',
+      '  useEffect(() => {',
+      '    const stage = stageRef.current;',
+      '    const canvas = canvasRef.current;',
+      '    const ctx = canvas.getContext("2d");',
+      '    const imgs = images.map(src => Object.assign(new Image(), { src }));',
+      '    let W = 0, H = 0, colW = 0, colX = 0;',
+      '    let offset = 0, vel = 0, drag = null, raf;',
+      '',
+      '    const resize = () => {',
+      '      const dpr = Math.min(window.devicePixelRatio || 1, 2);',
+      '      W = stage.clientWidth; H = stage.clientHeight;',
+      '      canvas.width = W * dpr; canvas.height = H * dpr;',
+      '      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);',
+      '      colW = Math.min(430, W * 0.74); colX = (W - colW) / 2;',
+      '    };',
+      '',
+      '    const warpDraw = (img, x, y, w, h, bendPx) => {',
+      '      const ir = img.width / img.height, cr = w / h;',
+      '      let sw, sh, sx0, sy0;',
+      '      if (ir > cr) { sh = img.height; sw = sh * cr; sx0 = (img.width - sw) / 2; sy0 = 0; }',
+      '      else { sw = img.width; sh = sw / cr; sx0 = 0; sy0 = (img.height - sh) / 2; }',
+      '      const ssw = sw / strips, stw = w / strips;',
+      '      for (let s = 0; s < strips; s++) {',
+      '        const bend = Math.sin(((s + 0.5) / strips) * Math.PI) * bendPx;',
+      '        ctx.drawImage(img, sx0 + s * ssw, sy0, ssw, sh, x + s * stw, y + bend, stw + 1, h);',
+      '      }',
+      '    };',
+      '',
+      '    const frame = () => {',
+      '      if (!drag) { offset += vel + flow; vel *= 0.93; }',
+      '      const cellH = colW * ratio;',
+      '      const step = cellH + gap;',
+      '      const total = images.length * step;',
+      '      const bendPx = Math.max(-60, Math.min(60, vel * warp * 1.6));',
+      '      const sc = 1 + Math.min(0.35, Math.abs(vel) * stretch * 0.004);',
+      '      ctx.clearRect(0, 0, W, H);',
+      '      const mod = ((offset % total) + total) % total;',
+      '      let idx = Math.floor(mod / step) - 1;',
+      '      let y = -(mod % step) - step;',
+      '      while (y < H + step) {',
+      '        const img = imgs[((idx % images.length) + images.length) % images.length];',
+      '        if (img && img.complete && img.naturalWidth) {',
+      '          const hh = cellH * sc;',
+      '          warpDraw(img, colX, y - (hh - cellH) / 2, colW, hh, bendPx);',
+      '        }',
+      '        y += step; idx++;',
+      '      }',
+      '      raf = requestAnimationFrame(frame);',
+      '    };',
+      '',
+      '    const onWheel = (e) => { e.preventDefault(); vel += e.deltaY * 0.06; };',
+      '    const onDown = (e) => {',
+      '      e.preventDefault();',
+      '      try { stage.setPointerCapture(e.pointerId); } catch (_) {}',
+      '      drag = { last: e.clientY };',
+      '    };',
+      '    const onMove = (e) => {',
+      '      if (!drag) return;',
+      '      const dy = e.clientY - drag.last;',
+      '      drag.last = e.clientY;',
+      '      offset -= dy; vel = -dy * 0.9;',
+      '    };',
+      '    const onUp = () => { drag = null; };',
+      '',
+      '    stage.addEventListener("wheel", onWheel, { passive: false });',
+      '    stage.addEventListener("pointerdown", onDown);',
+      '    stage.addEventListener("pointermove", onMove);',
+      '    stage.addEventListener("pointerup", onUp);',
+      '    stage.addEventListener("pointercancel", onUp);',
+      '    window.addEventListener("resize", resize);',
+      '    resize();',
+      '    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {',
+      '      raf = requestAnimationFrame(frame);',
+      '    }',
+      '',
+      '    return () => {',
+      '      cancelAnimationFrame(raf);',
+      '      stage.removeEventListener("wheel", onWheel);',
+      '      stage.removeEventListener("pointerdown", onDown);',
+      '      stage.removeEventListener("pointermove", onMove);',
+      '      stage.removeEventListener("pointerup", onUp);',
+      '      stage.removeEventListener("pointercancel", onUp);',
+      '      window.removeEventListener("resize", resize);',
+      '    };',
+      '  }, [images, warp, stretch, flow, gap, ratio, strips]);',
+      '',
+      '  return (',
+      '    <div ref={stageRef} className="warp-gallery">',
+      '      <canvas ref={canvasRef} />',
+      '    </div>',
+      '  );',
+      '}'
+    ].join('\n');
+  }
+</script>
+
+</body>
+</html>
