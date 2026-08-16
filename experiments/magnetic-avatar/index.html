@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magnetic Avatar — FFForma Experiments</title>
+  <meta name="description" content="FFForma Experiment 005 — avatars with a magnetic field: spring physics, parallax depth, and a polarity switch.">
+  <meta name="theme-color" content="#0b0a09">
+  <link rel="icon" type="image/png" href="../../img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0a09;
+      --fg: #e8e6e2;
+      --subtle: #a3a09b;
+      --subtler: #6f6c67;
+      --line: #262421;
+      --accent: #c8ff00;
+      --font-mono: 'Geist Mono', 'Courier New', monospace;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--fg);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    a {
+      color: var(--subtle);
+      text-decoration: underline dotted;
+      text-decoration-color: var(--subtler);
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+
+    a:hover { color: var(--accent); }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 1px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    header { padding: 56px 0 0; }
+
+    .exp-eyebrow {
+      font-size: 0.72rem;
+      color: var(--subtler);
+      margin: 40px 0 6px;
+    }
+
+    h1 { font-size: 0.95rem; font-weight: 500; }
+
+    .exp-sub { color: var(--subtle); margin-top: 6px; }
+
+    /* ─── Tabs ─── */
+    .tabs {
+      display: flex;
+      gap: 1.4em;
+      margin-top: 36px;
+      font-size: 0.78rem;
+    }
+
+    .tab {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: var(--subtler);
+      transition: color 0.2s ease;
+    }
+
+    .tab:hover { color: var(--fg); }
+
+    .tab.active { color: var(--accent); }
+
+    .panel { display: none; }
+
+    .panel.active { display: block; }
+
+    /* ─── Stage ─── */
+    .stage {
+      position: relative;
+      min-height: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 56px;
+      padding: 30px 0 6px;
+      touch-action: none;
+    }
+
+    .avatars {
+      display: flex;
+      gap: 26px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ─── Magnetic avatar ─── */
+    .m-avatar {
+      position: relative;
+      width: var(--m-size, 72px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      cursor: grab;
+      touch-action: none;
+      will-change: transform;
+    }
+
+    .m-avatar:active { cursor: grabbing; }
+
+    .m-avatar .photo {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #050504;
+      box-shadow: 0 0 22px var(--glow-c, rgba(200, 255, 0, 0.3)), inset 0 0 10px rgba(0, 0, 0, 0.6);
+    }
+
+    /* The orb inside: parallax moves this wrapper, spin lives on the core */
+    .m-avatar .orb-inner {
+      position: absolute;
+      inset: 0;
+      will-change: transform;
+    }
+
+    .m-avatar .orb-core {
+      position: absolute;
+      inset: -35%;
+      background: conic-gradient(from 0deg, var(--a), var(--b), var(--c), var(--a));
+      filter: blur(10px);
+      animation: core-spin var(--spd, 9s) linear infinite;
+    }
+
+    @keyframes core-spin { to { transform: rotate(360deg); } }
+
+    .m-avatar .orb-hl {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.5), transparent 46%);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    /* Proximity ring — charges up as the cursor approaches */
+    .m-avatar .ring {
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 1px solid var(--accent);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Dotted field boundary around the captured avatar */
+    .m-avatar .field {
+      position: absolute;
+      inset: -16px;
+      border-radius: 50%;
+      border: 1px dotted var(--subtler);
+      opacity: 0;
+      pointer-events: none;
+      animation: field-spin 24s linear infinite;
+    }
+
+    @keyframes field-spin { to { transform: rotate(360deg); } }
+
+    .m-avatar .name {
+      position: absolute;
+      top: calc(100% + 14px);
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.65rem;
+      color: var(--accent);
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    /* Dotted floor appears when gravity is on */
+    .stage::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-bottom: 1px dotted var(--line);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .stage.has-gravity::after { opacity: 1; }
+
+    .stage-hint {
+      font-size: 0.72rem;
+      color: var(--subtler);
+      text-align: center;
+    }
+
+    .stage-hint .on { color: var(--accent); }
+
+    /* ─── Controls ─── */
+    .controls {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 36px;
+    }
+
+    @media (max-width: 560px) {
+      .controls { grid-template-columns: 1fr; }
+    }
+
+    .ctl label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--subtle);
+      margin-bottom: 6px;
+    }
+
+    .ctl .val {
+      color: var(--subtler);
+      font-variant-numeric: tabular-nums;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      height: 16px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track { height: 1px; background: var(--line); }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--fg);
+      margin-top: -5.5px;
+      transition: background 0.15s ease;
+    }
+
+    input[type="range"]:hover::-webkit-slider-thumb,
+    input[type="range"]:active::-webkit-slider-thumb { background: var(--accent); }
+
+    input[type="range"]::-moz-range-track { height: 1px; background: var(--line); }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border: none;
+      border-radius: 50%;
+      background: var(--fg);
+    }
+
+    input[type="range"]:hover::-moz-range-thumb { background: var(--accent); }
+
+    /* Polarity switch */
+    .row {
+      margin-top: 26px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .polarity {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8em;
+      font-size: 0.72rem;
+      color: var(--subtler);
+    }
+
+    .pol-btn {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: var(--subtler);
+      transition: color 0.2s ease;
+    }
+
+    .pol-btn:hover { color: var(--fg); }
+
+    .pol-btn.active { color: var(--accent); }
+
+    /* ─── Code panels ─── */
+    .code-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin: 28px 0 8px;
+    }
+
+    .code-label { font-size: 0.72rem; color: var(--subtler); }
+
+    .copy-btn {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: var(--subtle);
+      text-decoration: underline dotted;
+      text-decoration-color: var(--subtler);
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+
+    .copy-btn:hover { color: var(--accent); }
+
+    .toast {
+      font-size: 0.72rem;
+      color: var(--accent);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      margin-left: 0.8em;
+    }
+
+    .toast.is-visible { opacity: 1; }
+
+    pre.code {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      line-height: 1.6;
+      color: var(--subtle);
+      background: #100f0d;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      white-space: pre;
+      max-height: 480px;
+      overflow-y: auto;
+    }
+
+    footer {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--subtler);
+      text-align: center;
+      padding: 56px 0 32px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <a href="../../">&larr; FFForma</a>
+    <p class="exp-eyebrow">FFForma Experiments · UI · 005</p>
+    <h1>Magnetic Avatar</h1>
+    <p class="exp-sub">Orbs with a magnetic field. Attract them, grab them, throw them — or switch gravity on.</p>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="preview" role="tab">Preview</button>
+    <button class="tab" data-tab="css" role="tab">CSS</button>
+    <button class="tab" data-tab="react" role="tab">React</button>
+  </div>
+
+  <!-- ─── Preview panel ─── -->
+  <div class="panel active" id="panel-preview">
+    <div class="stage" id="stage">
+      <div class="avatars" id="avatars"></div>
+      <p class="stage-hint" id="stageHint">( bring the cursor near )</p>
+    </div>
+
+    <div class="row">
+      <div class="polarity">
+        Polarity:
+        <button class="pol-btn active" data-pol="1">Attract</button>
+        <span aria-hidden="true">/</span>
+        <button class="pol-btn" data-pol="-1">Repel</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="ctl">
+        <label>Size <span class="val" data-val="size">72px</span></label>
+        <input type="range" data-param="size" min="48" max="120" step="4" value="72">
+      </div>
+      <div class="ctl">
+        <label>Strength <span class="val" data-val="strength">24px</span></label>
+        <input type="range" data-param="strength" min="0" max="60" step="2" value="24">
+      </div>
+      <div class="ctl">
+        <label>Field radius <span class="val" data-val="radius">140px</span></label>
+        <input type="range" data-param="radius" min="60" max="280" step="10" value="140">
+      </div>
+      <div class="ctl">
+        <label>Stiffness <span class="val" data-val="stiffness">0.12</span></label>
+        <input type="range" data-param="stiffness" min="0.03" max="0.3" step="0.01" value="0.12">
+      </div>
+      <div class="ctl">
+        <label>Damping <span class="val" data-val="damping">0.82</span></label>
+        <input type="range" data-param="damping" min="0.5" max="0.95" step="0.01" value="0.82">
+      </div>
+      <div class="ctl">
+        <label>Hover scale <span class="val" data-val="scale">1.12</span></label>
+        <input type="range" data-param="scale" min="1" max="1.4" step="0.02" value="1.12">
+      </div>
+      <div class="ctl">
+        <label>Parallax <span class="val" data-val="parallax">0.50</span></label>
+        <input type="range" data-param="parallax" min="0" max="1" step="0.05" value="0.5">
+      </div>
+      <div class="ctl">
+        <label>Gravity <span class="val" data-val="gravity">0.00</span></label>
+        <input type="range" data-param="gravity" min="0" max="1" step="0.05" value="0">
+      </div>
+      <div class="ctl">
+        <label>Bounce <span class="val" data-val="bounce">0.55</span></label>
+        <input type="range" data-param="bounce" min="0.2" max="0.9" step="0.05" value="0.55">
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── CSS panel ─── -->
+  <div class="panel" id="panel-css">
+    <div class="code-head">
+      <span class="code-label">The look — pair it with the React hook for the physics.</span>
+      <span>
+        <button class="copy-btn" data-copy="css">Copy CSS</button>
+        <span class="toast" data-toast="css">Copied</span>
+      </span>
+    </div>
+    <pre class="code" id="cssCode"></pre>
+  </div>
+
+  <!-- ─── React panel ─── -->
+  <div class="panel" id="panel-react">
+    <div class="code-head">
+      <span class="code-label">Complete component — spring physics included, no dependencies.</span>
+      <span>
+        <button class="copy-btn" data-copy="react">Copy JSX</button>
+        <span class="toast" data-toast="react">Copied</span>
+      </span>
+    </div>
+    <pre class="code" id="reactCode"></pre>
+  </div>
+
+  <footer>Form Follows Function.</footer>
+</div>
+
+<script>
+  const AVATARS = [
+    { name: 'Forma',  a: '#c8ff00', b: '#e8e6e2', c: '#3a4d00' },
+    { name: 'Ember',  a: '#ff6a00', b: '#ff2d55', c: '#7a1fa2' },
+    { name: 'Ocean',  a: '#00e0ff', b: '#2b6bff', c: '#6a00ff' },
+    { name: 'Aurora', a: '#48ffb1', b: '#00c2ff', c: '#8a5cff' },
+    { name: 'Rose',   a: '#ff9ecb', b: '#ff4d6d', c: '#6f1d3d' }
+  ];
+
+  function hexToRgba(hex, alpha) {
+    const n = parseInt(hex.slice(1), 16);
+    return 'rgba(' + [(n >> 16) & 255, (n >> 8) & 255, n & 255].join(', ') + ', ' + alpha + ')';
+  }
+
+  const DEFAULTS = { size: 72, strength: 24, radius: 140, stiffness: 0.12, damping: 0.82, scale: 1.12, parallax: 0.5, gravity: 0, bounce: 0.55 };
+  const params = { ...DEFAULTS };
+  let polarity = 1; // 1 attract, -1 repel
+
+  const stage = document.getElementById('stage');
+  const avatarsEl = document.getElementById('avatars');
+  const stageHint = document.getElementById('stageHint');
+
+  // Build avatars — each one a live orb
+  const nodes = AVATARS.map((a, i) => {
+    const el = document.createElement('div');
+    el.className = 'm-avatar';
+    el.style.setProperty('--a', a.a);
+    el.style.setProperty('--b', a.b);
+    el.style.setProperty('--c', a.c);
+    el.style.setProperty('--spd', (7 + i * 2) + 's');
+    el.style.setProperty('--glow-c', hexToRgba(a.a, 0.3));
+    el.innerHTML =
+      '<div class="field"></div>' +
+      '<div class="photo"><div class="orb-inner"><div class="orb-core"></div></div><div class="orb-hl"></div></div>' +
+      '<div class="ring"></div>' +
+      '<span class="name">' + a.name + '</span>';
+    avatarsEl.appendChild(el);
+    return {
+      el,
+      img: el.querySelector('.orb-inner'),
+      ring: el.querySelector('.ring'),
+      field: el.querySelector('.field'),
+      label: el.querySelector('.name'),
+      x: 0, y: 0, vx: 0, vy: 0,
+      tx: 0, ty: 0, prox: 0
+    };
+  });
+
+  // Cursor tracking (pointer events cover touch drags too)
+  const cursor = { x: -9999, y: -9999 };
+
+  stage.addEventListener('pointermove', (e) => {
+    cursor.x = e.clientX;
+    cursor.y = e.clientY;
+  });
+
+  stage.addEventListener('pointerleave', () => {
+    cursor.x = -9999;
+    cursor.y = -9999;
+  });
+
+  // Drag: grab an orb, throw it — velocity carries through the release
+  nodes.forEach(n => {
+    n.dragging = false;
+    n.el.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      try { n.el.setPointerCapture(e.pointerId); } catch (_) {}
+      n.dragging = true;
+      cursor.x = e.clientX;
+      cursor.y = e.clientY;
+    });
+    n.el.addEventListener('pointermove', (e) => {
+      if (n.dragging) { cursor.x = e.clientX; cursor.y = e.clientY; }
+    });
+    const release = () => { n.dragging = false; };
+    n.el.addEventListener('pointerup', release);
+    n.el.addEventListener('pointercancel', release);
+  });
+
+  // Physics loop: elastic drag > gravity field > magnetic spring
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function tick() {
+    let captured = null;
+    let held = null;
+    const sr = stage.getBoundingClientRect();
+
+    // ── Pass 1: integrate each body ──
+    nodes.forEach(n => {
+      const r = n.el.getBoundingClientRect();
+      // Rest center: remove current offset to keep the anchor stable
+      n.ax = r.left + r.width / 2 - n.x;
+      n.ay = r.top + r.height / 2 - n.y;
+      const dx = cursor.x - n.ax;
+      const dy = cursor.y - n.ay;
+      const dist = Math.hypot(dx, dy);
+
+      let prox = 0;
+      if (dist < params.radius && dist > 0.001) {
+        prox = 1 - dist / params.radius;
+      }
+      n.prox = prox;
+
+      if (n.dragging) {
+        // Elastic grab: a stiff spring toward the cursor keeps it juicy
+        n.vx = (n.vx + ((cursor.x - n.ax) - n.x) * 0.3) * 0.72;
+        n.vy = (n.vy + ((cursor.y - n.ay) - n.y) * 0.3) * 0.72;
+        n.x += n.vx;
+        n.y += n.vy;
+        held = n;
+      } else if (params.gravity > 0) {
+        // Free bodies: gravity + magnet as forces
+        n.vy += params.gravity * 0.55;
+        if (prox > 0 && dist > 0.001) {
+          const f = prox * params.strength * 0.02 * polarity;
+          n.vx += (dx / dist) * f;
+          n.vy += (dy / dist) * f;
+        }
+        n.vx *= 0.995;
+        n.vy *= 0.995;
+        n.x += n.vx;
+        n.y += n.vy;
+      } else {
+        // Magnetic spring to a pulled target, anchored home
+        let tx = 0, ty = 0;
+        if (prox > 0 && dist > 0.001) {
+          const pull = prox * params.strength * polarity;
+          tx = (dx / dist) * pull;
+          ty = (dy / dist) * pull;
+        }
+        n.vx = (n.vx + (tx - n.x) * params.stiffness) * params.damping;
+        n.vy = (n.vy + (ty - n.y) * params.stiffness) * params.damping;
+        n.x += n.vx;
+        n.y += n.vy;
+      }
+
+      if (prox > 0.55 && (!captured || prox > captured.prox)) captured = n;
+    });
+
+    // ── Pass 2: orb-to-orb collisions (two iterations for stable piles) ──
+    const R = params.size / 2 + 2;
+    const minD = R * 2;
+    for (let iter = 0; iter < 2; iter++) {
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i], b = nodes[j];
+          const dx = (b.ax + b.x) - (a.ax + a.x);
+          const dy = (b.ay + b.y) - (a.ay + a.y);
+          const d = Math.hypot(dx, dy);
+          if (d >= minD || d < 0.0001) continue;
+
+          const nx = dx / d, ny = dy / d;
+          const overlap = minD - d;
+
+          // A dragged orb is kinematic: it shoves, it is not shoved
+          const invA = a.dragging ? 0 : 1;
+          const invB = b.dragging ? 0 : 1;
+          const invSum = invA + invB;
+          if (invSum === 0) continue;
+
+          // Positional correction, mass-weighted
+          a.x -= nx * overlap * (invA / invSum);
+          a.y -= ny * overlap * (invA / invSum);
+          b.x += nx * overlap * (invB / invSum);
+          b.y += ny * overlap * (invB / invSum);
+
+          // Impulse along the normal, only if approaching
+          const rvx = b.vx - a.vx;
+          const rvy = b.vy - a.vy;
+          const vn = rvx * nx + rvy * ny;
+          if (vn < 0) {
+            const e = params.gravity > 0 ? params.bounce : 0.4;
+            const jimp = -(1 + e) * vn / invSum;
+            a.vx -= jimp * nx * invA;
+            a.vy -= jimp * ny * invA;
+            b.vx += jimp * nx * invB;
+            b.vy += jimp * ny * invB;
+          }
+        }
+      }
+    }
+
+    // ── Pass 3: stage walls (gravity mode) + paint ──
+    nodes.forEach(n => {
+      if (!n.dragging && params.gravity > 0) {
+        const half = params.size / 2 + 2;
+        const minX = sr.left + half - n.ax, maxX = sr.right - half - n.ax;
+        const minY = sr.top + half - n.ay, maxY = sr.bottom - half - n.ay;
+        if (n.x < minX) { n.x = minX; n.vx = -n.vx * params.bounce; }
+        if (n.x > maxX) { n.x = maxX; n.vx = -n.vx * params.bounce; }
+        if (n.y < minY) { n.y = minY; n.vy = -n.vy * params.bounce; }
+        if (n.y > maxY) {
+          n.y = maxY;
+          n.vy = -n.vy * params.bounce;
+          n.vx *= 0.94; // floor friction
+        }
+      }
+
+      const s = n.dragging ? params.scale : 1 + n.prox * (params.scale - 1);
+      n.el.style.transform = 'translate(' + n.x.toFixed(2) + 'px, ' + n.y.toFixed(2) + 'px) scale(' + s.toFixed(3) + ')';
+      // The core lags behind — depth
+      n.img.style.transform = 'translate(' + (-n.x * params.parallax * 0.35).toFixed(2) + 'px, ' + (-n.y * params.parallax * 0.35).toFixed(2) + 'px)';
+      n.ring.style.opacity = (n.dragging ? 0.9 : n.prox * 0.9).toFixed(2);
+      n.field.style.opacity = (n.dragging || n.prox > 0.55) ? '0.6' : '0';
+      n.label.style.opacity = (n.dragging || n.prox > 0.55) ? '1' : '0';
+    });
+
+    stageHint.innerHTML = held
+      ? '( <span class="on">' + held.label.textContent + '</span> in hand — throw it )'
+      : captured
+        ? '( <span class="on">' + captured.label.textContent + '</span> captured )'
+        : params.gravity > 0
+          ? '( gravity on — grab, throw, collide )'
+          : '( bring the cursor near — or grab an orb )';
+
+    requestAnimationFrame(tick);
+  }
+
+  if (!reduced) requestAnimationFrame(tick);
+
+  // Controls
+  function fmt(k) {
+    if (k === 'size' || k === 'strength' || k === 'radius') return params[k] + 'px';
+    return Number(params[k]).toFixed(2);
+  }
+
+  function apply() {
+    document.documentElement.style.setProperty('--m-size', params.size + 'px');
+    stage.classList.toggle('has-gravity', params.gravity > 0);
+    document.querySelectorAll('.val').forEach(v => { v.textContent = fmt(v.dataset.val); });
+    document.getElementById('cssCode').textContent = cssCode();
+    document.getElementById('reactCode').textContent = reactCode();
+  }
+
+  document.querySelectorAll('input[type="range"]').forEach(input => {
+    input.addEventListener('input', () => {
+      params[input.dataset.param] = parseFloat(input.value);
+      apply();
+    });
+  });
+
+  document.querySelectorAll('.pol-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      polarity = parseInt(btn.dataset.pol, 10);
+      document.querySelectorAll('.pol-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      apply();
+    });
+  });
+
+  // Tabs
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Copy
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = btn.dataset.copy === 'css'
+        ? document.getElementById('cssCode').textContent
+        : document.getElementById('reactCode').textContent;
+      const toastEl = document.querySelector('[data-toast="' + btn.dataset.copy + '"]');
+      navigator.clipboard.writeText(text).then(() => {
+        toastEl.classList.add('is-visible');
+        setTimeout(() => toastEl.classList.remove('is-visible'), 2000);
+      });
+    });
+  });
+
+  // ─── Generated code ───
+  function cssCode() {
+    return [
+      '.magnetic-avatar {',
+      '  position: relative;',
+      '  width: ' + params.size + 'px;',
+      '  aspect-ratio: 1;',
+      '  border-radius: 50%;',
+      '  cursor: pointer;',
+      '  will-change: transform; /* transform driven by the hook */',
+      '}',
+      '',
+      '.magnetic-avatar .photo {',
+      '  position: absolute;',
+      '  inset: 0;',
+      '  border-radius: 50%;',
+      '  overflow: hidden;',
+      '  border: 1px solid #262421;',
+      '  background: #050504;',
+      '}',
+      '',
+      '/* Parallax moves .orb-inner; the spin lives on .orb-core */',
+      '.magnetic-avatar .orb-inner {',
+      '  position: absolute;',
+      '  inset: 0;',
+      '  will-change: transform;',
+      '}',
+      '',
+      '.magnetic-avatar .orb-core {',
+      '  position: absolute;',
+      '  inset: -35%;',
+      '  background: conic-gradient(from 0deg, var(--a), var(--b), var(--c), var(--a));',
+      '  filter: blur(10px);',
+      '  animation: core-spin 9s linear infinite;',
+      '}',
+      '',
+      '.magnetic-avatar .orb-hl {',
+      '  position: absolute;',
+      '  inset: 0;',
+      '  border-radius: 50%;',
+      '  background: radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.5), transparent 46%);',
+      '  mix-blend-mode: screen;',
+      '}',
+      '',
+      '@keyframes core-spin { to { transform: rotate(360deg); } }',
+      '',
+      '.magnetic-avatar .ring {',
+      '  position: absolute;',
+      '  inset: -5px;',
+      '  border-radius: 50%;',
+      '  border: 1px solid #c8ff00;',
+      '  opacity: 0;              /* set to proximity by the hook */',
+      '  pointer-events: none;',
+      '}'
+    ].join('\n');
+  }
+
+  function reactCode() {
+    return [
+      'import { useEffect, useRef } from "react";',
+      '',
+      'export function MagneticAvatar({',
+      "  colors = ['#c8ff00', '#e8e6e2', '#3a4d00'], // orb palette [a, b, c]",
+      '  spin = 9,          // seconds per core revolution',
+      '  size = ' + params.size + ',',
+      '  strength = ' + params.strength + ',    // max magnetic pull, px',
+      '  radius = ' + params.radius + ',      // field radius, px',
+      '  stiffness = ' + params.stiffness + ',',
+      '  damping = ' + params.damping + ',',
+      '  hoverScale = ' + params.scale + ',',
+      '  parallax = ' + params.parallax + ',',
+      '  polarity = ' + polarity + ',      // 1 attracts, -1 repels',
+      '  gravity = ' + params.gravity + ',       // > 0 turns the orb into a free body',
+      '  bounce = ' + params.bounce + ',    // wall restitution in gravity mode',
+      '  draggable = true,  // grab and throw with pointer',
+      '}) {',
+      '  const rootRef = useRef(null);',
+      '  const innerRef = useRef(null);',
+      '  const ringRef = useRef(null);',
+      '',
+      '  useEffect(() => {',
+      '    const root = rootRef.current;',
+      '    const inner = innerRef.current;',
+      '    const ring = ringRef.current;',
+      '    const bounds = root.offsetParent; // gravity bounces inside this box',
+      '    const st = { x: 0, y: 0, vx: 0, vy: 0, drag: false };',
+      '    const cursor = { x: -9999, y: -9999 };',
+      '    let raf;',
+      '',
+      '    const onMove = (e) => { cursor.x = e.clientX; cursor.y = e.clientY; };',
+      '    const onLeave = () => { cursor.x = -9999; cursor.y = -9999; };',
+      '    const onDown = (e) => {',
+      '      if (!draggable) return;',
+      '      e.preventDefault();',
+      '      root.setPointerCapture(e.pointerId);',
+      '      st.drag = true;',
+      '      onMove(e);',
+      '    };',
+      '    const onUp = () => { st.drag = false; };',
+      '',
+      '    const tick = () => {',
+      '      const r = root.getBoundingClientRect();',
+      '      const cx = r.left + r.width / 2 - st.x;',
+      '      const cy = r.top + r.height / 2 - st.y;',
+      '      const dx = cursor.x - cx;',
+      '      const dy = cursor.y - cy;',
+      '      const dist = Math.hypot(dx, dy);',
+      '      const prox = dist < radius && dist > 0.001 ? 1 - dist / radius : 0;',
+      '',
+      '      if (st.drag) {',
+      '        // Elastic grab — stiff spring toward the cursor',
+      '        st.vx = (st.vx + (dx - st.x) * 0.3) * 0.72;',
+      '        st.vy = (st.vy + (dy - st.y) * 0.3) * 0.72;',
+      '        st.x += st.vx;',
+      '        st.y += st.vy;',
+      '      } else if (gravity > 0) {',
+      '        // Free body: gravity + magnet as forces, bouncing walls',
+      '        st.vy += gravity * 0.55;',
+      '        if (prox > 0) {',
+      '          const f = prox * strength * 0.02 * polarity;',
+      '          st.vx += (dx / dist) * f;',
+      '          st.vy += (dy / dist) * f;',
+      '        }',
+      '        st.vx *= 0.995;',
+      '        st.vy *= 0.995;',
+      '        st.x += st.vx;',
+      '        st.y += st.vy;',
+      '        const b = bounds.getBoundingClientRect();',
+      '        const half = size / 2 + 2;',
+      '        if (st.x < b.left + half - cx)  { st.x = b.left + half - cx;  st.vx = -st.vx * bounce; }',
+      '        if (st.x > b.right - half - cx) { st.x = b.right - half - cx; st.vx = -st.vx * bounce; }',
+      '        if (st.y < b.top + half - cy)   { st.y = b.top + half - cy;   st.vy = -st.vy * bounce; }',
+      '        if (st.y > b.bottom - half - cy) {',
+      '          st.y = b.bottom - half - cy;',
+      '          st.vy = -st.vy * bounce;',
+      '          st.vx *= 0.94; // floor friction',
+      '        }',
+      '      } else {',
+      '        // Magnetic spring, anchored home',
+      '        let tx = 0, ty = 0;',
+      '        if (prox > 0) {',
+      '          const pull = prox * strength * polarity;',
+      '          tx = (dx / dist) * pull;',
+      '          ty = (dy / dist) * pull;',
+      '        }',
+      '        st.vx = (st.vx + (tx - st.x) * stiffness) * damping;',
+      '        st.vy = (st.vy + (ty - st.y) * stiffness) * damping;',
+      '        st.x += st.vx;',
+      '        st.y += st.vy;',
+      '      }',
+      '',
+      '      const scale = st.drag ? hoverScale : 1 + prox * (hoverScale - 1);',
+      '      root.style.transform = `translate(${st.x}px, ${st.y}px) scale(${scale})`;',
+      '      inner.style.transform = `translate(${-st.x * parallax * 0.35}px, ${-st.y * parallax * 0.35}px)`;',
+      '      ring.style.opacity = st.drag ? 0.9 : prox * 0.9;',
+      '      raf = requestAnimationFrame(tick);',
+      '    };',
+      '',
+      '    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {',
+      '      window.addEventListener("pointermove", onMove);',
+      '      window.addEventListener("pointerleave", onLeave);',
+      '      root.addEventListener("pointerdown", onDown);',
+      '      root.addEventListener("pointerup", onUp);',
+      '      root.addEventListener("pointercancel", onUp);',
+      '      raf = requestAnimationFrame(tick);',
+      '    }',
+      '',
+      '    return () => {',
+      '      window.removeEventListener("pointermove", onMove);',
+      '      window.removeEventListener("pointerleave", onLeave);',
+      '      root.removeEventListener("pointerdown", onDown);',
+      '      root.removeEventListener("pointerup", onUp);',
+      '      root.removeEventListener("pointercancel", onUp);',
+      '      cancelAnimationFrame(raf);',
+      '    };',
+      '  }, [strength, radius, stiffness, damping, hoverScale, parallax, polarity, gravity, bounce, draggable, size]);',
+      '',
+      '  const [a, b, c] = colors;',
+      '  return (',
+      '    <div',
+      '      ref={rootRef}',
+      '      className="magnetic-avatar"',
+      '      style={{ width: size, "--a": a, "--b": b, "--c": c }}',
+      '    >',
+      '      <div className="photo">',
+      '        <div ref={innerRef} className="orb-inner">',
+      '          <div className="orb-core" style={{ animationDuration: `${spin}s` }} />',
+      '        </div>',
+      '        <div className="orb-hl" />',
+      '      </div>',
+      '      <div ref={ringRef} className="ring" />',
+      '    </div>',
+      '  );',
+      '}'
+    ].join('\n');
+  }
+
+  apply();
+</script>
+
+</body>
+</html>

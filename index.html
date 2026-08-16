@@ -1,1879 +1,547 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FFForma — Creative Practice</title>
-  <link rel="icon" type="image/png" href="assets/favicon.png">
-  <link rel="preconnect" href="https://cdn.vercel.com">
-  <link href="https://cdn.vercel.com/geist/font/geist-mono/style.css" rel="stylesheet">
+  <title>FFForma — Design Studio</title>
+  <meta name="description" content="A design studio born from AI. We shape brands, websites, and digital products.">
+  <meta name="theme-color" content="#0b0a09">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <style>
-    /* ─── Reset & Base ─── */
+    /* ─── Tokens (dark is the house default) ─── */
+    :root {
+      --bg: #0b0a09;
+      --bg-raised: #141311;
+      --fg: #e8e6e2;
+      --subtle: #a3a09b;
+      --subtler: #6f6c67;
+      --line: #262421;
+      --accent: #c8ff00;
+      --font-mono: 'Geist Mono', 'Courier New', monospace;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      color-scheme: dark;
+    }
+
+    [data-theme="light"] {
+      color-scheme: light;
+      --bg: #f2f0ec;
+      --bg-raised: #ffffff;
+      --fg: #1d1c1a;
+      --subtle: #5f5c56;
+      --subtler: #8a8781;
+      --line: #dcd9d3;
+      --accent: #5f7d00; /* the chartreuse, grounded for paper */
+    }
+
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* ─── Light Theme (default) ─── */
-    :root, [data-theme="light"] {
-      --bg-panel: #f5f3f0;
-      --bg-hero: #0a0a0f;
-      --text-primary: #1a1a1a;
-      --text-secondary: #6b6b6b;
-      --text-muted: #9a9a9a;
-      --accent: #c8ff00;
-      --border: #e0ddd8;
-      --btn-primary-bg: #1a1a1a;
-      --btn-primary-text: #f5f3f0;
-      --btn-primary-hover: #333;
-      --tag-hover-bg: rgba(0,0,0,0.03);
-      --shadow-color: rgba(0,0,0,0.15);
-      --hero-gradient-1: rgba(200, 255, 0, 0.03);
-      --hero-gradient-2: rgba(10, 10, 20, 0.8);
-      --hero-gradient-3: rgba(20, 20, 40, 0.6);
-      --hero-grid-line: rgba(255,255,255,0.3);
-      --hero-streak: rgba(255,255,255,0.4);
-      --hero-corner: rgba(255,255,255,0.4);
-      --particle-color: rgba(200, 255, 0, 0.3);
-      --glow-color: rgba(200, 255, 0, 0.06);
-      --toggle-bg: #e0ddd8;
-      --toggle-knob: #1a1a1a;
-      --font-mono: 'Geist Mono', monospace;
-    }
-
-    /* ─── Dark Theme ─── */
-    [data-theme="dark"] {
-      --bg-panel: #0e0e12;
-      --bg-hero: #f5f3f0;
-      --text-primary: #e8e6e2;
-      --text-secondary: #8a8a8a;
-      --text-muted: #5a5a5a;
-      --accent: #c8ff00;
-      --border: #2a2a30;
-      --btn-primary-bg: #e8e6e2;
-      --btn-primary-text: #0e0e12;
-      --btn-primary-hover: #d0cec8;
-      --tag-hover-bg: rgba(255,255,255,0.04);
-      --shadow-color: rgba(0,0,0,0.4);
-      --hero-gradient-1: rgba(200, 255, 0, 0.04);
-      --hero-gradient-2: rgba(240, 238, 232, 0.06);
-      --hero-gradient-3: rgba(240, 238, 232, 0.03);
-      --hero-grid-line: rgba(0,0,0,0.15);
-      --hero-streak: rgba(0,0,0,0.2);
-      --hero-corner: rgba(0,0,0,0.2);
-      --particle-color: rgba(200, 255, 0, 0.25);
-      --glow-color: rgba(200, 255, 0, 0.04);
-      --toggle-bg: #2a2a30;
-      --toggle-knob: #e8e6e2;
-    }
-
-    html { font-size: 15px; scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: var(--font-mono);
-      color: var(--text-primary);
-      background: var(--bg-panel);
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--fg);
+      background: var(--bg);
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* Selection stays chartreuse in both worlds */
+    ::selection {
+      background: #c8ff00;
+      color: #151510;
+    }
+
+    a {
+      color: var(--subtle);
+      text-decoration: underline dotted;
+      text-decoration-color: var(--subtler);
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+
+    a:hover { color: var(--accent); }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 1px solid var(--accent);
+      outline-offset: 3px;
     }
 
     /* ─── Layout ─── */
-    .site-layout {
-      display: grid;
-      grid-template-columns: minmax(380px, 500px) 1fr;
-      min-height: 100vh;
+    .container {
+      width: 90%;
+      max-width: 440px;
+      margin: 0 auto;
     }
 
-    /* ─── Left Panel ─── */
-    .panel-left {
-      padding: 2.5rem 2.5rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      z-index: 2;
-      background: var(--bg-panel);
-      overflow-y: auto;
-      max-height: 100vh;
-      scrollbar-width: none;
-    }
+    main { padding-top: 56px; }
 
-    .panel-left::-webkit-scrollbar { display: none; }
-
-    /* ─── Top Bar (Logo + Toggle) ─── */
+    /* ─── Top bar (language toggle + connect) ─── */
     .top-bar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      margin-bottom: 2rem;
-      opacity: 0;
-      animation: fadeSlideUp 0.6s ease forwards;
-    }
-
-    /* ─── Logo ─── */
-    .logo-mark {
-      height: 22px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .logo-mark img {
-      height: 100%;
-      width: auto;
-    }
-
-    /* Light theme: show black logo, hide white logo */
-    .logo-mark .logo-on-light { display: block; }
-    .logo-mark .logo-on-dark  { display: none; }
-    [data-theme="dark"] .logo-mark .logo-on-light { display: none; }
-    [data-theme="dark"] .logo-mark .logo-on-dark  { display: block; }
-
-    /* Light theme: dark hero bg → white logo. Dark theme: light hero bg → black logo */
-    .ff-logo-container .hero-on-dark  { display: block; }
-    .ff-logo-container .hero-on-light { display: none; }
-    [data-theme="dark"] .ff-logo-container .hero-on-dark  { display: none; }
-    [data-theme="dark"] .ff-logo-container .hero-on-light { display: block; }
-
-    /* ─── Theme Toggle ─── */
-    .theme-toggle {
-      position: relative;
-      width: 52px;
-      height: 28px;
-      border-radius: 100px;
-      background: var(--toggle-bg);
-      border: none;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .theme-toggle::after {
-      content: '';
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--toggle-knob);
-    }
-
-    [data-theme="dark"] .theme-toggle::after {
-      transform: translateX(24px);
-    }
-
-    .toggle-icons {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 6px;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .toggle-icon {
-      width: 14px;
-      height: 14px;
-      opacity: 0.5;
-    }
-
-    .toggle-icon--sun { opacity: 0.8; }
-    .toggle-icon--moon { opacity: 0.3; }
-
-    [data-theme="dark"] .toggle-icon--sun { opacity: 0.3; }
-    [data-theme="dark"] .toggle-icon--moon { opacity: 0.8; }
-
-    /* ─── Language Toggle ─── */
-    .top-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
+      align-items: baseline;
+      gap: 1em;
+      margin-bottom: 44px;
     }
 
     .lang-toggle {
       display: flex;
-      align-items: center;
-      gap: 0;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.04em;
+      align-items: baseline;
+      gap: 0.5em;
+      font-size: 0.72rem;
+      color: var(--subtler);
     }
 
+    .connect {
+      display: flex;
+      align-items: baseline;
+      gap: 0.9em;
+      font-size: 0.72rem;
+    }
+
+    .connect-label { color: var(--subtler); }
+
+    .connect a {
+      color: var(--subtle);
+      text-decoration: none;
+    }
+
+    .connect a:hover { color: var(--accent); }
+
     .lang-btn {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
       background: none;
       border: none;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--text-muted);
+      padding: 0;
       cursor: pointer;
-      padding: 0.2rem 0.3rem;
+      color: var(--subtler);
       transition: color 0.2s ease;
     }
 
-    .lang-btn:hover {
-      color: var(--text-primary);
-    }
+    .lang-btn:hover { color: var(--fg); }
 
-    .lang-btn.active {
-      color: var(--text-primary);
-      font-weight: 500;
-    }
+    .lang-btn.active { color: var(--fg); }
 
-    .lang-sep {
-      color: var(--text-muted);
-      font-size: 0.65rem;
-      user-select: none;
-    }
-
-    /* ─── Navigation ─── */
-    .nav-bar {
+    /* ─── Theme toggle: an empty circle by night, a filled one by day ─── */
+    .top-left {
       display: flex;
-      gap: 0;
-      margin-bottom: 2.5rem;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 4px;
-      width: 100%;
-      opacity: 0;
-      animation: fadeSlideUp 0.6s ease 0.1s forwards;
+      align-items: center;
+      gap: 1.6em;
     }
 
-    .nav-link {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 400;
-      flex: 1;
-      text-align: center;
-      padding: 0.4rem 0.8rem;
-      border-radius: 100px;
-      text-decoration: none;
-      color: var(--text-secondary);
-      transition: all 0.3s ease;
-      letter-spacing: 0.02em;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .nav-link:hover {
-      color: var(--text-primary);
-    }
-
-    .nav-link.active {
-      background: var(--btn-primary-bg);
-      color: var(--btn-primary-text);
-    }
-
-    /* ─── Content Sections ─── */
-    .panel-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 2.2rem;
-    }
-
-    .intro-text {
-      font-size: 0.88rem;
-      line-height: 1.7;
-      color: var(--text-primary);
-      max-width: 460px;
-      opacity: 0;
-      animation: fadeSlideUp 0.6s ease 0.2s forwards;
-    }
-
-    .intro-text strong {
-      font-weight: 500;
-    }
-
-    /* ─── Pricing ─── */
-    .pricing-block {
-      opacity: 0;
-      animation: fadeSlideUp 0.6s ease 0.3s forwards;
-    }
-
-    .section-label {
-      font-size: 0.7rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 0.8rem;
-    }
-
-    .pricing-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 0.35rem 0;
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.3s ease;
-    }
-
-    .pricing-row:hover {
-      border-bottom-color: var(--border);
-    }
-
-    .pricing-row .price {
-      font-weight: 500;
-      font-size: 0.82rem;
-      color: var(--text-primary);
-    }
-
-    /* ─── Services ─── */
-    .services-block {
-      opacity: 0;
-      animation: fadeSlideUp 0.6s ease 0.4s forwards;
-    }
-
-    .service-tag {
-      display: inline-block;
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      padding: 0.35rem 0.9rem;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      margin: 0 0.3rem 0.4rem 0;
-      transition: all 0.3s ease;
-      cursor: default;
-    }
-
-    .service-tag:not(.no-hover):hover {
-      border-color: var(--text-primary);
-      color: var(--text-primary);
-      background: var(--tag-hover-bg);
-    }
-
-    /* ─── CTA ─── */
-    .cta-block {
-      opacity: 0;
-      animation: fadeSlideUp 0.6s ease 0.5s forwards;
-    }
-
-    .cta-heading {
-      font-size: 1.1rem;
-      font-weight: 500;
-      margin-bottom: 0.3rem;
-      letter-spacing: -0.01em;
-    }
-
-    .cta-sub {
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      margin-bottom: 1rem;
-    }
-
-    .cta-buttons {
-      display: flex;
-      gap: 0.6rem;
-    }
-
-    .btn {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      font-weight: 500;
-      padding: 0.6rem 1.4rem;
-      border-radius: 100px;
+    .theme-toggle {
+      background: none;
       border: none;
+      padding: 0;
       cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .theme-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid var(--subtler);
+      background: transparent;
+      transition: background 0.25s ease, border-color 0.2s ease;
+    }
+
+    [data-theme="light"] .theme-dot {
+      background: var(--fg);
+      border-color: var(--fg);
+    }
+
+    .theme-toggle:hover .theme-dot { border-color: var(--accent); }
+
+    [data-theme="light"] .theme-toggle:hover .theme-dot {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* White logo turns ink on paper */
+    [data-theme="light"] .hero h1 img { filter: invert(1); }
+
+    /* ─── Hero ─── */
+    .hero { padding: 48px 0 90px; }
+
+    .hero h1 {
+      margin-bottom: 16px;
+      line-height: 0;
+    }
+
+    .hero h1 img {
+      height: 22px;
+      width: auto;
+    }
+
+    .hero p { color: var(--fg); }
+
+    .hero-statement {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.3rem;
+    }
+
+    .hero p + p { margin-top: 14px; }
+
+    /* ─── Q&A ─── */
+    .qa > div:not(:last-of-type) { margin-bottom: 40px; }
+
+    .question {
+      color: var(--subtler);
+      margin-bottom: 10px;
+    }
+
+    .answer { color: var(--fg); }
+
+    /* ─── Sections ─── */
+    section[data-block] { padding-top: 90px; }
+
+    h2 {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--subtler);
+      margin-bottom: 14px;
+    }
+
+    /* ─── CTA & experiment links ─── */
+    .arrow-icon {
+      width: 1em;
+      height: 1em;
+      flex-shrink: 0;
+    }
+
+    .cta-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 4px;
+      font-size: 0.95rem;
+      color: var(--fg);
     }
 
-    .btn-primary {
-      background: var(--btn-primary-bg);
-      color: var(--btn-primary-text);
-    }
+    .cta-link .arrow-icon { color: var(--subtler); }
 
-    .btn-primary:hover {
-      background: var(--btn-primary-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px var(--shadow-color);
-    }
+    .cta-link:hover,
+    .cta-link:hover .arrow-icon { color: var(--accent); }
 
-    .btn-secondary {
-      background: transparent;
-      color: var(--text-primary);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--text-primary);
-      transform: translateY(-1px);
-    }
-
-    /* ─── Clients ─── */
-    .clients-block {
-      opacity: 0;
-      animation: fadeSlideUp 0.6s ease 0.6s forwards;
-    }
-
-    .clients-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.15rem 2rem;
-    }
-
-    .client-name {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      padding: 0.25rem 0;
-    }
-
-    /* ─── Process Section ─── */
-    .process-content {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .process-step {
-      padding: 0.8rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .process-step:last-child {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .step-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.3rem;
-    }
-
-    .step-header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .step-number {
-      font-size: 0.63rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .step-title {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--text-primary);
-    }
-
-    .step-tag {
-      font-size: 0.63rem;
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 0.15rem 0.5rem;
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-    }
-
-    .step-desc {
-      font-size: 0.74rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      margin: 0 0 0.2rem 0;
-    }
-
-    .step-agent {
-      font-size: 0.74rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      line-height: 1.6;
-      margin: 0;
-    }
-
-    .tag-icon--agent { color: #e03c3c; }
-    .tag-icon--automated { color: #3c7ee0; }
-
-    .process-disclaimer {
-      font-size: 0.63rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      padding-top: 0.8rem;
-      margin-top: 0.4rem;
-    }
-
-    /* ─── Grupos Section ─── */
-    .grupos-content {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    /* ─── Talos Section ─── */
-    .talos-content {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .talos-status {
-      display: inline-block;
-      font-size: 0.6rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      padding: 0.15rem 0.5rem;
-      border-radius: 100px;
-      margin-left: 0.5rem;
-      vertical-align: middle;
-    }
-
-    .talos-header-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.8rem;
-    }
-
-    .talos-header-row .section-label {
-      margin-bottom: 0;
-    }
-
-    .talos-principles {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      max-width: 460px;
-      padding: 0.8rem 0 0.2rem;
-    }
-
-    .talos-principles li {
-      font-size: 0.72rem;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
-      line-height: 1.6;
-    }
-
-    .talos-principles li::before {
-      content: '→';
-      color: var(--text-muted);
-      flex-shrink: 0;
-      font-size: 0.65rem;
-      margin-top: 0.1rem;
-    }
-
-    .tiers-section {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      padding-top: 0.6rem;
-    }
-
-    .tier-card {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .tier-card--highlight {
-      border-color: var(--text-primary);
-    }
-
-    .tier-header {
-      padding: 1.1rem 1.3rem 1rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .tier-card--highlight .tier-header {
-      border-bottom-color: var(--text-primary);
-      background: var(--tag-hover-bg);
-    }
-
-    .tier-header-left {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-
-    .tier-name {
-      font-size: 0.65rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
-    }
-
-    .tier-badge {
-      display: inline-block;
-      font-size: 0.6rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--btn-primary-text);
-      background: var(--btn-primary-bg);
-      padding: 0.15rem 0.45rem;
-      border-radius: 100px;
-    }
-
-    .tier-price-block {
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .tier-price {
-      font-size: 1.35rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      line-height: 1.1;
-    }
-
-    .tier-price-period {
-      font-size: 0.62rem;
-      color: var(--text-muted);
-      margin-top: 0.2rem;
-    }
-
-    .tier-body {
-      padding: 1rem 1.3rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      flex: 1;
-    }
-
-    .tier-desc {
-      font-size: 0.74rem;
-      line-height: 1.65;
-      color: var(--text-secondary);
-    }
-
-    .tier-benefits {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-
-    .tier-benefits li {
-      font-size: 0.7rem;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
-      line-height: 1.5;
-    }
-
-    .tier-benefits li::before {
-      content: '→';
-      color: var(--text-muted);
-      flex-shrink: 0;
-      font-size: 0.65rem;
-      margin-top: 0.1rem;
-    }
-
-    .tier-footer {
-      padding: 0.8rem 1.3rem 1.2rem;
-    }
-
-    .tier-btn {
-      width: 100%;
-      text-align: center;
-      justify-content: center;
-    }
-
-    /* ─── About Section ─── */
-    .about-content {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      gap: 1.4rem;
-    }
-
-    .about-bio {
-      font-size: 0.82rem;
-      line-height: 1.75;
-      color: var(--text-primary);
-      max-width: 460px;
-    }
-
-    .about-bio strong {
-      font-weight: 500;
-    }
-
-    .about-bio .highlight {
-      color: var(--text-primary);
-      font-weight: 500;
-    }
-
-    .about-quote {
-      font-size: 0.78rem;
-      line-height: 1.7;
-      color: var(--text-secondary);
-      border-left: 2px solid var(--border);
-      padding-left: 1rem;
-      font-style: italic;
-      max-width: 460px;
-    }
-
-    .about-list-block {
-      max-width: 460px;
-    }
-
-    .about-list-row {
-      display: flex;
-      gap: 0.6rem;
-      padding: 0.3rem 0;
-      font-size: 0.74rem;
-      line-height: 1.6;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .about-list-row:last-child {
-      border-bottom: none;
-    }
-
-    .about-list-label {
-      color: var(--text-muted);
-      white-space: nowrap;
-      min-width: 90px;
-      flex-shrink: 0;
-    }
-
-    .about-list-value {
-      color: var(--text-secondary);
-    }
-
-    /* ─── Learning Section ─── */
-    .learning-content {
-      display: none;
-      flex: 1;
-      flex-direction: column;
-      gap: 1.4rem;
-    }
-
-    .learning-text {
-      font-size: 0.82rem;
-      line-height: 1.75;
-      color: var(--text-primary);
-      max-width: 460px;
-    }
-
-    .learning-text strong {
-      font-weight: 500;
-    }
-
-    .learning-topics {
-      max-width: 460px;
-    }
-
-    .learning-topic-row {
+    .exp-item {
       display: flex;
       align-items: baseline;
-      gap: 0.6rem;
-      padding: 0.4rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
+      gap: 0.7em;
     }
 
-    .learning-topic-row:last-child {
-      border-bottom: none;
+    .exp-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--fg);
+      text-decoration: none;
     }
 
-    .learning-topic-number {
-      font-size: 0.63rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-      flex-shrink: 0;
+    .exp-link .arrow-icon { color: var(--subtler); }
+
+    .exp-link:hover,
+    .exp-link:hover .arrow-icon { color: var(--accent); }
+
+    /* ─── Prose sections ─── */
+    .prose p + p { margin-top: 14px; }
+
+    /* ─── Plain lists ─── */
+    ul { list-style: none; }
+
+    li:not(:last-of-type) { margin-bottom: 8px; }
+
+    /* ─── Work (hover reveal) ─── */
+    .work-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.7em;
+      cursor: crosshair;
     }
 
-    .learning-audience {
-      max-width: 460px;
+    .work-item .work-name { color: var(--fg); }
+
+    .work-item:hover .work-name { color: var(--accent); }
+
+    .work-preview {
+      position: fixed;
+      z-index: 100;
+      pointer-events: none;
+      display: none;
+      width: min(720px, 50vw);
+      transform: translate(20px, -50%);
+    }
+
+    .work-preview.is-visible { display: block; }
+
+    .work-preview img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      border-radius: 4px;
+    }
+
+    /* Mobile: inline thumbnails instead of cursor preview */
+    .work-thumbs { display: none; }
+
+    @media (hover: none) {
+      .work-item { cursor: default; }
+
+      .work-thumbs {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        margin: 10px 0 4px;
+        scrollbar-width: none;
+      }
+
+      .work-thumbs::-webkit-scrollbar { display: none; }
+
+      .work-thumbs img {
+        height: 88px;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        border-radius: 3px;
+        flex-shrink: 0;
+      }
     }
 
     /* ─── Footer ─── */
-    .panel-footer {
-      margin-top: auto;
-      padding-top: 2rem;
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      opacity: 0;
-      animation: fadeSlideUp 0.6s ease 0.7s forwards;
+    footer {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--fg);
+      padding: 100px 0 24px;
     }
 
-    /* ─── Right Hero Panel ─── */
-    .panel-right {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      background: var(--bg-hero);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+    .footer-meta {
+      font-family: var(--font-mono);
+      font-style: normal;
+      font-size: 0.68rem;
+      color: var(--subtler);
+      margin-top: 40px;
+      padding-bottom: 26px;
     }
 
-    /* ─── Hero Canvas ─── */
-    .hero-canvas {
-      position: relative;
+    /* ─── ASCII easter egg ─── */
+    .ascii-egg {
+      width: 100%;
+      height: 240px;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .ascii-egg canvas {
+      display: block;
       width: 100%;
       height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
-    /* Gradient overlay */
-    .hero-canvas::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 50%, var(--hero-gradient-1) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 80% at 30% 70%, var(--hero-gradient-2) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 50% at 70% 30%, var(--hero-gradient-3) 0%, transparent 50%);
-      z-index: 1;
+    /* ─── Motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
     }
-
-    /* Grid lines */
-    .grid-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      opacity: 0.06;
-      background-image:
-        linear-gradient(var(--hero-grid-line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px);
-      background-size: 60px 60px;
-      animation: gridPulse 8s ease-in-out infinite;
-    }
-
-    /* Horizontal light streaks */
-    .streak {
-      position: absolute;
-      height: 1px;
-      background: linear-gradient(90deg, transparent 0%, var(--hero-streak) 50%, transparent 100%);
-      z-index: 2;
-      animation: streakGlow 6s ease-in-out infinite;
-    }
-
-    .streak-1 { top: 28%; width: 80%; left: 10%; animation-delay: 0s; }
-    .streak-2 { top: 35%; width: 60%; left: 25%; animation-delay: 1.5s; opacity: 0.6; }
-    .streak-3 { top: 62%; width: 90%; left: 5%; animation-delay: 3s; }
-    .streak-4 { top: 68%; width: 50%; left: 30%; animation-delay: 4.5s; opacity: 0.5; }
-    .streak-5 { top: 45%; width: 70%; left: 15%; animation-delay: 2s; opacity: 0.3; }
-
-    /* ─── Hero Showcase Images ─── */
-    .hero-showcase {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
-
-    .hero-showcase img {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      max-width: 85%;
-      max-height: 75%;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      border-radius: 6px;
-      opacity: 0;
-    }
-
-    .hero-showcase img.is-active {
-      opacity: 1;
-    }
-
-    /* ─── Hero Logo (image-based) ─── */
-    .ff-logo-container {
-      position: relative;
-      z-index: 3;
-      opacity: 0;
-      animation: logoReveal 1.2s ease 0.8s forwards;
-    }
-
-    .hero-logo {
-      height: 60px;
-      width: auto;
-    }
-
-    /* Logo glow pulse */
-    .ff-logo-container::after {
-      content: '';
-      position: absolute;
-      inset: -60px;
-      background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
-      z-index: -1;
-      animation: glowPulse 4s ease-in-out infinite;
-    }
-
-    /* Corner accents */
-    .corner-accent {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      z-index: 4;
-      opacity: 0.2;
-    }
-
-    .corner-accent--tl { top: 2rem; left: 2rem; border-top: 1px solid var(--hero-corner); border-left: 1px solid var(--hero-corner); }
-    .corner-accent--tr { top: 2rem; right: 2rem; border-top: 1px solid var(--hero-corner); border-right: 1px solid var(--hero-corner); }
-    .corner-accent--bl { bottom: 2rem; left: 2rem; border-bottom: 1px solid var(--hero-corner); border-left: 1px solid var(--hero-corner); }
-    .corner-accent--br { bottom: 2rem; right: 2rem; border-bottom: 1px solid var(--hero-corner); border-right: 1px solid var(--hero-corner); }
-
-    /* ─── Noise Texture ─── */
-    .noise {
-      position: absolute;
-      inset: 0;
-      z-index: 5;
-      opacity: 0.035;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 200px 200px;
-    }
-
-    /* ─── Floating particles ─── */
-    .particle {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: var(--particle-color);
-      border-radius: 50%;
-      z-index: 3;
-      animation: float 12s ease-in-out infinite;
-    }
-
-    .particle:nth-child(1) { top: 20%; left: 30%; animation-delay: 0s; }
-    .particle:nth-child(2) { top: 60%; left: 70%; animation-delay: 3s; }
-    .particle:nth-child(3) { top: 40%; left: 50%; animation-delay: 6s; }
-    .particle:nth-child(4) { top: 75%; left: 25%; animation-delay: 9s; }
-    .particle:nth-child(5) { top: 30%; left: 80%; animation-delay: 2s; width: 3px; height: 3px; }
-
-    /* ─── Animations ─── */
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-in > * {
-      opacity: 0;
-      animation: fadeSlideUp 0.5s ease forwards;
-    }
-
-    .animate-in > *:nth-child(1) { animation-delay: 0s; }
-    .animate-in > *:nth-child(2) { animation-delay: 0.08s; }
-    .animate-in > *:nth-child(3) { animation-delay: 0.16s; }
-    .animate-in > *:nth-child(4) { animation-delay: 0.24s; }
-    .animate-in > *:nth-child(5) { animation-delay: 0.32s; }
-    .animate-in > *:nth-child(6) { animation-delay: 0.4s; }
-    .animate-in > *:nth-child(7) { animation-delay: 0.48s; }
-    .animate-in > *:nth-child(8) { animation-delay: 0.56s; }
-
-    @keyframes logoReveal {
-      0% { opacity: 0; transform: scale(0.9); filter: blur(8px); }
-      100% { opacity: 1; transform: scale(1); filter: blur(0); }
-    }
-
-    @keyframes gridPulse {
-      0%, 100% { opacity: 0.06; }
-      50% { opacity: 0.1; }
-    }
-
-    @keyframes streakGlow {
-      0%, 100% { opacity: 0.15; }
-      50% { opacity: 0.5; }
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { opacity: 0.6; }
-      50% { opacity: 1; }
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0); opacity: 0.3; }
-      25% { transform: translate(10px, -20px); opacity: 0.6; }
-      50% { transform: translate(-5px, -10px); opacity: 0.3; }
-      75% { transform: translate(15px, 5px); opacity: 0.5; }
-    }
-
-    /* ─── Modal Overlay ─── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-    }
-
-    .modal-overlay.is-open {
-      display: flex;
-    }
-
-    .modal {
-      background: #fff;
-      border-radius: 12px;
-      padding: 2.5rem;
-      width: 100%;
-      max-width: 560px;
-      position: relative;
-      max-height: 90vh;
-      overflow-y: auto;
-      scrollbar-width: none;
-    }
-
-    .modal::-webkit-scrollbar { display: none; }
-
-    [data-theme="dark"] .modal {
-      background: #1a1a1f;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 1.2rem;
-      right: 1.2rem;
-      width: 32px;
-      height: 32px;
-      border: none;
-      background: none;
-      cursor: pointer;
-      color: var(--text-muted);
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 6px;
-      transition: background 0.2s ease;
-    }
-
-    .modal-close:hover {
-      background: rgba(0,0,0,0.05);
-    }
-
-    [data-theme="dark"] .modal-close:hover {
-      background: rgba(255,255,255,0.05);
-    }
-
-    .modal-title {
-      font-size: 1.15rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin-bottom: 0.3rem;
-      padding-right: 2rem;
-    }
-
-    .modal-subtitle {
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      margin-bottom: 1.8rem;
-    }
-
-    /* ─── Form ─── */
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin-bottom: 0.4rem;
-    }
-
-    .form-input,
-    .form-textarea {
-      width: 100%;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      padding: 0.7rem 0.9rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--bg-panel);
-      color: var(--text-primary);
-      outline: none;
-      transition: border-color 0.2s ease;
-    }
-
-    .form-input:focus,
-    .form-textarea:focus {
-      border-color: var(--text-secondary);
-    }
-
-    .form-input::placeholder,
-    .form-textarea::placeholder {
-      color: var(--text-muted);
-    }
-
-    .form-textarea {
-      resize: vertical;
-      min-height: 90px;
-    }
-
-    /* ─── Chip Select ─── */
-    .chip-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-
-    .chip {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      padding: 0.4rem 1rem;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      background: transparent;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .chip:hover {
-      border-color: var(--text-primary);
-      color: var(--text-primary);
-    }
-
-    .chip.selected {
-      background: var(--btn-primary-bg);
-      color: var(--btn-primary-text);
-      border-color: var(--btn-primary-bg);
-    }
-
-    /* ─── Submit ─── */
-    .form-submit {
-      width: 100%;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      font-weight: 500;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 100px;
-      background: var(--btn-primary-bg);
-      color: var(--btn-primary-text);
-      cursor: pointer;
-      margin-top: 0.6rem;
-      transition: background 0.2s ease;
-    }
-
-    .form-submit:hover {
-      background: var(--btn-primary-hover);
-    }
-
-    .form-footer {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.65rem;
-      color: var(--text-muted);
-    }
-
-    .form-footer a {
-      color: var(--text-muted);
-      text-decoration: underline;
-    }
-
-    /* ─── Success State ─── */
-    .form-success {
-      display: none;
-      text-align: center;
-      padding: 2rem 0;
-    }
-
-    .form-success.is-visible {
-      display: block;
-    }
-
-    .form-success-icon {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .form-success-title {
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin-bottom: 0.4rem;
-    }
-
-    .form-success-text {
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-    }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 900px) {
-      .site-layout {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-      }
-
-      .panel-right {
-        position: relative;
-        height: auto;
-        aspect-ratio: 4 / 3;
-        order: -1;
-        overflow: hidden;
-        margin: 0.5rem;
-        border-radius: 8px;
-      }
-
-      .hero-canvas {
-        position: absolute;
-        inset: 0;
-      }
-
-      .hero-canvas::before,
-      .grid-overlay,
-      .streak,
-      .particle,
-      .ff-logo-container,
-      .corner-accent,
-      .noise {
-        display: none;
-      }
-
-      .hero-showcase {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .hero-showcase img {
-        position: static;
-        transform: none;
-        max-width: 90%;
-        max-height: 90%;
-        width: auto;
-        height: auto;
-        object-fit: contain;
-        display: none;
-      }
-
-      .hero-showcase img.is-active {
-        display: block;
-        opacity: 1;
-      }
-
-      .panel-left {
-        max-height: none;
-        overflow: visible;
-        padding: 2rem 1.5rem 3rem;
-      }
-
-      .hero-logo {
-        height: 40px;
-      }
-
-      .corner-accent { display: none; }
-
-      .intro-text,
-      .about-bio,
-      .about-quote,
-      .learning-text {
-        max-width: 100%;
-      }
-
-      .about-list-block,
-      .learning-topics,
-      .learning-audience {
-        max-width: 100%;
-      }
-
-      .modal {
-        padding: 2rem 1.5rem;
-        margin: 1rem;
-      }
-    }
-
-    @media (max-width: 500px) {
-      .panel-right {
-        margin: 0.4rem;
-      }
-
-      .panel-left {
-        padding: 1.5rem 1.2rem 3rem;
-      }
-
-      .top-bar {
-        margin-bottom: 1.2rem;
-      }
-
-      .nav-bar {
-        width: 100%;
-        justify-content: center;
-        margin-bottom: 1.8rem;
-      }
-
-      .nav-link {
-        font-size: 0.72rem;
-        padding: 0.35rem 0.8rem;
-      }
-
-      .intro-text {
-        font-size: 0.82rem;
-      }
-
-      .panel-content {
-        gap: 1.8rem;
-      }
-
-      .cta-buttons {
-        flex-direction: column;
-      }
-
-      .btn {
-        justify-content: center;
-        width: 100%;
-      }
-
-      .pricing-row {
-        font-size: 0.78rem;
-      }
-
-      .pricing-row .price {
-        font-size: 0.78rem;
-      }
-
-      .clients-grid {
-        gap: 0.1rem 1.5rem;
-      }
-
-      /* Process mobile */
-      .step-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.3rem;
-      }
-
-      .step-desc {
-        font-size: 0.72rem;
-      }
-
-      .step-agent {
-        font-size: 0.72rem;
-      }
-
-      /* Learning mobile */
-      .learning-text {
-        max-width: 100%;
-        font-size: 0.78rem;
-      }
-
-      .learning-topics,
-      .learning-audience {
-        max-width: 100%;
-      }
-
-      .learning-topic-row {
-        font-size: 0.72rem;
-      }
-
-      /* About mobile */
-      .about-bio {
-        font-size: 0.78rem;
-      }
-
-      .about-quote {
-        font-size: 0.74rem;
-      }
-
-      .about-list-row {
-        font-size: 0.7rem;
-        flex-direction: column;
-        gap: 0.1rem;
-      }
-
-      .about-list-label {
-        min-width: auto;
-      }
-
-      .hero-logo {
-        height: 28px;
-      }
-
-      /* Modal mobile */
-      .modal {
-        padding: 1.5rem 1.2rem;
-        border-radius: 10px;
-      }
-
-      .modal-title {
-        font-size: 1rem;
-      }
-
-      .chip {
-        font-size: 0.7rem;
-        padding: 0.35rem 0.8rem;
-      }
-    }
-
-    body, body *, body *::before, body *::after { font-size: 12px !important; }
   </style>
 </head>
 <body>
 
-<div class="site-layout">
-
-  <!-- ═══ LEFT PANEL ═══ -->
-  <div class="panel-left">
-
-    <!-- Top Bar: Logo + Theme Toggle -->
+<div class="container">
+  <main>
     <div class="top-bar">
-      <div class="logo-mark">
-        <!-- Black logo for light background -->
-        <img src="assets/logo-dark.png" alt="FFForma" class="logo-on-light">
-        <!-- White logo for dark background -->
-        <img src="assets/logo-light.png" alt="FFForma" class="logo-on-dark">
+      <div class="top-left">
+        <div class="lang-toggle" role="group" aria-label="Language">
+          <button class="lang-btn" data-lang="en">EN</button>
+          <span aria-hidden="true">/</span>
+          <button class="lang-btn" data-lang="pt">PT</button>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
+          <span class="theme-dot"></span>
+        </button>
       </div>
-
-      <div class="top-controls">
-      <div class="lang-toggle">
-        <button class="lang-btn active" data-lang="en">EN</button>
-        <span class="lang-sep">/</span>
-        <button class="lang-btn" data-lang="pt">PT</button>
-      </div>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <span class="toggle-icons">
-          <svg class="toggle-icon toggle-icon--sun" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.93 4.93l1.41 1.41M13.66 13.66l1.41 1.41M4.93 15.07l1.41-1.41M13.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-          <svg class="toggle-icon toggle-icon--moon" viewBox="0 0 20 20" fill="none">
-            <path d="M17.29 13.35A8 8 0 0 1 6.65 2.71 8 8 0 1 0 17.29 13.35z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-      </button>
-      </div>
+      <nav class="connect" aria-label="Social links">
+        <span class="connect-label">Connect:</span>
+        <a href="https://x.com/pedrojulien3" target="_blank" rel="noopener" aria-label="X (Twitter)">X</a>
+        <a href="https://github.com/pducry" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+        <a href="https://instagram.com/pedro_julien" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+        <a href="https://www.linkedin.com/in/pedrojulien/" target="_blank" rel="noopener" aria-label="LinkedIn">LI</a>
+      </nav>
     </div>
 
-    <!-- Navigation -->
-    <nav class="nav-bar">
-      <a class="nav-link active" data-page="home" data-i18n="nav.home">Home</a>
-      <a class="nav-link" data-page="grupos" data-i18n="nav.grupos">FFF-Teach</a>
-      <a class="nav-link" data-page="talos" data-i18n="nav.talos">FFF-Talos</a>
-    </nav>
+    <!-- ═══ Hero ═══ -->
+    <section class="hero">
+      <h1><img src="img/logo-light.png" alt="FFForma"></h1>
+      <p class="hero-statement">Design, Engineered.</p>
+      <p><span data-i18n="hero.p1">A home for brands, interfaces, and creative experiments.</span> <span data-i18n="hero.by">By</span> <a href="https://www.pedrojulien.com" target="_blank" rel="noopener">Pedro Julien</a>.</p>
+      <p data-i18n="hero.p2">Ideas that don't fit neatly into categories. Some become identities. Some become websites. Some become digital products. Some remain experiments.</p>
+    </section>
 
-    <!-- Content -->
-    <div class="panel-content">
-
-      <p class="intro-text" data-i18n="home.intro1">
-        <strong>FFForma</strong> is a creative side project by <a href="https://www.pedrojulien.com" target="_blank" style="color:inherit;text-decoration:underline;">Pedro Julien</a> — a parallel design practice built on craft. Brands, visuals and interfaces made by hand, refined until every detail earns its place.
-      </p>
-      <p class="intro-text" data-i18n="home.intro2">
-        For agencies, studios, teams and independent creatives who care about how things are made — not just what ships. Work driven by taste, obsessive polishing, and the slow decisions that turn good enough into finished. No templates. No shortcuts. Craft.
-      </p>
-
-      <hr style="border:none;border-top:1px solid var(--border);margin:0;">
-      <div class="cta-block">
-        <div class="cta-sub" data-i18n="home.cta.sub">Want to collaborate or just have a call? Let's talk.</div>
-        <div class="cta-buttons">
-          <button class="btn btn-primary" data-cal-link="pedro-julien" data-cal-config='{"layout":"month_view"}' data-i18n="home.cta.call">Book a call</button>
-        </div>
+    <!-- ═══ Q&A ═══ -->
+    <section class="qa">
+      <div>
+        <p class="question" data-i18n="qa.1.q">What is FFForma?</p>
+        <p class="answer" data-i18n="qa.1.a">A place where ideas take form — brands, interfaces, digital products.</p>
       </div>
-
-      <!-- Clients -->
-      <div class="clients-block">
-        <div class="section-label" data-i18n="home.clients">Clients and Brands</div>
-        <div class="clients-grid">
-          <span class="client-name">Rise Ny & Partners</span>
-          <span class="client-name">MaverickFilms</span>
-          <span class="client-name">Landscape</span>
-          <span class="client-name">Porsche</span>
-          <span class="client-name">Oakley</span>
-          <span class="client-name">Red Bull</span>
-          <span class="client-name">Budweiser</span>
-          <span class="client-name">Whatsapp</span>
-          <span class="client-name">Azeite Star</span>
-          <span class="client-name">Globosat</span>
-        </div>
+      <div>
+        <p class="question" data-i18n="qa.2.q">Why three F's?</p>
+        <p class="answer">Form Follows Function.</p>
       </div>
-
-    </div>
-
-    <!-- Grupos de Monitoramento -->
-    <div class="grupos-content">
-
-      <div class="section-label" data-i18n="grupos.label">Monitoring Groups</div>
-      <p class="learning-text" data-i18n="grupos.intro">Small groups of designers and creatives working with AI as a creative collaborator. Each cycle covers design fundamentals, reference building, creative systems and frameworks for using AI without losing the human edge. The creative capacity stays yours. AI amplifies it.</p>
-
-      <div class="process-step">
-        <div class="step-header">
-          <div class="step-header-left">
-            <span class="step-number">01</span>
-            <span class="step-title" data-i18n="grupos.01.title">Look</span>
-          </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> References</span>
-        </div>
-        <p class="step-desc" data-i18n="grupos.01.desc">Build your creative eye before you touch any tool. References pulled, influences mapped, a visual point of view that's yours — not borrowed from the last thing you liked online.</p>
-        <p class="step-agent" data-i18n="grupos.01.agent">Gaze before gesture.</p>
+      <div>
+        <p class="question" data-i18n="qa.3.q">Is it a studio?</p>
+        <p class="answer" data-i18n="qa.3.a">Depends.</p>
       </div>
-
-      <div class="process-step">
-        <div class="step-header">
-          <div class="step-header-left">
-            <span class="step-number">02</span>
-            <span class="step-title" data-i18n="grupos.02.title">Make</span>
-          </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> Practice</span>
-        </div>
-        <p class="step-desc" data-i18n="grupos.02.desc">Design as daily discipline. Hands-on briefs worked by hand — logos, type, layout, identity. Volume builds instinct. The work teaches what theory doesn't.</p>
-        <p class="step-agent" data-i18n="grupos.02.agent">Learning by making, not watching.</p>
+      <div>
+        <p class="question" data-i18n="qa.4.q">Is it just one person?</p>
+        <p class="answer" data-i18n="qa.4.a">Mostly.</p>
       </div>
-
-      <div class="process-step">
-        <div class="step-header">
-          <div class="step-header-left">
-            <span class="step-number">03</span>
-            <span class="step-title" data-i18n="grupos.03.title">Systematize</span>
-          </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Systems</span>
-        </div>
-        <p class="step-desc" data-i18n="grupos.03.desc">Turn instincts into repeatable creative systems. Naming conventions, visual logic, decision frameworks. The point where taste becomes method.</p>
-        <p class="step-agent" data-i18n="grupos.03.agent">Instinct with structure.</p>
+      <div>
+        <p class="question" data-i18n="qa.5.q">What do you actually do?</p>
+        <p class="answer" data-i18n="qa.5.a">Design identities. Build websites and products. Create visual series. Experiment with AI. Make things for the internet.</p>
       </div>
-
-      <div class="process-step">
-        <div class="step-header">
-          <div class="step-header-left">
-            <span class="step-number">04</span>
-            <span class="step-title" data-i18n="grupos.04.title">Amplify</span>
-          </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> AI</span>
-        </div>
-        <p class="step-desc" data-i18n="grupos.04.desc">Where AI enters the process — as instrument, not author. Generate territory, accelerate exploration, stress-test ideas. Human vision sets the direction. AI expands the reach.</p>
-        <p class="step-agent" data-i18n="grupos.04.agent">Your creative capacity, wider.</p>
+      <div>
+        <p class="question" data-i18n="qa.6.q">Why so many forms?</p>
+        <p class="answer" data-i18n="qa.6.a">Because curiosity rarely follows a straight line.</p>
       </div>
-
-      <div class="process-step">
-        <div class="step-header">
-          <div class="step-header-left">
-            <span class="step-number">05</span>
-            <span class="step-title" data-i18n="grupos.05.title">Iterate</span>
-          </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> Critique</span>
-        </div>
-        <p class="step-desc" data-i18n="grupos.05.desc">Group critique in practice. Collaborative creative frameworks to give and receive feedback. Work evolves through honest collective pressure.</p>
-        <p class="step-agent" data-i18n="grupos.05.agent">Better work through honest eyes.</p>
+      <div>
+        <p class="question" data-i18n="qa.9.q">Do you take on clients?</p>
+        <p class="answer" data-i18n="qa.9.a">Selectively. When the work feels like a good fit.</p>
       </div>
+    </section>
 
-      <hr style="border:none;border-top:1px solid var(--border);margin:0;">
-
-      <div class="tiers-section">
-        <div class="section-label" data-i18n="tiers.label">Models</div>
-
-        <!-- Tier 1: Grupo + Prática -->
-        <div class="tier-card">
-          <div class="tier-header">
-            <div class="tier-header-left">
-              <div class="tier-name" data-i18n="tier1.name">Group + Accompanied Practice</div>
-            </div>
-            <div class="tier-price-block">
-              <div class="tier-price">R$ 1.000</div>
-              <div class="tier-price-period" data-i18n="tier1.period">per cycle · 6 weeks</div>
-            </div>
-          </div>
-          <div class="tier-body">
-            <p class="tier-desc" data-i18n="tier1.desc">Small groups of up to 8 designers. Live online sessions, hands-on briefs and group critique through the full 5-step methodology.</p>
-            <ul class="tier-benefits">
-              <li data-i18n="tier1.b1">Up to 8 designers per group</li>
-              <li data-i18n="tier1.b2">Live online sessions</li>
-              <li data-i18n="tier1.b3">Hands-on briefs with feedback</li>
-              <li data-i18n="tier1.b4">Group critique each cycle</li>
-              <li data-i18n="tier1.b5">6-week structured program</li>
-              <li data-i18n="tier1.b6">Group communication channel</li>
-            </ul>
-          </div>
-          <div class="tier-footer">
-            <button class="btn btn-primary tier-btn open-teach-form" data-tier="Grupo + Prática" data-i18n="tiers.cta">Quero me inscrever</button>
-          </div>
-        </div>
-
-        <!-- Tier 2: Individual 1:1 -->
-        <div class="tier-card tier-card--highlight">
-          <div class="tier-header">
-            <div class="tier-header-left">
-              <div class="tier-name" data-i18n="tier2.name">Individual · 1:1</div>
-            </div>
-            <div class="tier-price-block">
-              <div class="tier-price">R$ 2.500</div>
-              <div class="tier-price-period" data-i18n="tier2.period">per month</div>
-            </div>
-          </div>
-          <div class="tier-body">
-            <p class="tier-desc" data-i18n="tier2.desc">Direct access to Pedro Julien. Work reviewed with advanced criteria, program fully adapted to your creative practice and goals.</p>
-            <ul class="tier-benefits">
-              <li data-i18n="tier2.b1">Individual sessions with Pedro</li>
-              <li data-i18n="tier2.b2">Advanced critique on your work</li>
-              <li data-i18n="tier2.b3">Program adapted to your project</li>
-              <li data-i18n="tier2.b4">Monthly accompaniment</li>
-              <li data-i18n="tier2.b5">Priority access and response</li>
-              <li data-i18n="tier2.b6">Direct feedback on every piece</li>
-            </ul>
-          </div>
-          <div class="tier-footer">
-            <button class="btn btn-primary tier-btn open-teach-form" data-tier="Individual 1:1" data-i18n="tiers.cta">Quero me inscrever</button>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- FFF-Talos -->
-    <div class="talos-content">
-
-      <div class="talos-header-row">
-        <div class="section-label" data-i18n="talos.label">Brand Consistency Orchestrator</div>
-        <span class="talos-status" data-i18n="talos.status">In development</span>
-      </div>
-
-      <p class="learning-text" data-i18n="talos.intro1">A brand expresses itself across dozens or hundreds of pieces — posts, ads, videos, packaging, decks — made by different hands, under tight deadlines. The known result is brand drift: pieces that look fine alone but reveal inconsistency side by side. The brandbook exists to prevent this, yet it's a static document nobody consults at production speed.</p>
-
-      <p class="learning-text" style="margin-top:0.8rem;" data-i18n="talos.intro2"><strong>FFF-Talos</strong> turns the brandbook into a living verification system: an orchestration of AI agents, running in a harness with quality loops, that evaluates every piece against the brand — and proposes evolutions without breaking the identity. Named after Talos, the bronze automaton that patrolled Crete: a tireless guardian, now for brands.</p>
-
-      <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;">
-
-      <div class="section-label" data-i18n="talos.pipeline.label">The Pipeline · 5 Agents</div>
-
-      <div class="process-step">
-        <div class="step-header">
-          <div class="step-header-left">
-            <span class="step-number">01</span>
-            <span class="step-title" data-i18n="talos.01.title">Brandbook Guardian</span>
-          </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> <span data-i18n="talos.01.tag">Onboarding</span></span>
-        </div>
-        <p class="step-desc" data-i18n="talos.01.desc">Reads and internalizes each client's brandbook, converting it into a verifiable brand contract — the normative source every other agent answers to. Runs once per brand, revisited when the brandbook changes.</p>
-        <p class="step-agent" data-i18n="talos.01.agent">The brandbook, made executable.</p>
-      </div>
-
-      <div class="process-step">
-        <div class="step-header">
-          <div class="step-header-left">
-            <span class="step-number">02</span>
-            <span class="step-title" data-i18n="talos.02.title">Piece Categorizer</span>
-          </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> <span data-i18n="talos.02.tag">Ingestion</span></span>
-        </div>
-        <p class="step-desc" data-i18n="talos.02.desc">Every new piece produced enters the system, gets classified — format, channel, campaign, function — and is positioned within the brand's body of work.</p>
-        <p class="step-agent" data-i18n="talos.02.agent">Every piece knows its place.</p>
-      </div>
-
-      <div class="process-step">
-        <div class="step-header">
-          <div class="step-header-left">
-            <span class="step-number">03</span>
-            <span class="step-title" data-i18n="talos.03.title">Consistency Analyst</span>
-          </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> <span data-i18n="talos.03.tag">Analysis</span></span>
-        </div>
-        <p class="step-desc" data-i18n="talos.03.desc">Measures how much the piece converses with the brand contract and with the pieces that already exist. Does the new work belong to the same brand, side by side?</p>
-        <p class="step-agent" data-i18n="talos.03.agent">Consistency, measured — not guessed.</p>
-      </div>
-
-      <div class="process-step">
-        <div class="step-header">
-          <div class="step-header-left">
-            <span class="step-number">04</span>
-            <span class="step-title" data-i18n="talos.04.title">Creative Evaluator</span>
-          </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--automated">⚡</span> <span data-i18n="talos.04.tag">Evaluation</span></span>
-        </div>
-        <p class="step-desc" data-i18n="talos.04.desc">Score and grounded verdict, criterion by criterion, before the work reaches the client. Never a binary pass/fail: every evaluation cites the brandbook criterion behind it.</p>
-        <p class="step-agent" data-i18n="talos.04.agent">Every verdict comes with its why.</p>
-      </div>
-
-      <div class="process-step">
-        <div class="step-header">
-          <div class="step-header-left">
-            <span class="step-number">05</span>
-            <span class="step-title" data-i18n="talos.05.title">Evolution Proposer</span>
-          </div>
-          <span class="step-tag"><span class="tag-icon tag-icon--agent">⬡</span> <span data-i18n="talos.05.tag">Evolution</span></span>
-        </div>
-        <p class="step-desc" data-i18n="talos.05.desc">Proposes creative improvements, in text and in visual, that elevate the work without breaking the identity. The agency receives a consolidated report — and decides.</p>
-        <p class="step-agent" data-i18n="talos.05.agent">Better, still on brand.</p>
-      </div>
-
-      <ul class="talos-principles">
-        <li data-i18n="talos.p1">Not a piece generator that replaces the creative: it evaluates, points and proposes. Final decision is human.</li>
-        <li data-i18n="talos.p2">Agents never invent criteria — a gap in the brandbook is flagged, not filled by assumption.</li>
-        <li data-i18n="talos.p3">Quality loops with limits: work that doesn't meet the bar escalates to human review, never gets approved by fatigue.</li>
+    <!-- ═══ What I do ═══ -->
+    <section data-block>
+      <h2 data-i18n="shape.h">What I do</h2>
+      <ul>
+        <li>Branding Experiences</li>
+        <li>Product Design</li>
+        <li>Visuals</li>
+        <li>Design Systems</li>
       </ul>
+    </section>
 
-      <hr style="border:none;border-top:1px solid var(--border);margin:0.6rem 0 1.4rem;">
+    <!-- ═══ Selected work ═══ -->
+    <section data-block>
+      <h2 data-i18n="work.h">Selected work</h2>
+      <ul>
+        <li>
+          <div class="work-item" data-images="img/FFForma1.jpg,img/FFForma2.jpg,img/ff-56.jpg,img/ff-60.jpg,img/ff-id4.jpg,img/ff-id15.jpg,img/ff-id21.jpg">
+            <span class="work-name">FFForma</span>
+          </div>
+          <div class="work-thumbs">
+            <img src="img/FFForma1.jpg" alt="FFForma visual identity" loading="lazy">
+            <img src="img/FFForma2.jpg" alt="FFForma visual identity" loading="lazy">
+            <img src="img/ff-56.jpg" alt="FFForma visual identity" loading="lazy">
+            <img src="img/ff-id4.jpg" alt="FFForma visual identity" loading="lazy">
+          </div>
+        </li>
+        <li>
+          <div class="work-item" data-images="img/combustion1.jpg,img/combustion6.jpg,img/combustion9.jpg,img/combustion5.jpg,img/combustion2.jpg,img/combustion4.jpg">
+            <span class="work-name">Combustion</span>
+          </div>
+          <div class="work-thumbs">
+            <img src="img/combustion1.jpg" alt="Combustion visual series" loading="lazy">
+            <img src="img/combustion6.jpg" alt="Combustion visual series" loading="lazy">
+            <img src="img/combustion9.jpg" alt="Combustion visual series" loading="lazy">
+            <img src="img/combustion5.jpg" alt="Combustion visual series" loading="lazy">
+          </div>
+        </li>
+        <li>
+          <div class="work-item" data-images="img/pace-1.jpg,img/pace-2.jpg,img/pace-3.jpg,img/pace-4.jpg,img/pace-5.jpg,img/pace-6.jpg,img/pace-7.jpg,img/pace-8.jpg,img/pace-9.jpg,img/pace-10.jpg,img/pace-11.jpg,img/pace-12.jpg,img/pace-13.jpg,img/pace-14.jpg,img/pace-15.jpg">
+            <span class="work-name">Pace</span>
+          </div>
+          <div class="work-thumbs">
+            <img src="img/pace-1.jpg" alt="Pace brand identity" loading="lazy">
+            <img src="img/pace-2.jpg" alt="Pace brand identity" loading="lazy">
+            <img src="img/pace-9.jpg" alt="Pace brand identity" loading="lazy">
+            <img src="img/pace-12.jpg" alt="Pace brand identity" loading="lazy">
+          </div>
+        </li>
+        <li>
+          <div class="work-item" data-images="img/foracle-0.jpg,img/foracle-1.jpg,img/foracle-2.jpg,img/foracle-3.jpg,img/foracle-5.jpg,img/foracle-6.jpg,img/foracle-mobile.jpg">
+            <a class="exp-link" href="https://www.goforacle.com" target="_blank" rel="noopener">Foracle<svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          </div>
+          <div class="work-thumbs">
+            <img src="img/foracle-0.jpg" alt="Foracle" loading="lazy">
+            <img src="img/foracle-1.jpg" alt="Foracle" loading="lazy">
+            <img src="img/foracle-mobile.jpg" alt="Foracle" loading="lazy">
+          </div>
+        </li>
+      </ul>
+    </section>
 
-      <div class="cta-block" style="opacity:1;animation:none;">
-        <div class="cta-sub" data-i18n="talos.cta.sub">For agencies and studios that need brand quality at scale. Want to follow the project or talk about it?</div>
-        <div class="cta-buttons">
-          <button class="btn btn-primary" data-cal-link="pedro-julien" data-cal-config='{"layout":"month_view"}' data-i18n="talos.cta.call">Book a call</button>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Footer -->
-    <div class="panel-footer">
-      <span data-i18n="footer">&copy; 2026 FFForma. All rights reserved.</span>
-    </div>
-
-  </div>
-
-  <!-- ═══ RIGHT HERO PANEL ═══ -->
-  <div class="panel-right">
-    <div class="hero-canvas">
-
-      <!-- Showcase images -->
-      <div class="hero-showcase" id="heroShowcase">
-        <img src="Imagens/Frame5.png" alt="FFForma" class="is-active">
-        <img src="Imagens/Frame4.png" alt="FFForma">
-        <img src="Imagens/Frame3.png" alt="FFForma">
-        <img src="Imagens/Frame2.png" alt="FFForma">
-        <img src="Imagens/Frame1.png" alt="FFForma">
-        <img src="Imagens/Frame6.png" alt="FFForma">
-        <img src="Imagens/0001.png" alt="FFForma">
-        <img src="Imagens/Desktop HD Copy.jpg" alt="FFForma">
-        <img src="Imagens/FFForma10.png" alt="FFForma">
-        <img src="Imagens/FFForma12.png" alt="FFForma">
-        <img src="Imagens/FFForma18.png" alt="FFForma">
-        <img src="Imagens/FFForma22.png" alt="FFForma">
-        <img src="Imagens/FFForma22b.png" alt="FFForma">
-        <img src="Imagens/FFForma23.png" alt="FFForma">
-        <img src="Imagens/FFForma25.png" alt="FFForma">
-        <img src="Imagens/FFForma27.png" alt="FFForma">
-        <img src="Imagens/FFForma28.png" alt="FFForma">
-        <img src="Imagens/FFForma29.png" alt="FFForma">
-        <img src="Imagens/FFForma33.png" alt="FFForma">
-        <img src="Imagens/FFForma3b.png" alt="FFForma">
-        <img src="Imagens/FFForma51.png" alt="FFForma">
-        <img src="Imagens/FFForma54.png" alt="FFForma">
-        <img src="Imagens/FFForma55.png" alt="FFForma">
-        <img src="Imagens/FFForma56.png" alt="FFForma">
-        <img src="Imagens/FFForma60.png" alt="FFForma">
-        <img src="Imagens/FFForma7.png" alt="FFForma">
-        <img src="Imagens/Map.jpg" alt="FFForma">
-        <img src="Imagens/Mudethumb.png" alt="FFForma">
-        <img src="Imagens/combustion1.png" alt="FFForma">
-        <img src="Imagens/combustion6.png" alt="FFForma">
-      </div>
+    <!-- ═══ FFForma Experiments ═══ -->
+    <section data-block>
+      <h2>FFForma Experiments</h2>
+      <ul>
+        <li>
+          <div class="exp-item">
+            <a class="exp-link" href="experiments/circular-share-menu/">Circular Share Menu<svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          </div>
+        </li>
+        <li>
+          <div class="exp-item">
+            <a class="exp-link" href="experiments/text-highlight-on-scroll/">Text Highlight on Scroll<svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          </div>
+        </li>
+        <li>
+          <div class="exp-item">
+            <a class="exp-link" href="experiments/liquid-glass/">Liquid Glass<svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          </div>
+        </li>
+        <li>
+          <div class="exp-item">
+            <a class="exp-link" href="experiments/thinking-orb/">Thinking Orb<svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          </div>
+        </li>
+        <li>
+          <div class="exp-item">
+            <a class="exp-link" href="experiments/magnetic-avatar/">Magnetic Avatar<svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          </div>
+        </li>
+      </ul>
+    </section>
 
 
-    </div>
-  </div>
+    <!-- ═══ Mentorship ═══ -->
+    <section data-block class="prose">
+      <h2 data-i18n="ment.h">Mentorship</h2>
+      <p data-i18n="ment.p1">Twenty-plus years inside the technology and design industry. Ten-plus leading design teams. Early adopter of AI. Focused on digital products and brand experiences.</p>
+      <p data-i18n="ment.p2">I've helped startups, scale-ups and enterprises improve the way they design and build products — from in-house designers sharpening their craft to founders leveling up their design thinking.</p>
+      <p data-i18n="ment.p3">If that sounds like you, I'd love to chat.</p>
+    </section>
 
+    <!-- ═══ Contact ═══ -->
+    <section data-block>
+      <a href="#" data-cal-link="pedro-julien" data-cal-config='{"layout":"month_view"}' class="cta-link"><span data-i18n="cta.call">Book a call</span><svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+    </section>
+  </main>
+
+  <!-- ═══ Footer ═══ -->
+  <footer>
+    Form Follows Function.
+    <div class="footer-meta" data-i18n="footer.meta">&copy; 2026 FFForma Studio. All rights reserved.</div>
+  </footer>
 </div>
 
-<!-- ═══ PROJECT FORM MODAL ═══ -->
-<div class="modal-overlay" id="formModal">
-  <div class="modal">
-    <button class="modal-close" id="closeFormBtn">&times;</button>
-
-    <!-- Form -->
-    <form id="projectForm" action="https://formsubmit.co/ajax/pducry@gmail.com" method="POST">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_subject" value="New project inquiry — FFForma">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_next" value="#">
-      <input type="text" name="_honey" style="display:none">
-
-      <div class="modal-title" data-i18n="form.title">Let's give your idea a form.</div>
-      <div class="modal-subtitle" data-i18n="form.subtitle">Fill out the form and we'll get back to you within 24 hours.</div>
-
-      <div class="form-group">
-        <label class="form-label" data-i18n="form.name">Name</label>
-        <input class="form-input" type="text" name="name" data-i18n-placeholder="form.name.ph" placeholder="Your name" required>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" data-i18n="form.email">Email</label>
-        <input class="form-input" type="email" name="email" data-i18n-placeholder="form.email.ph" placeholder="Your email" required>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" data-i18n="form.message">Tell us about your project</label>
-        <textarea class="form-textarea" name="message" data-i18n-placeholder="form.message.ph" placeholder="What are you building and what do you need help with?"></textarea>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" data-i18n="form.type">Type of work</label>
-        <div class="chip-group" data-field="type">
-          <button type="button" class="chip" data-value="Branding">Branding</button>
-          <button type="button" class="chip" data-value="Website">Website</button>
-          <button type="button" class="chip" data-value="Visuals">Visuals</button>
-          <button type="button" class="chip" data-value="App">App</button>
-          <button type="button" class="chip" data-value="Motion">Motion</button>
-          <button type="button" class="chip" data-value="Art Direction">Art Direction</button>
-        </div>
-        <input type="hidden" name="type_of_work" id="typeOfWork">
-      </div>
-
-      <button type="submit" class="form-submit" data-i18n="form.send">Send message</button>
-
-      <div class="form-footer" data-i18n="form.footer">Terms of Service | Privacy Policy</div>
-    </form>
-
-    <!-- Success -->
-    <div class="form-success" id="formSuccess">
-      <div class="form-success-icon">&#10003;</div>
-      <div class="form-success-title" data-i18n="form.success.title">Message sent!</div>
-      <div class="form-success-text" data-i18n="form.success.text">We'll get back to you within 24 hours.</div>
-    </div>
-  </div>
+<!-- ═══ ASCII easter egg ═══ -->
+<div class="ascii-egg" id="asciiEgg" aria-hidden="true">
+  <canvas id="asciiCanvas"></canvas>
 </div>
 
-<!-- FFF-Teach Signup Modal -->
-<div class="modal-overlay" id="teachModal">
-  <div class="modal">
-    <button class="modal-close" id="closeTeachFormBtn">&times;</button>
-
-    <form id="teachForm" action="https://formsubmit.co/ajax/pducry@gmail.com" method="POST">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_subject" value="FFF-Teach — Nova inscrição">
-      <input type="hidden" name="modelo" id="teachTier" value="">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_next" value="#">
-      <input type="text" name="_honey" style="display:none">
-
-      <div class="modal-title" data-i18n="teach.form.title">FFF-Teach</div>
-      <div class="modal-subtitle" data-i18n="teach.form.subtitle">Leave your email and we'll reach out when the next cycle opens.</div>
-
-      <div class="form-group">
-        <label class="form-label" data-i18n="teach.form.email">Email</label>
-        <input class="form-input" type="email" name="email" data-i18n-placeholder="teach.form.email.ph" placeholder="Your email" required>
-      </div>
-
-      <button type="submit" class="form-submit" data-i18n="teach.form.send">Sign up</button>
-    </form>
-
-    <div class="form-success" id="teachFormSuccess">
-      <div class="form-success-icon">&#10003;</div>
-      <div class="form-success-title" data-i18n="teach.form.success.title">You're in!</div>
-      <div class="form-success-text" data-i18n="teach.form.success.text">We'll reach out when the next cycle opens.</div>
-    </div>
-  </div>
+<!-- Floating work preview -->
+<div class="work-preview" id="workPreview" aria-hidden="true">
+  <img src="" alt="">
 </div>
 
 <!-- Cal.com Embed -->
@@ -1909,486 +577,343 @@
 
 Cal("init", {origin: "https://cal.com"});
 Cal("ui", {
-  "styles": { "branding": { "brandColor": "#1a1a1a" } },
+  "styles": { "branding": { "brandColor": "#c8ff00" } },
   "hideEventTypeDetails": false,
   "layout": "month_view"
 });
 </script>
 
 <script>
-  // ─── i18n System ───
-  const translations = {
+  // ─── Language toggle (EN/PT) ───
+  const I18N = {
     en: {
-      'nav.home': 'Home',
-      'nav.grupos': 'FFF-Teach',
-      'nav.about': 'About',
-      'home.intro1': '<strong>FFForma</strong> is a creative side project by <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\">Pedro Julien</a> — a parallel design practice built on craft. Brands, visuals and interfaces made by hand, refined until every detail earns its place.',
-      'home.intro2': 'For agencies, studios, teams and independent creatives who care about how things are made — not just what ships. Work driven by taste, obsessive polishing, and the slow decisions that turn good enough into finished. No templates. No shortcuts. Craft.',
-      'home.investment': 'Investment',
-      'home.price.brand': 'from $4.000,00',
-      'home.price.web': 'from $5.000,00',
-      'home.price.brandweb': 'from $9.000,00',
-      'home.price.visuals': 'from $1.000,00',
-      'home.price.app': 'from $10.000,00',
-      'home.price.partner': 'from $4.500,00/m',
-      'home.cta.heading': 'Ready to give your idea a form?',
-      'home.cta.sub': 'Want to collaborate or just have a call? Let\\\'s talk.',
-      'home.cta.start': 'Start a project',
-      'home.cta.call': 'Book a call',
-      'home.clients': 'Clients and Brands',
-      'grupos.label': 'Monitoring Groups',
-      'grupos.intro': 'Small groups of designers and creatives working with AI as a creative collaborator. Each cycle covers design fundamentals, reference building, creative systems and frameworks for using AI without losing the human edge. The creative capacity stays yours. AI amplifies it.',
-      'grupos.01.title': 'Look',
-      'grupos.01.desc': 'Build your creative eye before you touch any tool. References pulled, influences mapped, a visual point of view that\'s yours — not borrowed from the last thing you liked online.',
-      'grupos.01.agent': 'Gaze before gesture.',
-      'grupos.02.title': 'Make',
-      'grupos.02.desc': 'Design as daily discipline. Hands-on briefs worked by hand — logos, type, layout, identity. Volume builds instinct. The work teaches what theory doesn\'t.',
-      'grupos.02.agent': 'Learning by making, not watching.',
-      'grupos.03.title': 'Systematize',
-      'grupos.03.desc': 'Turn instincts into repeatable creative systems. Naming conventions, visual logic, decision frameworks. The point where taste becomes method.',
-      'grupos.03.agent': 'Instinct with structure.',
-      'grupos.04.title': 'Amplify',
-      'grupos.04.desc': 'Where AI enters the process — as instrument, not author. Generate territory, accelerate exploration, stress-test ideas. Human vision sets the direction. AI expands the reach.',
-      'grupos.04.agent': 'Your creative capacity, wider.',
-      'grupos.05.title': 'Iterate',
-      'grupos.05.desc': 'Group critique in practice. Collaborative creative frameworks to give and receive feedback. Work evolves through honest collective pressure.',
-      'grupos.05.agent': 'Better work through honest eyes.',
-      'tiers.label': 'Models',
-      'tiers.cta': 'I want to sign up',
-      'tier1.name': 'Group + Accompanied Practice',
-      'tier1.period': 'per cycle · 6 weeks',
-      'tier1.desc': 'Small groups of up to 8 designers. Live online sessions, hands-on briefs and group critique through the full 5-step methodology.',
-      'tier1.b1': 'Up to 8 designers per group',
-      'tier1.b2': 'Live online sessions',
-      'tier1.b3': 'Hands-on briefs with feedback',
-      'tier1.b4': 'Group critique each cycle',
-      'tier1.b5': '6-week structured program',
-      'tier1.b6': 'Group communication channel',
-      'tier2.name': 'Individual · 1:1',
-      'tier2.badge': 'Premium',
-      'tier2.period': 'per month',
-      'tier2.desc': 'Direct access to Pedro Julien. Work reviewed with advanced criteria, program fully adapted to your creative practice and goals.',
-      'tier2.b1': 'Individual sessions with Pedro',
-      'tier2.b2': 'Advanced critique on your work',
-      'tier2.b3': 'Program adapted to your project',
-      'tier2.b4': 'Monthly accompaniment',
-      'tier2.b5': 'Priority access and response',
-      'tier2.b6': 'Direct feedback on every piece',
-      'nav.talos': 'FFF-Talos',
-      'talos.label': 'Brand Consistency Orchestrator',
-      'talos.status': 'In development',
-      'talos.intro1': 'A brand expresses itself across dozens or hundreds of pieces — posts, ads, videos, packaging, decks — made by different hands, under tight deadlines. The known result is brand drift: pieces that look fine alone but reveal inconsistency side by side. The brandbook exists to prevent this, yet it\'s a static document nobody consults at production speed.',
-      'talos.intro2': '<strong>FFF-Talos</strong> turns the brandbook into a living verification system: an orchestration of AI agents, running in a harness with quality loops, that evaluates every piece against the brand — and proposes evolutions without breaking the identity. Named after Talos, the bronze automaton that patrolled Crete: a tireless guardian, now for brands.',
-      'talos.pipeline.label': 'The Pipeline · 5 Agents',
-      'talos.01.title': 'Brandbook Guardian',
-      'talos.01.tag': 'Onboarding',
-      'talos.01.desc': 'Reads and internalizes each client\'s brandbook, converting it into a verifiable brand contract — the normative source every other agent answers to. Runs once per brand, revisited when the brandbook changes.',
-      'talos.01.agent': 'The brandbook, made executable.',
-      'talos.02.title': 'Piece Categorizer',
-      'talos.02.tag': 'Ingestion',
-      'talos.02.desc': 'Every new piece produced enters the system, gets classified — format, channel, campaign, function — and is positioned within the brand\'s body of work.',
-      'talos.02.agent': 'Every piece knows its place.',
-      'talos.03.title': 'Consistency Analyst',
-      'talos.03.tag': 'Analysis',
-      'talos.03.desc': 'Measures how much the piece converses with the brand contract and with the pieces that already exist. Does the new work belong to the same brand, side by side?',
-      'talos.03.agent': 'Consistency, measured — not guessed.',
-      'talos.04.title': 'Creative Evaluator',
-      'talos.04.tag': 'Evaluation',
-      'talos.04.desc': 'Score and grounded verdict, criterion by criterion, before the work reaches the client. Never a binary pass/fail: every evaluation cites the brandbook criterion behind it.',
-      'talos.04.agent': 'Every verdict comes with its why.',
-      'talos.05.title': 'Evolution Proposer',
-      'talos.05.tag': 'Evolution',
-      'talos.05.desc': 'Proposes creative improvements, in text and in visual, that elevate the work without breaking the identity. The agency receives a consolidated report — and decides.',
-      'talos.05.agent': 'Better, still on brand.',
-      'talos.p1': 'Not a piece generator that replaces the creative: it evaluates, points and proposes. Final decision is human.',
-      'talos.p2': 'Agents never invent criteria — a gap in the brandbook is flagged, not filled by assumption.',
-      'talos.p3': 'Quality loops with limits: work that doesn\'t meet the bar escalates to human review, never gets approved by fatigue.',
-      'talos.cta.sub': 'For agencies and studios that need brand quality at scale. Want to follow the project or talk about it?',
-      'talos.cta.call': 'Book a call',
-      'teach.form.title': 'FFF-Teach',
-      'teach.form.subtitle': 'Leave your email and we\'ll reach out when the next cycle opens.',
-      'teach.form.email': 'Email',
-      'teach.form.email.ph': 'Your email',
-      'teach.form.send': 'Sign up',
-      'teach.form.success.title': 'You\'re in!',
-      'teach.form.success.text': 'We\'ll reach out when the next cycle opens.',
-      'about.bio1': '<strong>FFForma</strong> is a creative side project by <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\"><strong>Pedro Julien</strong></a> — a practice exploring how far craft can push a piece. Brands, visuals and interfaces refined by hand, until every detail earns its place.',
-      'about.bio2': 'The impact is practical. Work that\'s obsessed over reads differently — it earns trust, it lasts, and the craft itself becomes the advantage.',
-      'footer': '&copy; 2026 FFForma. All rights reserved.',
-      'form.title': 'Let\'s give your idea a form.',
-      'form.subtitle': 'Fill out the form and we\'ll get back to you within 24 hours.',
-      'form.name': 'Name',
-      'form.name.ph': 'Your name',
-      'form.email': 'Email',
-      'form.email.ph': 'Your email',
-      'form.message': 'Tell us about your project',
-      'form.message.ph': 'What are you building and what do you need help with?',
-      'form.type': 'Type of work',
-      'form.send': 'Send message',
-      'form.footer': 'Terms of Service | Privacy Policy',
-      'form.success.title': 'Message sent!',
-      'form.success.text': 'We\'ll get back to you within 24 hours.',
+      'hero.p1': "A home for brands, interfaces, and creative experiments.",
+      'hero.by': "By",
+      'hero.p2': "Ideas that don't fit neatly into categories. Some become identities. Some become websites. Some become digital products. Some remain experiments.",
+      'qa.1.q': "What is FFForma?",
+      'qa.1.a': "A place where ideas take form — brands, interfaces, digital products.",
+      'qa.2.q': "Why three F's?",
+      'qa.3.q': "Is it a studio?",
+      'qa.3.a': "Depends.",
+      'qa.4.q': "Is it just one person?",
+      'qa.4.a': "Mostly.",
+      'qa.5.q': "What do you actually do?",
+      'qa.5.a': "Design identities. Build websites and products. Create visual series. Experiment with AI. Make things for the internet.",
+      'qa.6.q': "Why so many forms?",
+      'qa.6.a': "Because curiosity rarely follows a straight line.",
+      'qa.9.q': "Do you take on clients?",
+      'shape.h': "What I do",
+      'qa.9.a': "Selectively. When the work feels like a good fit.",
+      'cta.call': "Book a call",
+      'ment.h': "Mentorship",
+      'ment.p1': "Twenty-plus years inside the technology and design industry. Ten-plus leading design teams. Early adopter of AI. Focused on digital products and brand experiences.",
+      'ment.p2': "I've helped startups, scale-ups and enterprises improve the way they design and build products — from in-house designers sharpening their craft to founders leveling up their design thinking.",
+      'ment.p3': "If that sounds like you, I'd love to chat.",
+      'work.h': "Selected work",
+      'footer.meta': "© 2026 FFForma Studio. All rights reserved.",
+      'success.text': "We'll get back to you within 24 hours."
     },
     pt: {
-      'nav.home': 'Home',
-      'nav.grupos': 'FFF-Teach',
-      'nav.about': 'Sobre',
-      'home.intro1': '<strong>FFForma</strong> é um creative side project de <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\">Pedro Julien</a> — uma design practice paralela feita de craft. Marcas, visuais e interfaces feitos à mão, refinados até cada detalhe merecer seu lugar.',
-      'home.intro2': 'Para agências, estúdios, equipes e criativos independentes que se importam com como as coisas são feitas — não só com o que é entregue. Trabalho movido por gosto, polimento obsessivo e as decisões lentas que transformam bom o bastante em finalizado. Sem templates. Sem atalhos. Craft.',
-      'home.investment': 'Investimento',
-      'home.price.brand': 'a partir de R$20.000',
-      'home.price.web': 'a partir de R$25.000',
-      'home.price.brandweb': 'a partir de R$45.000',
-      'home.price.visuals': 'a partir de R$5.000',
-      'home.price.app': 'a partir de R$50.000',
-      'home.price.partner': 'a partir de R$22.000/m',
-      'home.cta.heading': 'Pronto para dar forma à sua ideia?',
-      'home.cta.sub': 'Quer colaborar ou apenas bater um papo? Vamos conversar.',
-      'home.cta.start': 'Iniciar projeto',
-      'home.cta.call': 'Agendar call',
-      'home.clients': 'Clientes e Marcas',
-      'grupos.label': 'Grupos de Monitoramento',
-      'grupos.intro': 'Grupos pequenos de designers e criativos que trabalham com AI como colaboradora criativa. Cada ciclo cobre fundamentos de design, construção de referências, sistemas criativos e frameworks para usar AI sem perder a voz humana. A capacidade criativa é sua. A AI amplifica.',
-      'grupos.01.title': 'Olhar',
-      'grupos.01.desc': 'Construa seu olhar criativo antes de tocar em qualquer ferramenta. Referências reunidas, influências mapeadas, um ponto de vista visual que é seu — não emprestado da última coisa que você curtiu online.',
-      'grupos.01.agent': 'Olhar antes do gesto.',
-      'grupos.02.title': 'Fazer',
-      'grupos.02.desc': 'Design como disciplina diária. Briefs práticos trabalhados à mão — logos, tipografia, layout, identidade. Volume constrói instinto. O trabalho ensina o que a teoria não ensina.',
-      'grupos.02.agent': 'Aprender fazendo, não assistindo.',
-      'grupos.03.title': 'Sistematizar',
-      'grupos.03.desc': 'Transforme instintos em sistemas criativos repetíveis. Convenções de naming, lógica visual, frameworks de decisão. O ponto onde o gosto vira método.',
-      'grupos.03.agent': 'Instinto com estrutura.',
-      'grupos.04.title': 'Ampliar',
-      'grupos.04.desc': 'Onde a AI entra no processo — como instrumento, não como autora. Gere território, acelere exploração, teste ideias sob pressão. A visão humana define a direção. A AI expande o alcance.',
-      'grupos.04.agent': 'Sua capacidade criativa, mais ampla.',
-      'grupos.05.title': 'Iterar',
-      'grupos.05.desc': 'Crítica em grupo na prática. Frameworks criativos colaborativos para dar e receber feedback. O trabalho evolui pela pressão coletiva honesta.',
-      'grupos.05.agent': 'Trabalho melhor por olhos honestos.',
-      'tiers.label': 'Modelos',
-      'tiers.cta': 'Quero me inscrever',
-      'tier1.name': 'Grupo + Prática Acompanhada',
-      'tier1.period': 'por ciclo · 6 semanas',
-      'tier1.desc': 'Grupos de até 8 designers. Sessões online ao vivo, briefs práticos e critique em grupo ao longo da metodologia completa de 5 passos.',
-      'tier1.b1': 'Até 8 designers por grupo',
-      'tier1.b2': 'Sessões online ao vivo',
-      'tier1.b3': 'Briefs práticos com feedback',
-      'tier1.b4': 'Critique em grupo a cada ciclo',
-      'tier1.b5': 'Programa estruturado de 6 semanas',
-      'tier1.b6': 'Canal de comunicação do grupo',
-      'tier2.name': 'Individual · 1:1',
-      'tier2.badge': 'Premium',
-      'tier2.period': 'por mês',
-      'tier2.desc': 'Acesso direto ao Pedro Julien. Trabalho revisado com critério avançado, programa adaptado à sua prática criativa e objetivos.',
-      'tier2.b1': 'Sessões individuais com Pedro',
-      'tier2.b2': 'Critério avançado no seu trabalho',
-      'tier2.b3': 'Programa adaptado ao seu projeto',
-      'tier2.b4': 'Acompanhamento mensal',
-      'tier2.b5': 'Acesso e resposta prioritários',
-      'tier2.b6': 'Feedback direto em cada peça',
-      'nav.talos': 'FFF-Talos',
-      'talos.label': 'Orquestrador de Consistência de Marca',
-      'talos.status': 'Em desenvolvimento',
-      'talos.intro1': 'Uma marca se expressa em dezenas ou centenas de peças — posts, anúncios, vídeos, embalagens, apresentações — feitas por mãos diferentes, sob prazos apertados. O resultado conhecido é o drift de marca: peças que parecem boas sozinhas, mas que lado a lado revelam inconsistência. O brandbook existe para evitar isso — mas é um documento estático que ninguém consulta na velocidade da produção.',
-      'talos.intro2': 'O <strong>FFF-Talos</strong> transforma o brandbook em um sistema vivo de verificação: uma orquestração de agentes de IA, rodando em harness com loops de qualidade, que avalia cada peça contra a marca — e propõe evoluções sem romper a identidade. O nome vem de Talos, o autômato de bronze que patrulhava Creta: um guardião incansável, agora para marcas.',
-      'talos.pipeline.label': 'O Pipeline · 5 Agentes',
-      'talos.01.title': 'Guardião do Brandbook',
-      'talos.01.tag': 'Onboarding',
-      'talos.01.desc': 'Lê e internaliza o brandbook de cada cliente, convertendo-o em um contrato de marca verificável — a fonte normativa que rege os demais agentes. Roda uma vez por marca, revisitado quando o brandbook muda.',
-      'talos.01.agent': 'O brandbook, executável.',
-      'talos.02.title': 'Categorizador de Peças',
-      'talos.02.tag': 'Ingestão',
-      'talos.02.desc': 'Cada peça nova produzida entra no sistema, é classificada — formato, canal, campanha, função — e posicionada no conjunto da marca.',
-      'talos.02.agent': 'Cada peça sabe seu lugar.',
-      'talos.03.title': 'Analista de Consistência',
-      'talos.03.tag': 'Análise',
-      'talos.03.desc': 'Mede o quanto a peça conversa com o contrato de marca e com as peças que já existem. O trabalho novo pertence à mesma marca, lado a lado?',
-      'talos.03.agent': 'Consistência medida — não chutada.',
-      'talos.04.title': 'Avaliador de Criativos',
-      'talos.04.tag': 'Avaliação',
-      'talos.04.desc': 'Score e parecer fundamentado, critério a critério, antes do trabalho chegar ao cliente. Nunca um aprovado/reprovado binário: toda avaliação cita o critério do brandbook que a fundamenta.',
-      'talos.04.agent': 'Todo parecer vem com o porquê.',
-      'talos.05.title': 'Propositor de Evoluções',
-      'talos.05.tag': 'Evolução',
-      'talos.05.desc': 'Propõe melhorias criativas, em texto e em visual, que elevam o trabalho sem romper a identidade. A agência recebe um parecer consolidado — e decide.',
-      'talos.05.agent': 'Melhor, ainda dentro da marca.',
-      'talos.p1': 'Não é um gerador de peças que substitui o criativo: ele avalia, aponta e propõe. A decisão final é humana.',
-      'talos.p2': 'Agentes não inventam critério — lacuna no brandbook é sinalizada, não preenchida por suposição.',
-      'talos.p3': 'Loops de qualidade com limite: trabalho abaixo do padrão escala para revisão humana, nunca é aprovado por cansaço.',
-      'talos.cta.sub': 'Para agências e estúdios que precisam de qualidade de marca em escala. Quer acompanhar o projeto ou conversar sobre ele?',
-      'talos.cta.call': 'Agendar call',
-      'teach.form.title': 'FFF-Teach',
-      'teach.form.subtitle': 'Deixe seu email e avisamos quando o próximo ciclo abrir.',
-      'teach.form.email': 'Email',
-      'teach.form.email.ph': 'Seu email',
-      'teach.form.send': 'Inscrever',
-      'teach.form.success.title': 'Inscrição feita!',
-      'teach.form.success.text': 'Avisamos quando o próximo ciclo abrir.',
-      'about.bio1': '<strong>FFForma</strong> é um creative side project de <a href=\"https://www.pedrojulien.com\" target=\"_blank\" style=\"color:inherit;text-decoration:underline;\"><strong>Pedro Julien</strong></a> — uma prática que explora até onde o craft pode levar uma peça. Marcas, visuais e interfaces refinados à mão, até cada detalhe merecer seu lugar.',
-      'about.bio2': 'O impacto é prático. Um trabalho obsessivamente cuidado se lê diferente — gera confiança, dura, e o próprio craft vira a vantagem.',
-      'footer': '&copy; 2026 FFForma. Todos os direitos reservados.',
-      'form.title': 'Vamos dar forma à sua ideia.',
-      'form.subtitle': 'Preencha o formulário e retornamos em até 24 horas.',
-      'form.name': 'Nome',
-      'form.name.ph': 'Seu nome',
-      'form.email': 'Email',
-      'form.email.ph': 'Seu email',
-      'form.message': 'Conte sobre seu projeto',
-      'form.message.ph': 'O que você está construindo e como podemos ajudar?',
-      'form.type': 'Tipo de trabalho',
-      'form.send': 'Enviar mensagem',
-      'form.footer': 'Termos de Uso | Política de Privacidade',
-      'form.success.title': 'Mensagem enviada!',
-      'form.success.text': 'Retornamos em até 24 horas.',
+      'hero.p1': "Uma casa para marcas, interfaces e experimentos criativos.",
+      'hero.by': "Por",
+      'hero.p2': "Ideias que não cabem direito em categorias. Algumas viram identidades. Algumas viram sites. Algumas viram produtos digitais. Algumas permanecem experimentos.",
+      'qa.1.q': "O que é a FFForma?",
+      'qa.1.a': "Um lugar onde ideias ganham forma — marcas, interfaces, produtos digitais.",
+      'qa.2.q': "Por que três F's?",
+      'qa.3.q': "É um estúdio?",
+      'qa.3.a': "Depende.",
+      'qa.4.q': "É uma pessoa só?",
+      'qa.4.a': "Quase sempre.",
+      'qa.5.q': "O que você faz, afinal?",
+      'qa.5.a': "Desenho identidades. Construo sites e produtos. Crio séries visuais. Experimento com AI. Faço coisas para a internet.",
+      'qa.6.q': "Por que tantas formas?",
+      'qa.6.a': "Porque a curiosidade raramente anda em linha reta.",
+      'qa.9.q': "Você atende clientes?",
+      'shape.h': "O que eu faço",
+      'qa.9.a': "Seletivamente. Quando o trabalho tem o encaixe certo.",
+      'cta.call': "Agendar uma call",
+      'ment.h': "Mentoria",
+      'ment.p1': "Mais de vinte anos dentro da indústria de tecnologia e design. Mais de dez liderando times de design. Early adopter de AI. Foco em produtos digitais e experiências de marca.",
+      'ment.p2': "Já ajudei startups, scale-ups e grandes empresas a melhorar a forma como desenham e constroem produtos — de designers internos apurando o ofício a founders elevando seu design thinking.",
+      'ment.p3': "Se isso soa como você, adoraria conversar.",
+      'work.h': "Trabalhos selecionados",
+      'footer.meta': "© 2026 FFForma Studio. Todos os direitos reservados.",
+      'success.text': "Retornamos em até 24 horas."
     }
   };
 
-  let currentLang = localStorage.getItem('ffforma-lang') || 'en';
+  // localStorage can be unavailable in sandboxed previews
+  const langStore = {
+    get() { try { return localStorage.getItem('ffforma-lang'); } catch (_) { return null; } },
+    set(v) { try { localStorage.setItem('ffforma-lang', v); } catch (_) {} }
+  };
+
+  let currentLang = langStore.get()
+    || ((navigator.language || '').toLowerCase().startsWith('pt') ? 'pt' : 'en');
 
   function applyLang(lang) {
     currentLang = lang;
-    localStorage.setItem('ffforma-lang', lang);
-    document.documentElement.setAttribute('lang', lang);
+    const dict = I18N[lang];
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const t = dict[el.dataset.i18n];
+      if (t !== undefined) el.textContent = t;
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const t = dict[el.dataset.i18nPh];
+      if (t !== undefined) el.placeholder = t;
+    });
     document.querySelectorAll('.lang-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.lang === lang);
     });
-    const t = translations[lang];
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (t[key]) el.innerHTML = t[key];
-    });
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-      const key = el.getAttribute('data-i18n-placeholder');
-      if (t[key]) el.placeholder = t[key];
-    });
+    langStore.set(lang);
   }
 
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => applyLang(btn.dataset.lang));
   });
 
-  // Apply saved language on load
-  if (currentLang !== 'en') applyLang(currentLang);
+  applyLang(currentLang);
 
-  // Theme toggle — instant, no transitions
-  const toggle = document.getElementById('themeToggle');
-  const html = document.documentElement;
+  // ─── Theme toggle (dark is home; light is a visit) ───
+  const themeStore = {
+    get() { try { return localStorage.getItem('ffforma-theme'); } catch (_) { return null; } },
+    set(v) { try { localStorage.setItem('ffforma-theme', v); } catch (_) {} }
+  };
 
-  // Check saved preference or system preference
-  const saved = localStorage.getItem('ffforma-theme');
-  if (saved) {
-    html.setAttribute('data-theme', saved);
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    html.setAttribute('data-theme', 'dark');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.documentElement.dataset.theme = 'light';
+    } else {
+      delete document.documentElement.dataset.theme;
+    }
+    if (themeMeta) themeMeta.content = theme === 'light' ? '#f2f0ec' : '#0b0a09';
+    document.getElementById('themeToggle').setAttribute('aria-label',
+      theme === 'light' ? 'Toggle dark mode' : 'Toggle light mode');
+    themeStore.set(theme);
   }
 
-  toggle.addEventListener('click', () => {
-    const current = html.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('ffforma-theme', next);
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    applyTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
   });
 
-  // Listen for system theme changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!localStorage.getItem('ffforma-theme')) {
-      html.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+  applyTheme(themeStore.get() === 'light' ? 'light' : 'dark');
+
+  // ─── ASCII easter egg: the word emerges from the noise ───
+  (function () {
+    const egg = document.getElementById('asciiEgg');
+    const canvas = document.getElementById('asciiCanvas');
+    const ctx = canvas.getContext('2d');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const CELL_W = 11, CELL_H = 15;
+    const CHARS = ' ··::;=+*#%@';
+    const RAMP_DARK = ['#181714', '#242220', '#33312d', '#45433f', '#5a5751', '#6f6c67', '#8a8781', '#a3a09b', '#c0bdb7', '#d6d3cd', '#e8e6e2'];
+    const RAMP_LIGHT = ['#e2dfd9', '#d3d0ca', '#c0bdb7', '#a8a5a0', '#8a8781', '#6f6c67', '#55524d', '#45433f', '#33312d', '#242220', '#181714'];
+    const ramp = () => document.documentElement.dataset.theme === 'light' ? RAMP_LIGHT : RAMP_DARK;
+
+    let cols = 0, rows = 0, mask = [], phase = [], heat = [];
+    const cursor = { x: -9999, y: -9999 };
+    const pulses = [];
+    let lastPointer = 0;
+
+    function build() {
+      const w = egg.clientWidth, h = egg.clientHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.font = '700 13px "Geist Mono", monospace';
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+
+      cols = Math.ceil(w / CELL_W);
+      rows = Math.ceil(h / CELL_H);
+
+      // Word mask: draw FFForma offscreen and sample it into the grid
+      const off = document.createElement('canvas');
+      off.width = cols;
+      off.height = rows;
+      const octx = off.getContext('2d');
+      octx.fillStyle = '#fff';
+      let size = rows * 0.62;
+      octx.font = '700 ' + size + 'px "Geist Mono", monospace';
+      while (octx.measureText('FFForma').width > cols * 0.84 && size > 4) {
+        size -= 1;
+        octx.font = '700 ' + size + 'px "Geist Mono", monospace';
+      }
+      octx.textAlign = 'center';
+      octx.textBaseline = 'middle';
+      octx.fillText('FFForma', cols / 2, rows / 2 + rows * 0.03);
+      const px = octx.getImageData(0, 0, cols, rows).data;
+
+      mask = new Float32Array(cols * rows);
+      phase = new Float32Array(cols * rows);
+      heat = new Float32Array(cols * rows);
+      for (let i = 0; i < cols * rows; i++) {
+        mask[i] = px[i * 4 + 3] / 255;
+        phase[i] = Math.random() * Math.PI * 2;
+      }
     }
-  });
 
-  // ─── Project Form Modal ───
-  const formModal = document.getElementById('formModal');
-  const openFormBtn = document.getElementById('openFormBtn') || null;
-  const closeFormBtn = document.getElementById('closeFormBtn');
-  const projectForm = document.getElementById('projectForm');
-  const formSuccess = document.getElementById('formSuccess');
+    function draw(t) {
+      const w = egg.clientWidth, h = egg.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+      const time = t * 0.001;
 
-  if (openFormBtn) {
-    openFormBtn.addEventListener('click', () => {
-      formModal.classList.add('is-open');
+      // A quiet beam sweeps the field when the pointer has been away a while
+      const idle = t - lastPointer > 3500;
+      const beamX = ((time * 60) % (w + 600)) - 300;
+
+      const rect = canvas.getBoundingClientRect();
+      const cx = cursor.x - rect.left;
+      const cy = cursor.y - rect.top;
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const i = r * cols + c;
+          const x = c * CELL_W + CELL_W / 2;
+          const y = r * CELL_H + CELL_H / 2;
+
+          // Cursor lens feeds the heat map; heat decays slowly
+          const dx = x - cx, dy = y - cy;
+          const d2 = dx * dx + dy * dy;
+          let add = Math.exp(-d2 / 14000);
+          if (idle) {
+            const bd = Math.abs(x - beamX);
+            add = Math.max(add, Math.exp(-(bd * bd) / 26000) * 0.55);
+          }
+          for (let p = 0; p < pulses.length; p++) {
+            const pu = pulses[p];
+            const pr = (time - pu.t0) * 320;
+            const pd = Math.abs(Math.hypot(x - pu.x, y - pu.y) - pr);
+            add = Math.max(add, Math.exp(-(pd * pd) / 3200) * Math.max(0, 1 - (time - pu.t0) / 1.6));
+          }
+          heat[i] = Math.max(heat[i] * 0.94, Math.min(1, add));
+
+          // Ambient shimmer + the ghost of the word + revealed detail
+          const flicker = 0.5 + 0.5 * Math.sin(time * 1.4 + phase[i]);
+          const ambient = 0.05 + flicker * 0.06;
+          const ghost = mask[i] * (0.16 + flicker * 0.05);
+          const reveal = heat[i] * (0.18 + mask[i] * 0.82);
+          const I = Math.min(1, ambient + ghost + reveal);
+
+          const ci = Math.min(CHARS.length - 1, Math.floor(I * (CHARS.length - 0.01)));
+          if (ci === 0) continue;
+          const g = ramp();
+          ctx.fillStyle = g[Math.min(g.length - 1, Math.floor(I * g.length))];
+          ctx.fillText(CHARS[ci], x, y);
+        }
+      }
+
+      for (let p = pulses.length - 1; p >= 0; p--) {
+        if (time - pulses[p].t0 > 1.8) pulses.splice(p, 1);
+      }
+    }
+
+    function staticDraw() {
+      // Reduced motion: the word, plainly, no shimmer
+      const w = egg.clientWidth, h = egg.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const i = r * cols + c;
+          const I = mask[i] * 0.75;
+          const ci = Math.floor(I * (CHARS.length - 0.01));
+          if (ci === 0) continue;
+          const g = ramp();
+          ctx.fillStyle = g[Math.min(g.length - 1, Math.floor(I * g.length))];
+          ctx.fillText(CHARS[ci], c * CELL_W + CELL_W / 2, r * CELL_H + CELL_H / 2);
+        }
+      }
+    }
+
+    let running = false, rafId = null;
+
+    function loop(t) {
+      draw(t);
+      if (running) rafId = requestAnimationFrame(loop);
+    }
+
+    // Animate only while on screen
+    const io = new IntersectionObserver((entries) => {
+      const visible = entries[0].isIntersecting;
+      if (reducedMotion) { if (visible) staticDraw(); return; }
+      if (visible && !running) { running = true; rafId = requestAnimationFrame(loop); }
+      if (!visible && running) { running = false; cancelAnimationFrame(rafId); }
     });
-  }
 
-  closeFormBtn.addEventListener('click', () => {
-    formModal.classList.remove('is-open');
-  });
+    egg.addEventListener('pointermove', (e) => {
+      cursor.x = e.clientX;
+      cursor.y = e.clientY;
+      lastPointer = performance.now();
+    });
 
-  formModal.addEventListener('click', (e) => {
-    if (e.target === formModal) formModal.classList.remove('is-open');
-  });
+    egg.addEventListener('pointerleave', () => {
+      cursor.x = -9999;
+      cursor.y = -9999;
+    });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      formModal.classList.remove('is-open');
-    }
-  });
+    egg.addEventListener('pointerdown', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      pulses.push({ x: e.clientX - rect.left, y: e.clientY - rect.top, t0: performance.now() * 0.001 });
+      lastPointer = performance.now();
+    });
 
-  // Chip selection (toggle) — project form only
-  const typeGroup = document.querySelector('[data-field="type"]');
-  const typeHidden = document.getElementById('typeOfWork');
-  if (typeGroup && typeHidden) {
-    typeGroup.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        chip.classList.toggle('selected');
-        const selected = [...typeGroup.querySelectorAll('.chip.selected')].map(c => c.dataset.value);
-        typeHidden.value = selected.join(', ');
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { build(); if (reducedMotion) staticDraw(); }, 150);
+    });
+
+    // Wait for Geist Mono so the mask is drawn with the real letterforms
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => {
+      build();
+      if (reducedMotion) staticDraw();
+      io.observe(egg);
+    });
+  })();
+
+  // ─── Work hover preview ───
+  const preview = document.getElementById('workPreview');
+  const previewImg = preview.querySelector('img');
+  const canHover = window.matchMedia('(hover: hover)').matches;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cycleTimer = null;
+
+  if (canHover) {
+    document.querySelectorAll('.work-item').forEach(item => {
+      const images = item.dataset.images.split(',');
+      let index = 0;
+
+      item.addEventListener('mouseenter', () => {
+        index = 0;
+        previewImg.src = images[0];
+        preview.classList.add('is-visible');
+        if (!reducedMotion && images.length > 1) {
+          cycleTimer = setInterval(() => {
+            index = (index + 1) % images.length;
+            previewImg.src = images[index];
+          }, 500);
+        }
       });
-    });
-  }
 
-  // Form submission via fetch (no redirect)
-  projectForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(projectForm);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-      const res = await fetch(projectForm.action, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(data)
+      item.addEventListener('mousemove', (e) => {
+        // Flip to the left of the cursor near the right edge
+        const flip = e.clientX + preview.offsetWidth + 40 > window.innerWidth;
+        preview.style.left = e.clientX + 'px';
+        preview.style.top = e.clientY + 'px';
+        preview.style.transform = flip
+          ? 'translate(calc(-100% - 20px), -50%)'
+          : 'translate(20px, -50%)';
       });
-      const result = await res.json();
-      console.log('FormSubmit response:', result);
-    } catch (err) {
-      console.error('FormSubmit error:', err);
-    }
 
-    // Show success
-    projectForm.style.display = 'none';
-    formSuccess.classList.add('is-visible');
-
-    // Auto-close after 3s
-    setTimeout(() => {
-      formModal.classList.remove('is-open');
-      // Reset for next open
-      setTimeout(() => {
-        projectForm.style.display = '';
-        formSuccess.classList.remove('is-visible');
-        projectForm.reset();
-        document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-        const typeField = document.getElementById('typeOfWork');
-        if (typeField) typeField.value = '';
-      }, 300);
-    }, 3000);
-  });
-
-  // ─── FFF-Teach Signup Modal ───
-  const teachModal = document.getElementById('teachModal');
-  const closeTeachFormBtn = document.getElementById('closeTeachFormBtn');
-  const teachForm = document.getElementById('teachForm');
-  const teachFormSuccess = document.getElementById('teachFormSuccess');
-  const teachTierInput = document.getElementById('teachTier');
-
-  document.querySelectorAll('.open-teach-form').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (teachTierInput) teachTierInput.value = btn.dataset.tier || '';
-      teachModal.classList.add('is-open');
-    });
-  });
-
-  closeTeachFormBtn.addEventListener('click', () => {
-    teachModal.classList.remove('is-open');
-  });
-
-  teachModal.addEventListener('click', (e) => {
-    if (e.target === teachModal) teachModal.classList.remove('is-open');
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') teachModal.classList.remove('is-open');
-  });
-
-  teachForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(teachForm);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-      await fetch(teachForm.action, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
+      item.addEventListener('mouseleave', () => {
+        preview.classList.remove('is-visible');
+        clearInterval(cycleTimer);
       });
-    } catch (err) {
-      console.error('FFF-Teach form error:', err);
-    }
-
-    teachForm.style.display = 'none';
-    teachFormSuccess.classList.add('is-visible');
-
-    setTimeout(() => {
-      teachModal.classList.remove('is-open');
-      setTimeout(() => {
-        teachForm.style.display = '';
-        teachFormSuccess.classList.remove('is-visible');
-        teachForm.reset();
-      }, 300);
-    }, 3000);
-  });
-
-  // ─── Hero Showcase Slideshow ───
-  const showcaseImgs = document.querySelectorAll('#heroShowcase img');
-  if (showcaseImgs.length > 1) {
-    let current = 0;
-    setInterval(() => {
-      showcaseImgs[current].classList.remove('is-active');
-      current = (current + 1) % showcaseImgs.length;
-      showcaseImgs[current].classList.add('is-active');
-    }, 450);
-  }
-
-  // Nav link switching
-  const panelContent = document.querySelector('.panel-content');
-  const gruposContent = document.querySelector('.grupos-content');
-  const talosContent = document.querySelector('.talos-content');
-
-  const logoMark = document.querySelector('.logo-mark');
-  if (logoMark) {
-    logoMark.addEventListener('click', () => {
-      const homeLink = document.querySelector('.nav-link[data-page="home"]');
-      if (homeLink) homeLink.click();
-    });
-  }
-
-  document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-      link.classList.add('active');
-
-      const page = link.dataset.page;
-      const sections = [panelContent, gruposContent, talosContent];
-      sections.forEach(s => { if (s) { s.style.display = 'none'; s.classList.remove('animate-in'); } });
-
-      let active;
-      if (page === 'grupos') active = gruposContent;
-      else if (page === 'talos') active = talosContent;
-      else active = panelContent;
-
-      active.style.display = 'flex';
-      void active.offsetWidth;
-      active.classList.add('animate-in');
-    });
-  });
-
-  // Subtle parallax on hero logo
-  const hero = document.querySelector('.panel-right');
-  const logo = document.querySelector('.ff-logo-container');
-
-  if (hero && logo) {
-    hero.addEventListener('mousemove', (e) => {
-      const rect = hero.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
-      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 12;
-      logo.style.transform = `translate(${x}px, ${y}px)`;
-    });
-
-    hero.addEventListener('mouseleave', () => {
-      logo.style.transform = 'translate(0, 0)';
-      logo.style.transition = 'transform 0.5s ease';
-      setTimeout(() => { logo.style.transition = ''; }, 500);
     });
   }
 </script>
