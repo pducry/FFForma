@@ -111,6 +111,8 @@
     .connect a {
       color: var(--subtle);
       text-decoration: none;
+      padding: 10px 4px;
+      margin: -10px -4px;
     }
 
     .connect a:hover { color: var(--accent); }
@@ -120,7 +122,8 @@
       font-size: 0.72rem;
       background: none;
       border: none;
-      padding: 0;
+      padding: 10px 6px;
+      margin: -10px -6px;
       cursor: pointer;
       color: var(--subtler);
       transition: color 0.2s ease;
@@ -140,7 +143,8 @@
     .theme-toggle {
       background: none;
       border: none;
-      padding: 0;
+      padding: 12px;
+      margin: -12px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -304,7 +308,12 @@
         overflow-x: auto;
         margin: 10px 0 4px;
         scrollbar-width: none;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
       }
+
+      .work-thumbs img,
+      .work-thumbs video { scroll-snap-align: start; }
 
       .work-thumbs::-webkit-scrollbar { display: none; }
 
@@ -341,13 +350,30 @@
       width: 100%;
       height: 240px;
       cursor: crosshair;
-      touch-action: none;
+      touch-action: pan-y; /* touch scroll passes through; the field still reacts */
     }
 
     .ascii-egg canvas {
       display: block;
       width: 100%;
       height: 100%;
+    }
+
+    /* ─── Small screens: tighter vertical rhythm ─── */
+    @media (max-width: 560px) {
+      main { padding-top: 40px; }
+
+      .top-bar { margin-bottom: 36px; }
+
+      .hero { padding: 36px 0 64px; }
+
+      section[data-block] { padding-top: 64px; }
+
+      .qa > div:not(:last-of-type) { margin-bottom: 32px; }
+
+      footer { padding: 72px 0 20px; }
+
+      .footer-meta { margin-top: 28px; }
     }
 
     /* ─── Motion ─── */
@@ -432,10 +458,10 @@
             <span class="work-name">FFForma</span>
           </div>
           <div class="work-thumbs">
-            <img src="img/FFForma1.jpg" alt="FFForma visual identity" loading="lazy">
-            <img src="img/FFForma2.jpg" alt="FFForma visual identity" loading="lazy">
-            <img src="img/ff-56.jpg" alt="FFForma visual identity" loading="lazy">
-            <img src="img/ff-id4.jpg" alt="FFForma visual identity" loading="lazy">
+            <img src="img/t-FFForma1.jpg" alt="FFForma visual identity" loading="lazy">
+            <img src="img/t-FFForma2.jpg" alt="FFForma visual identity" loading="lazy">
+            <img src="img/t-ff-56.jpg" alt="FFForma visual identity" loading="lazy">
+            <img src="img/t-ff-id4.jpg" alt="FFForma visual identity" loading="lazy">
           </div>
         </li>
         <li>
@@ -443,10 +469,10 @@
             <span class="work-name">Combustion</span>
           </div>
           <div class="work-thumbs">
-            <img src="img/combustion1.jpg" alt="Combustion visual series" loading="lazy">
-            <img src="img/combustion6.jpg" alt="Combustion visual series" loading="lazy">
-            <img src="img/combustion9.jpg" alt="Combustion visual series" loading="lazy">
-            <img src="img/combustion5.jpg" alt="Combustion visual series" loading="lazy">
+            <img src="img/t-combustion1.jpg" alt="Combustion visual series" loading="lazy">
+            <img src="img/t-combustion6.jpg" alt="Combustion visual series" loading="lazy">
+            <img src="img/t-combustion9.jpg" alt="Combustion visual series" loading="lazy">
+            <img src="img/t-combustion5.jpg" alt="Combustion visual series" loading="lazy">
           </div>
         </li>
         <li>
@@ -454,10 +480,10 @@
             <span class="work-name">Pace</span>
           </div>
           <div class="work-thumbs">
-            <img src="img/pace-1.jpg" alt="Pace brand identity" loading="lazy">
-            <img src="img/pace-2.jpg" alt="Pace brand identity" loading="lazy">
-            <img src="img/pace-9.jpg" alt="Pace brand identity" loading="lazy">
-            <img src="img/pace-12.jpg" alt="Pace brand identity" loading="lazy">
+            <img src="img/t-pace-1.jpg" alt="Pace brand identity" loading="lazy">
+            <img src="img/t-pace-2.jpg" alt="Pace brand identity" loading="lazy">
+            <img src="img/t-pace-9.jpg" alt="Pace brand identity" loading="lazy">
+            <img src="img/t-pace-12.jpg" alt="Pace brand identity" loading="lazy">
           </div>
         </li>
         <li>
@@ -465,9 +491,9 @@
             <a class="exp-link" href="https://www.goforacle.com" target="_blank" rel="noopener">Foracle<svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
           </div>
           <div class="work-thumbs">
-            <img src="img/foracle-0.jpg" alt="Foracle" loading="lazy">
-            <img src="img/foracle-1.jpg" alt="Foracle" loading="lazy">
-            <img src="img/foracle-mobile.jpg" alt="Foracle" loading="lazy">
+            <img src="img/t-foracle-0.jpg" alt="Foracle" loading="lazy">
+            <img src="img/t-foracle-1.jpg" alt="Foracle" loading="lazy">
+            <img src="img/t-foracle-mobile.jpg" alt="Foracle" loading="lazy">
           </div>
         </li>
         <li>
@@ -475,7 +501,7 @@
             <a class="exp-link" href="https://pducry.github.io/ARTAS1/" target="_blank" rel="noopener">Artas<svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
           </div>
           <div class="work-thumbs">
-            <video src="img/artas.mp4" muted loop playsinline autoplay preload="metadata"></video>
+            <video class="thumb-video" data-src="img/artas.mp4" muted loop playsinline preload="none"></video>
           </div>
         </li>
       </ul>
@@ -869,6 +895,21 @@ Cal("ui", {
       io.observe(egg);
     });
   })();
+
+  // ─── Thumb videos: stream only while visible ───
+  document.querySelectorAll('.thumb-video').forEach(v => {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          if (!v.src) v.src = v.dataset.src;
+          v.play().catch(() => {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.3 });
+    io.observe(v);
+  });
 
   // ─── Work hover preview (image carousel or video) ───
   const preview = document.getElementById('workPreview');
