@@ -283,7 +283,8 @@
 
     .work-preview.is-visible { display: block; }
 
-    .work-preview img {
+    .work-preview img,
+    .work-preview video {
       width: 100%;
       aspect-ratio: 16 / 9;
       object-fit: cover;
@@ -307,7 +308,8 @@
 
       .work-thumbs::-webkit-scrollbar { display: none; }
 
-      .work-thumbs img {
+      .work-thumbs img,
+      .work-thumbs video {
         height: 88px;
         aspect-ratio: 16 / 9;
         object-fit: cover;
@@ -468,6 +470,14 @@
             <img src="img/foracle-mobile.jpg" alt="Foracle" loading="lazy">
           </div>
         </li>
+        <li>
+          <div class="work-item" data-video="img/artas.mp4">
+            <a class="exp-link" href="https://pducry.github.io/ARTAS1/" target="_blank" rel="noopener">Artas<svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          </div>
+          <div class="work-thumbs">
+            <video src="img/artas.mp4" muted loop playsinline autoplay preload="metadata"></video>
+          </div>
+        </li>
       </ul>
     </section>
 
@@ -537,6 +547,7 @@
 <!-- Floating work preview -->
 <div class="work-preview" id="workPreview" aria-hidden="true">
   <img src="" alt="">
+  <video muted loop playsinline preload="none" style="display:none"></video>
 </div>
 
 <!-- Cal.com Embed -->
@@ -859,19 +870,33 @@ Cal("ui", {
     });
   })();
 
-  // ─── Work hover preview ───
+  // ─── Work hover preview (image carousel or video) ───
   const preview = document.getElementById('workPreview');
   const previewImg = preview.querySelector('img');
+  const previewVid = preview.querySelector('video');
   const canHover = window.matchMedia('(hover: hover)').matches;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let cycleTimer = null;
 
   if (canHover) {
     document.querySelectorAll('.work-item').forEach(item => {
-      const images = item.dataset.images.split(',');
+      const images = (item.dataset.images || '').split(',').filter(Boolean);
+      const video = item.dataset.video;
       let index = 0;
 
       item.addEventListener('mouseenter', () => {
+        if (video) {
+          previewImg.style.display = 'none';
+          previewVid.style.display = 'block';
+          if (previewVid.getAttribute('src') !== video) previewVid.src = video;
+          if (!reducedMotion) previewVid.play().catch(() => {});
+          preview.classList.add('is-visible');
+          return;
+        }
+        if (!images.length) return;
+        previewVid.pause();
+        previewVid.style.display = 'none';
+        previewImg.style.display = 'block';
         index = 0;
         previewImg.src = images[0];
         preview.classList.add('is-visible');
@@ -895,6 +920,7 @@ Cal("ui", {
 
       item.addEventListener('mouseleave', () => {
         preview.classList.remove('is-visible');
+        previewVid.pause();
         clearInterval(cycleTimer);
       });
     });
