@@ -359,6 +359,75 @@
       height: 100%;
     }
 
+    /* ─── Lightbox (mobile work images) ─── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: var(--bg);
+      display: none;
+    }
+
+    .lightbox.is-open { display: block; }
+
+    .lb-track {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 100%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 0 7vw;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .lb-track::-webkit-scrollbar { display: none; }
+
+    .lb-slide {
+      flex: 0 0 86vw;
+      scroll-snap-align: center;
+    }
+
+    .lb-slide img {
+      width: 100%;
+      max-height: 78vh;
+      object-fit: contain;
+      display: block;
+      border-radius: 4px;
+    }
+
+    .lb-close {
+      position: fixed;
+      top: 8px;
+      right: 8px;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--subtle);
+      z-index: 2;
+    }
+
+    .lb-close:hover { color: var(--accent); }
+
+    .lb-close svg { width: 18px; height: 18px; }
+
+    .lb-count {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.72rem;
+      color: var(--subtler);
+      font-variant-numeric: tabular-nums;
+      pointer-events: none;
+    }
+
     /* ─── Small screens: tighter vertical rhythm ─── */
     @media (max-width: 560px) {
       main { padding-top: 40px; }
@@ -537,6 +606,15 @@
 <div class="work-preview" id="workPreview" aria-hidden="true">
   <img src="" alt="">
   <video muted loop playsinline preload="none" style="display:none"></video>
+</div>
+
+<!-- ═══ Mobile lightbox ═══ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Gallery">
+  <button class="lb-close" id="lbClose" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
+  </button>
+  <div class="lb-track" id="lbTrack"></div>
+  <p class="lb-count" id="lbCount"></p>
 </div>
 
 <!-- Cal.com Embed -->
@@ -880,6 +958,63 @@ Cal("ui", {
       strip.appendChild(v);
     }
     if (strip.children.length) item.after(strip);
+  });
+
+  // ─── Lightbox: tap a thumb, see it full — neighbours peek at the edges ───
+  const lightbox = document.getElementById('lightbox');
+  const lbTrack = document.getElementById('lbTrack');
+  const lbCount = document.getElementById('lbCount');
+  let lbTotal = 0;
+
+  function lbUpdateCount() {
+    const slides = lbTrack.children;
+    if (!slides.length) return;
+    const step = slides[0].offsetWidth + 12;
+    const idx = Math.max(0, Math.min(lbTotal - 1, Math.round(lbTrack.scrollLeft / step)));
+    lbCount.textContent = (idx + 1) + ' / ' + lbTotal;
+  }
+
+  function lbOpen(images, index) {
+    lbTrack.innerHTML = '';
+    images.forEach(src => {
+      const slide = document.createElement('div');
+      slide.className = 'lb-slide';
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = '';
+      img.loading = 'lazy';
+      slide.appendChild(img);
+      lbTrack.appendChild(slide);
+    });
+    lbTotal = images.length;
+    lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    const slide = lbTrack.children[index];
+    lbTrack.scrollLeft = slide.offsetLeft - (lbTrack.clientWidth - slide.offsetWidth) / 2;
+    lbUpdateCount();
+  }
+
+  function lbClose() {
+    lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+    lbTrack.innerHTML = '';
+  }
+
+  lbTrack.addEventListener('scroll', lbUpdateCount, { passive: true });
+  document.getElementById('lbClose').addEventListener('click', lbClose);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) lbClose();
+  });
+
+  document.addEventListener('click', (e) => {
+    const thumb = e.target.closest('.work-thumbs img');
+    if (!thumb) return;
+    const strip = thumb.parentElement;
+    const item = strip.previousElementSibling;
+    const images = (item.dataset.images || '').split(',').filter(Boolean);
+    if (!images.length) return;
+    const index = [...strip.querySelectorAll('img')].indexOf(thumb);
+    lbOpen(images, Math.max(0, index));
   });
 
   // ─── Thumb videos: stream only while visible ───
