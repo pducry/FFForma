@@ -446,51 +446,25 @@
           <div class="work-item" data-images="img/FFForma1.jpg,img/FFForma2.jpg,img/ff-56.jpg,img/ff-60.jpg,img/ff-id4.jpg,img/ff-id15.jpg,img/ff-id21.jpg">
             <span class="work-name">FFForma</span>
           </div>
-          <div class="work-thumbs">
-            <img src="img/t-FFForma1.jpg" alt="FFForma visual identity" loading="lazy">
-            <img src="img/t-FFForma2.jpg" alt="FFForma visual identity" loading="lazy">
-            <img src="img/t-ff-56.jpg" alt="FFForma visual identity" loading="lazy">
-            <img src="img/t-ff-id4.jpg" alt="FFForma visual identity" loading="lazy">
-          </div>
         </li>
         <li>
           <div class="work-item" data-images="img/combustion1.jpg,img/combustion6.jpg,img/combustion9.jpg,img/combustion5.jpg,img/combustion2.jpg,img/combustion4.jpg">
             <span class="work-name">Combustion</span>
-          </div>
-          <div class="work-thumbs">
-            <img src="img/t-combustion1.jpg" alt="Combustion visual series" loading="lazy">
-            <img src="img/t-combustion6.jpg" alt="Combustion visual series" loading="lazy">
-            <img src="img/t-combustion9.jpg" alt="Combustion visual series" loading="lazy">
-            <img src="img/t-combustion5.jpg" alt="Combustion visual series" loading="lazy">
           </div>
         </li>
         <li>
           <div class="work-item" data-images="img/pace-1.jpg,img/pace-2.jpg,img/pace-3.jpg,img/pace-4.jpg,img/pace-5.jpg,img/pace-6.jpg,img/pace-7.jpg,img/pace-8.jpg,img/pace-9.jpg,img/pace-10.jpg,img/pace-11.jpg,img/pace-12.jpg,img/pace-13.jpg,img/pace-14.jpg,img/pace-15.jpg">
             <span class="work-name">Pace</span>
           </div>
-          <div class="work-thumbs">
-            <img src="img/t-pace-1.jpg" alt="Pace brand identity" loading="lazy">
-            <img src="img/t-pace-2.jpg" alt="Pace brand identity" loading="lazy">
-            <img src="img/t-pace-9.jpg" alt="Pace brand identity" loading="lazy">
-            <img src="img/t-pace-12.jpg" alt="Pace brand identity" loading="lazy">
-          </div>
         </li>
         <li>
           <div class="work-item" data-images="img/foracle-0.jpg,img/foracle-1.jpg,img/foracle-2.jpg,img/foracle-3.jpg,img/foracle-5.jpg,img/foracle-6.jpg,img/foracle-mobile.jpg">
             <a class="exp-link" href="https://www.goforacle.com" target="_blank" rel="noopener">Foracle<svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
           </div>
-          <div class="work-thumbs">
-            <img src="img/t-foracle-0.jpg" alt="Foracle" loading="lazy">
-            <img src="img/t-foracle-1.jpg" alt="Foracle" loading="lazy">
-            <img src="img/t-foracle-mobile.jpg" alt="Foracle" loading="lazy">
-          </div>
         </li>
         <li>
           <div class="work-item" data-video="img/artas.mp4">
             <a class="exp-link" href="https://pducry.github.io/ARTAS1/" target="_blank" rel="noopener">Artas<svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-          </div>
-          <div class="work-thumbs">
-            <video class="thumb-video" data-src="img/artas.mp4" muted loop playsinline preload="none"></video>
           </div>
         </li>
       </ul>
@@ -882,6 +856,31 @@ Cal("ui", {
       io.observe(egg);
     });
   })();
+
+  // ─── Mobile thumb strips: generated from the full carousel, nothing left out ───
+  document.querySelectorAll('.work-item').forEach(item => {
+    const name = item.textContent.trim();
+    const strip = document.createElement('div');
+    strip.className = 'work-thumbs';
+    (item.dataset.images || '').split(',').filter(Boolean).forEach(src => {
+      const img = document.createElement('img');
+      img.src = src.replace('img/', 'img/t-');
+      img.alt = name;
+      img.loading = 'lazy';
+      strip.appendChild(img);
+    });
+    if (item.dataset.video) {
+      const v = document.createElement('video');
+      v.className = 'thumb-video';
+      v.dataset.src = item.dataset.video;
+      v.muted = true;
+      v.loop = true;
+      v.playsInline = true;
+      v.preload = 'none';
+      strip.appendChild(v);
+    }
+    if (strip.children.length) item.after(strip);
+  });
 
   // ─── Thumb videos: stream only while visible ───
   document.querySelectorAll('.thumb-video').forEach(v => {
