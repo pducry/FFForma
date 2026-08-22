@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FFForma — Design Studio</title>
-  <meta name="description" content="Design, Engineered. A home for brands, interfaces, and creative experiments — human taste and craft, amplified by the force of AI. By Pedro Julien.">
+  <meta name="description" content="Design, Engineered. FFForma is the design practice of Pedro Julien: brands, interfaces, and creative experiments, shaped by human taste and craft, accelerated by AI.">
   <meta name="theme-color" content="#0b0a09">
   <link rel="icon" type="image/png" href="img/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -196,16 +196,6 @@
     }
 
     .hero p + p { margin-top: 14px; }
-
-    /* ─── Q&A ─── */
-    .qa > div:not(:last-of-type) { margin-bottom: 40px; }
-
-    .question {
-      color: var(--subtler);
-      margin-bottom: 10px;
-    }
-
-    .answer { color: var(--fg); }
 
     /* ─── Sections ─── */
     section[data-block] { padding-top: 90px; }
@@ -438,8 +428,6 @@
 
       section[data-block] { padding-top: 64px; }
 
-      .qa > div:not(:last-of-type) { margin-bottom: 32px; }
-
       footer { padding: 72px 0 20px; }
 
       .footer-meta { margin-top: 28px; }
@@ -480,35 +468,7 @@
     <section class="hero">
       <h1><img src="img/logo-light.png" alt="FFForma"></h1>
       <p class="hero-statement">Design, Engineered.</p>
-      <p><span data-i18n="hero.p1">A home for brands, interfaces, and creative experiments — human taste and craft, amplified by the force of AI.</span> <span data-i18n="hero.by">By</span> <a href="https://www.pedrojulien.com" target="_blank" rel="noopener">Pedro Julien</a>.</p>
-    </section>
-
-    <!-- ═══ Q&A ═══ -->
-    <section class="qa">
-      <div>
-        <p class="question" data-i18n="qa.2.q">Why three F's?</p>
-        <p class="answer">Form Follows Function.</p>
-      </div>
-      <div>
-        <p class="question" data-i18n="qa.3.q">Is it a studio?</p>
-        <p class="answer" data-i18n="qa.3.a">Depends.</p>
-      </div>
-      <div>
-        <p class="question" data-i18n="qa.4.q">Is it just one person?</p>
-        <p class="answer" data-i18n="qa.4.a">Mostly.</p>
-      </div>
-      <div>
-        <p class="question" data-i18n="qa.6.q">Why so many forms?</p>
-        <p class="answer" data-i18n="qa.6.a">Because curiosity rarely follows a straight line.</p>
-      </div>
-      <div>
-        <p class="question" data-i18n="qa.7.q">What can't AI do?</p>
-        <p class="answer" data-i18n="qa.7.a">Taste and craft. Everything else, it accelerates.</p>
-      </div>
-      <div>
-        <p class="question" data-i18n="qa.9.q">Do you take on clients?</p>
-        <p class="answer" data-i18n="qa.9.a">Selectively. When the work feels like a good fit.</p>
-      </div>
+      <p><span data-i18n="intro.1">FFForma is the design practice of </span><a href="https://www.pedrojulien.com" target="_blank" rel="noopener">Pedro Julien</a><span data-i18n="intro.2">. Brands, interfaces, and creative experiments, shaped by human taste and craft, accelerated by AI. Three F's for Form Follows Function. A studio of one, most days, taking on clients selectively, when the work is the right fit.</span></p>
     </section>
 
     <!-- ═══ Selected work ═══ -->
@@ -664,19 +624,8 @@ Cal("ui", {
   // ─── Language toggle (EN/PT) ───
   const I18N = {
     en: {
-      'hero.p1': "A home for brands, interfaces, and creative experiments — human taste and craft, amplified by the force of AI.",
-      'hero.by': "By",
-      'qa.2.q': "Why three F's?",
-      'qa.3.q': "Is it a studio?",
-      'qa.3.a': "Depends.",
-      'qa.4.q': "Is it just one person?",
-      'qa.4.a': "Mostly.",
-      'qa.6.q': "Why so many forms?",
-      'qa.6.a': "Because curiosity rarely follows a straight line.",
-      'qa.7.q': "What can't AI do?",
-      'qa.7.a': "Taste and craft. Everything else, it accelerates.",
-      'qa.9.q': "Do you take on clients?",
-      'qa.9.a': "Selectively. When the work feels like a good fit.",
+      'intro.1': "FFForma is the design practice of ",
+      'intro.2': ". Brands, interfaces, and creative experiments, shaped by human taste and craft, accelerated by AI. Three F's for Form Follows Function. A studio of one, most days, taking on clients selectively, when the work is the right fit.",
       'cta.call': "Book a call",
       'ment.h': "Mentorship",
       'ment.p1': "Twenty-plus years in technology and design. Ten-plus leading design teams. Early adopter of AI.",
@@ -686,19 +635,8 @@ Cal("ui", {
       'success.text': "We'll get back to you within 24 hours."
     },
     pt: {
-      'hero.p1': "Uma casa para marcas, interfaces e experimentos criativos — taste e ofício humanos, amplificados pela força da AI.",
-      'hero.by': "Por",
-      'qa.2.q': "Por que três F's?",
-      'qa.3.q': "É um estúdio?",
-      'qa.3.a': "Depende.",
-      'qa.4.q': "É uma pessoa só?",
-      'qa.4.a': "Quase sempre.",
-      'qa.6.q': "Por que tantas formas?",
-      'qa.6.a': "Porque a curiosidade raramente anda em linha reta.",
-      'qa.7.q': "O que a AI não faz?",
-      'qa.7.a': "Taste e ofício. Todo o resto, ela acelera.",
-      'qa.9.q': "Você atende clientes?",
-      'qa.9.a': "Seletivamente. Quando o trabalho tem o encaixe certo.",
+      'intro.1': "A FFForma é a prática de design de ",
+      'intro.2': ". Marcas, interfaces e experimentos criativos, moldados por taste e ofício humanos, acelerados pela AI. Três F's de Form Follows Function. Um estúdio de uma pessoa só, na maioria dos dias, atendendo clientes seletivamente, quando o trabalho tem o encaixe certo.",
       'cta.call': "Agendar uma call",
       'ment.h': "Mentoria",
       'ment.p1': "Mais de vinte anos em tecnologia e design. Mais de dez liderando times. Early adopter de AI.",
