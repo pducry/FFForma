@@ -59,13 +59,42 @@
 
     a {
       color: var(--subtle);
-      text-decoration: underline dotted;
-      text-decoration-color: var(--subtler);
-      text-underline-offset: 3px;
+      text-decoration: none;
+      position: relative;
       transition: color 0.2s ease;
     }
 
-    a:hover { color: var(--accent); }
+    /* Underline in two layers: a faint permanent track, and an accent
+       line that sweeps in from the left on hover. */
+    a::before,
+    a::after,
+    .work-name::before,
+    .work-name::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -3px;
+      height: 1px;
+      pointer-events: none;
+    }
+
+    a::before,
+    .work-name::before { background: var(--line); }
+
+    a::after,
+    .work-name::after {
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    a:hover { color: var(--fg); }
+
+    a:hover::after,
+    a:focus-visible::after,
+    .work-item:hover .work-name::after { transform: scaleX(1); }
 
     a:focus-visible,
     button:focus-visible {
@@ -115,7 +144,7 @@
       margin: -10px -4px;
     }
 
-    .connect a:hover { color: var(--accent); }
+    .connect a:hover { color: var(--fg); }
 
     .lang-btn {
       font-family: var(--font-mono);
@@ -212,7 +241,10 @@
       width: 1em;
       height: 1em;
       flex-shrink: 0;
+      transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
     }
+
+    a:hover .arrow-icon { transform: translate(2px, -2px); }
 
     .cta-link {
       display: inline-flex;
@@ -224,8 +256,7 @@
 
     .cta-link .arrow-icon { color: var(--subtler); }
 
-    .cta-link:hover,
-    .cta-link:hover .arrow-icon { color: var(--accent); }
+    .cta-link:hover .arrow-icon { color: var(--fg); }
 
     .exp-item {
       display: flex;
@@ -243,8 +274,7 @@
 
     .exp-link .arrow-icon { color: var(--subtler); }
 
-    .exp-link:hover,
-    .exp-link:hover .arrow-icon { color: var(--accent); }
+    .exp-link:hover .arrow-icon { color: var(--fg); }
 
     /* ─── Prose sections ─── */
     .prose p + p { margin-top: 14px; }
@@ -262,9 +292,10 @@
       cursor: crosshair;
     }
 
-    .work-item .work-name { color: var(--fg); }
-
-    .work-item:hover .work-name { color: var(--accent); }
+    .work-item .work-name {
+      color: var(--fg);
+      position: relative;
+    }
 
     .work-preview {
       position: fixed;
