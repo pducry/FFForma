@@ -737,7 +737,7 @@ Cal("ui", {
 
   applyTheme(themeStore.get() === 'light' ? 'light' : 'dark');
 
-  // ─── ASCII easter egg: the word emerges from the noise ───
+  // ─── ASCII easter egg: the word emerges from red dither waves ───
   (function () {
     const egg = document.getElementById('asciiEgg');
     const canvas = document.getElementById('asciiCanvas');
@@ -746,11 +746,49 @@ Cal("ui", {
 
     const CELL_W = 11, CELL_H = 15;
     const CHARS = ' ··::;=+*#%@';
-    const RAMP_DARK = ['#181714', '#242220', '#33312d', '#45433f', '#5a5751', '#6f6c67', '#8a8781', '#a3a09b', '#c0bdb7', '#d6d3cd', '#e8e6e2'];
-    const RAMP_LIGHT = ['#e2dfd9', '#d3d0ca', '#c0bdb7', '#a8a5a0', '#8a8781', '#6f6c67', '#55524d', '#45433f', '#33312d', '#242220', '#181714'];
-    const ramp = () => document.documentElement.dataset.theme === 'light' ? RAMP_LIGHT : RAMP_DARK;
 
-    let cols = 0, rows = 0, mask = [], phase = [], heat = [];
+    // Red dither waves: fbm noise quantized to a few shades of red through a
+    // Bayer matrix — glyphs stand in for pixels.
+    const RED = [254, 46, 0];
+    const LEVELS = 5;
+    const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+
+    let reds = [], redsTheme = '';
+    function redRamp() {
+      const th = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+      if (th !== redsTheme) {
+        redsTheme = th;
+        const bg = th === 'light' ? [242, 240, 236] : [11, 10, 9];
+        reds = [];
+        for (let l = 0; l < LEVELS; l++) {
+          const t = l / (LEVELS - 1);
+          reds.push('rgb(' + Math.round(bg[0] + (RED[0] - bg[0]) * t) + ',' +
+            Math.round(bg[1] + (RED[1] - bg[1]) * t) + ',' +
+            Math.round(bg[2] + (RED[2] - bg[2]) * t) + ')');
+        }
+      }
+      return reds;
+    }
+
+    function nhash(x, y) {
+      const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+      return s - Math.floor(s);
+    }
+    function vnoise(x, y) {
+      const xi = Math.floor(x), yi = Math.floor(y);
+      const xf = x - xi, yf = y - yi;
+      const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+      const a = nhash(xi, yi), b = nhash(xi + 1, yi);
+      const c = nhash(xi, yi + 1), d = nhash(xi + 1, yi + 1);
+      return a + (b - a) * u + (c - a) * v + (d - c) * u * v;
+    }
+    function fbm(x, y) {
+      let v = 0, a = 0.5;
+      for (let o = 0; o < 3; o++) { v += a * vnoise(x, y); x *= 2; y *= 2; a *= 0.5; }
+      return v;
+    }
+
+    let cols = 0, rows = 0, mask = [], heat = [];
     const cursor = { x: -9999, y: -9999 };
     const pulses = [];
     let lastPointer = 0;
@@ -786,11 +824,9 @@ Cal("ui", {
       const px = octx.getImageData(0, 0, cols, rows).data;
 
       mask = new Float32Array(cols * rows);
-      phase = new Float32Array(cols * rows);
       heat = new Float32Array(cols * rows);
       for (let i = 0; i < cols * rows; i++) {
         mask[i] = px[i * 4 + 3] / 255;
-        phase[i] = Math.random() * Math.PI * 2;
       }
     }
 
@@ -829,17 +865,21 @@ Cal("ui", {
           }
           heat[i] = Math.max(heat[i] * 0.94, Math.min(1, add));
 
-          // Ambient shimmer + the ghost of the word + revealed detail
-          const flicker = 0.5 + 0.5 * Math.sin(time * 1.4 + phase[i]);
-          const ambient = 0.05 + flicker * 0.06;
-          const ghost = mask[i] * (0.16 + flicker * 0.05);
-          const reveal = heat[i] * (0.18 + mask[i] * 0.82);
+          // Flowing wave field + the ghost of the word + revealed detail
+          const wave = fbm(x / h * 2.3 + time * 0.12, y / h * 2.3 - time * 0.05);
+          const crest = Math.min(1, Math.max(0, (wave - 0.3) * 2.2));
+          const ambient = crest * 0.5;
+          const ghost = mask[i] * (0.14 + crest * 0.12);
+          const reveal = heat[i] * (0.22 + mask[i] * 0.78);
           const I = Math.min(1, ambient + ghost + reveal);
 
-          const ci = Math.min(CHARS.length - 1, Math.floor(I * (CHARS.length - 0.01)));
-          if (ci === 0) continue;
-          const g = ramp();
-          ctx.fillStyle = g[Math.min(g.length - 1, Math.floor(I * g.length))];
+          // Ordered dithering: quantize through the Bayer threshold
+          const qf = I * (LEVELS - 1);
+          let level = Math.floor(qf);
+          if (qf - level > BAYER[(r & 3) * 4 + (c & 3)] / 16) level++;
+          if (level === 0) continue;
+          const ci = Math.round(level / (LEVELS - 1) * (CHARS.length - 1));
+          ctx.fillStyle = redRamp()[level];
           ctx.fillText(CHARS[ci], x, y);
         }
       }
@@ -856,11 +896,12 @@ Cal("ui", {
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
           const i = r * cols + c;
-          const I = mask[i] * 0.75;
-          const ci = Math.floor(I * (CHARS.length - 0.01));
-          if (ci === 0) continue;
-          const g = ramp();
-          ctx.fillStyle = g[Math.min(g.length - 1, Math.floor(I * g.length))];
+          const qf = mask[i] * 0.85 * (LEVELS - 1);
+          let level = Math.floor(qf);
+          if (qf - level > BAYER[(r & 3) * 4 + (c & 3)] / 16) level++;
+          if (level === 0) continue;
+          const ci = Math.round(level / (LEVELS - 1) * (CHARS.length - 1));
+          ctx.fillStyle = redRamp()[level];
           ctx.fillText(CHARS[ci], c * CELL_W + CELL_W / 2, r * CELL_H + CELL_H / 2);
         }
       }
