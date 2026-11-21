@@ -30,7 +30,18 @@ const langStore = {
   set(v) { try { localStorage.setItem('ffforma-lang', v); } catch (_) {} }
 };
 
-let currentLang = langStore.get()
+// ?lang= wins so the hreflang URLs (?lang=en, ?lang=pt) actually switch language.
+function langFromQuery() {
+  try {
+    const q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase();
+    if (q === 'pt' || q === 'pt-br') return 'pt';
+    if (q === 'en') return 'en';
+  } catch (_) {}
+  return null;
+}
+
+let currentLang = langFromQuery()
+  || langStore.get()
   || ((navigator.language || '').toLowerCase().startsWith('pt') ? 'pt' : 'en');
 
 function applyLang(lang) {
@@ -52,7 +63,15 @@ function applyLang(lang) {
 }
 
 document.querySelectorAll('.lang-btn').forEach(btn => {
-  btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+  btn.addEventListener('click', () => {
+    const lang = btn.dataset.lang;
+    try {
+      const url = new URL(location.href);
+      url.searchParams.set('lang', lang);
+      history.replaceState(null, '', url);
+    } catch (_) {}
+    applyLang(lang);
+  });
 });
 
 applyLang(currentLang);
