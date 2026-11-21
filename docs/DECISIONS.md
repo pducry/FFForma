@@ -1,20 +1,27 @@
 # Decisions
 
-## 2026-11-21 — FFForma stays a personal portfolio
+## 2026-11-21 — FormaSite 3 is a side project for creative resources
 
-**Decision.** [ffforma.design](https://ffforma.design) stays Pedro Julien's personal portfolio and mentoring page. It does not become a studio site, and it does not grow a price list, package menu, or a "hire the studio" offer.
+**Decision.** The new site is FormaSite 3. Forma is Pedro Julien's design side project, focused on creative resources: disruptive visuals, branding, and a bit of product. It is not a mentoring-first personal portfolio, and it is not a studio site with a price list. Mentoring and Cal.com stay as a small path on the contact page.
 
-**Why.** That is what is live today: one column of selected work, six experiments, a short mentorship note, and a Cal.com booking link. The intro was already rewritten away from studio language and toward a design-engineering portfolio. A studio site would need offers, rates, a process, and a client list this page does not have, and it would compete with [pedrojulien.com](https://www.pedrojulien.com), which the intro already links to.
+This supersedes the earlier decision on this branch that ffforma.design would stay the one-page personal portfolio.
 
-**What this rules out.** Case-study pages written to sell a service, public pricing, and a contact form whose job is to qualify studio leads. Mentoring can still sit next to "Book a call," including a short briefing form, because mentoring is already part of the page.
+**Why.** Pedro changed the positioning after that decision. The live one-pager was a portfolio with mentoring up front. FormaSite 3 borrows the structure of [VioCorp](https://viocorp.systems/work) (a short nav, a work index, a case per project, an experiments lab, an info page) and keeps Forma's own type, color, and voice. VioCorp's look is not the reference.
 
-## 2026-11-21 — Keep the site plain, and split the homepage into files
+**Voice, for Pedro to pick.** Two lines are in the copy. Option A is the line the site uses until he chooses. Option B sits on the info page as the alternate.
 
-**Decision.** Do not migrate to Astro or any other multi-page framework. The homepage stays one page. Its CSS lives in `css/site.css` and its behavior in `js/` (`i18n.js`, `theme.js`, `cal.js`, `ascii-egg.js`, `work.js`). The six experiments stay the standalone pages they already are.
+- A. "Forma is a side project for disruptive visuals, brand systems, and the occasional product."
+- B. "Make the mark. Then put it on something real."
 
-**Why.** Selected work is a hover gallery, not written case studies. Mentorship is two paragraphs. Separate pages per project would invent content and change the composition. The experiments are already their own documents.
+**What a case may say.** The repo has images, one video, and two public links (Foracle, Artas). It does not have research notes, concept write-ups, or client facts. Case pages use the process outline (summary, research, concept, construction, brand system, application, renders) and mark every empty section as a placeholder for Pedro. Image sections are labeled as files on hand, without invented captions. The Objects strand is the same: a place for posters and apparel from his t-shirt store, with no product shots in the repo yet.
 
-A build step was considered and skipped. GitHub Pages for this repo publishes the `main` branch from `/` (legacy branch source, custom domain `ffforma.design`). Shipping only source that needs a build would take the live site down until the Pages source was switched to GitHub Actions. Static files at the repository root keep the current setting working, with no owner action required on merge.
+## 2026-11-21 — FormaSite 3 is a static Astro site, deployed by GitHub Actions
+
+**Decision.** The multi-page site is Astro with static output. GitHub Actions builds it and deploys to Pages. `CNAME` stays `ffforma.design`.
+
+This supersedes the earlier decision to avoid a build so the current "deploy from branch /" setting could stay.
+
+**Why.** Pedro asked for separate pages per case, an experiments lab, info, and contact. A build is the straightforward way to share one layout across those pages. Pages for this repo currently publishes the `main` branch from `/`. After this change the root is source, not the built site, so the live domain breaks until Pages → Source is set to **GitHub Actions**.
 
 ## 2026-11-21 — The old image backup leaves the tree, not the history
 
@@ -22,8 +29,8 @@ A build step was considered and skipped. GitHub Pages for this repo publishes th
 
 **Why.** The folder is about 22 MB, nothing on the site links to it, and a public Pages site was serving it anyway. Rewriting history would force a force-push to `main` and is not wanted. The files remain reachable from older commits.
 
-## 2026-11-21 — Mentoring brief goes to Formspree, not to an inbox in the source
+## 2026-11-21 — Contact posts to Formspree, not to an inbox in the source
 
-**Decision.** Cal.com stays the way to book a call. Under it, a short mentoring brief posts to `https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID`. Pedro replaces that placeholder with a form id from Formspree. The id is not an email address, and no personal email is written into the HTML, CSS, or JS.
+**Decision.** Cal.com stays the booking link, as a small contact path. A short note form posts to `https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID`. Pedro replaces that placeholder with a form id from Formspree. The id is not an email address, and no personal email is written into the source.
 
-**Why.** The older `pducry/FFForma-site` form put a personal address in the page, which any visitor could read. A form endpoint does not. Until the placeholder is replaced, submit does nothing except say the form is not connected and point back at the booking link.
+**Why.** The older `pducry/FFForma-site` form put a personal address in the page, which any visitor could read. A form endpoint does not. Until the placeholder is replaced, submit stays on the page and says the form is not connected.
