@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+const description = 'Forma is Pedro Julien’s design side project: disruptive visuals, branding, and a bit of product.';
+---
+<Base title="Info — Forma" description={description}>
+  <h1 class="page-title" data-i18n="info.h">Info</h1>
+  <div class="prose measure">
+    <p data-i18n="info.p1">Forma is Pedro Julien’s design side project. The work is creative resources: disruptive visuals, branding, and a bit of product.</p>
+    <p data-i18n="info.p2">Mentoring stays a small door on the contact page. This site is not a studio, and it has no price list.</p>
+    <p><a href="https://www.pedrojulien.com" target="_blank" rel="noopener">pedrojulien.com</a></p>
+  </div>
+
+  <section class="block measure">
+    <h2 data-i18n="info.voice">Voice</h2>
+    <p class="quiet" data-i18n="info.voice.note">Two lines. Option A is the one in use until Pedro picks.</p>
+    <div class="voice">
+      <div class="voice-option">
+        <p class="voice-label" data-i18n="info.a">Option A — in use</p>
+        <p class="voice-line" data-i18n="info.lineA">Forma is a side project for disruptive visuals, brand systems, and the occasional product.</p>
+      </div>
+      <div class="voice-option">
+        <p class="voice-label" data-i18n="info.b">Option B</p>
+        <p class="voice-line" data-i18n="info.lineB">Make the mark. Then put it on something real.</p>
+      </div>
+    </div>
+  </section>
+</Base>

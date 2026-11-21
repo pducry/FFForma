@@ -1,0 +1,78 @@
+---
+import Base from '../../layouts/Base.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import { projects } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project, index) => ({
+    params: { slug: project.slug },
+    props: {
+      project,
+      prev: projects[index - 1] ?? null,
+      next: projects[index + 1] ?? null,
+    },
+  }));
+}
+
+const { project, prev, next } = Astro.props;
+const description = `${project.name}: images on file. Process sections are placeholders until they are written.`;
+const fileCount = String(project.images.length);
+---
+<Base title={`${project.name} — Forma`} description={description} image={project.images[0] ?? '/img/og.jpg'}>
+  <p class="quiet">Work</p>
+  <h1 class="case-title">{project.name}</h1>
+  {project.external && (
+    <p class="fact">
+      <span data-i18n="case.link">Public link already on the previous site</span>
+      {' · '}
+      <a href={project.external.href} target="_blank" rel="noopener">{project.external.href.replace('https://', '')}</a>
+    </p>
+  )}
+
+  <section class="block measure">
+    <h2 data-i18n="case.summary">Summary</h2>
+    <Placeholder body="ph.summary" text="No written summary is in the repo. Add what this project is, in your words." />
+  </section>
+  <section class="block measure">
+    <h2 data-i18n="case.research">Research / moodboard</h2>
+    <Placeholder body="ph.research" text="No moodboard or research notes are in the repo." />
+  </section>
+  <section class="block measure">
+    <h2 data-i18n="case.concept">Concept</h2>
+    <Placeholder body="ph.concept" text="No concept write-up is in the repo." />
+  </section>
+  <section class="block measure">
+    <h2 data-i18n="case.construction">Construction of the mark</h2>
+    <Placeholder body="ph.construction" text="No construction of the mark is documented in the repo." />
+  </section>
+  <section class="block measure">
+    <h2 data-i18n="case.system">Brand system</h2>
+    <Placeholder body="ph.system" text="No notes on type, color, or iconography are in the repo." />
+  </section>
+  <section class="block">
+    <h2 data-i18n="case.application">Application</h2>
+    {project.images.length > 0 && (
+      <p class="quiet" data-i18n="case.files" data-n={fileCount}>{project.images.length} images on file. Captions are not written.</p>
+    )}
+    {project.video && (
+      <p class="quiet" data-i18n="case.video">Video on file. It plays muted, as it did on the previous site.</p>
+    )}
+    <div class:list={['frames', { two: project.images.length > 1 }]}>
+      {project.images.map((src, index) => (
+        <img src={src} alt={`${project.name} — image on file`} loading={index === 0 ? 'eager' : 'lazy'}>
+      ))}
+      {project.video && (
+        <video src={project.video} muted loop playsinline controls preload="metadata"></video>
+      )}
+    </div>
+  </section>
+  <section class="block measure">
+    <h2 data-i18n="case.renders">3D / mockup renders</h2>
+    <Placeholder body="ph.renders" text="No frames were filed as renders. Move any 3D or mockup images here." />
+  </section>
+
+  <nav class="case-nav" aria-label="Cases">
+    {prev ? <a href={`/work/${prev.slug}/`}>{prev.name}</a> : <span></span>}
+    {next ? <a href={`/work/${next.slug}/`}>{next.name}</a> : <span></span>}
+  </nav>
+</Base>

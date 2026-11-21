@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import { projects } from '../data/projects';
+import { experiments } from '../data/experiments';
+
+const description = 'Forma is a side project for disruptive visuals, brand systems, and the occasional product.';
+---
+<Base title="Forma" description={description}>
+  <h1 class="logo"><img src="/img/logo-light.png" alt="Forma"></h1>
+  <p class="signature" data-i18n="home.sig">Forma is a side project for disruptive visuals, brand systems, and the occasional product.</p>
+  <p class="lead" data-i18n="home.lead">Creative resources by Pedro Julien. The cases are the images on file. Process notes are still open.</p>
+
+  <section class="block measure">
+    <h2 data-i18n="home.work">Work</h2>
+    <ul class="index-list">
+      {projects.map((project) => (
+        <li>
+          <a href={`/work/${project.slug}/`}>
+            <span>{project.name}</span>
+            {project.video && project.images.length === 0
+              ? <span class="meta" data-i18n="work.video">1 video on file</span>
+              : <span class="meta" data-i18n="work.count" data-n={String(project.images.length)}>{project.images.length} images on file</span>}
+          </a>
+        </li>
+      ))}
+      <li>
+        <a href="/work/objects/">
+          <span data-i18n="objects.h">Objects</span>
+          <span class="meta" data-i18n="work.none">No images on file yet</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="block measure">
+    <h2><a href="/experiments/" data-i18n="home.lab">Experiments</a></h2>
+    <ul class="index-list">
+      {experiments.map((item) => (
+        <li>
+          <a href={`/experiments/${item.slug}/`}>
+            <span>{item.num} {item.title}</span>
+            <span class="meta">{item.date}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+  <div slot="bleed">
+    <div class="ascii-egg" id="asciiEgg" aria-hidden="true">
+      <canvas id="asciiCanvas"></canvas>
+    </div>
+    <script is:inline src="/js/ascii-egg.js"></script>
+  </div>
+</Base>

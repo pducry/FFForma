@@ -1,0 +1,27 @@
+---
+const path = Astro.url.pathname;
+const items = [
+  { href: '/work/', key: 'nav.work', label: 'Work' },
+  { href: '/experiments/', key: 'nav.experiments', label: 'Experiments' },
+  { href: '/info/', key: 'nav.info', label: 'Info' },
+  { href: '/contact/', key: 'nav.contact', label: 'Contact' },
+];
+---
+<header class="nav">
+  <a class="brand" href="/">Forma</a>
+  <nav class="nav-links" aria-label="Sections">
+    {items.map((item) => (
+      <a href={item.href} data-i18n={item.key} aria-current={path.startsWith(item.href) ? 'page' : undefined}>{item.label}</a>
+    ))}
+  </nav>
+  <div class="nav-tools">
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button class="lang-btn" data-lang="en" type="button">EN</button>
+      <span aria-hidden="true">/</span>
+      <button class="lang-btn" data-lang="pt" type="button">PT</button>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle light mode">
+      <span class="theme-dot"></span>
+    </button>
+  </div>
+</header>
