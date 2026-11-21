@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import Placeholder from '../../components/Placeholder.astro';
+const description = 'Objects — posters and apparel. No product images are in the repo yet.';
+---
+<Base title="Objects — Forma" description={description}>
+  <h1 class="case-title" data-i18n="objects.h">Objects</h1>
+  <p class="lead measure" data-i18n="objects.p">Posters and apparel, including pieces from Pedro’s t-shirt store. No product images are in the repo yet.</p>
+  <section class="block">
+    <h2 data-i18n="case.application">Application</h2>
+    <Placeholder body="ph.objects" text="Add posters, shirts, and other objects here. Only show pieces that are pictured." />
+  </section>
+</Base>

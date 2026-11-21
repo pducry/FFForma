@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import { projects } from '../../data/projects';
+const description = 'Work by Forma. Five cases plus an objects strand. Process notes are placeholders.';
+---
+<Base title="Work — Forma" description={description}>
+  <h1 class="page-title" data-i18n="work.h">Work</h1>
+  <p class="lead measure" data-i18n="work.lead">Five cases, plus Objects for posters and apparel. No industry labels are shown, because none are in the repo.</p>
+  <ul class="index-list measure">
+    {projects.map((project) => (
+      <li>
+        <a href={`/work/${project.slug}/`}>
+          <span>{project.name}</span>
+          {project.video && project.images.length === 0
+            ? <span class="meta" data-i18n="work.video">1 video on file</span>
+            : <span class="meta" data-i18n="work.count" data-n={String(project.images.length)}>{project.images.length} images on file</span>}
+        </a>
+      </li>
+    ))}
+    <li>
+      <a href="/work/objects/">
+          <span data-i18n="objects.h">Objects</span>
+        <span class="meta" data-i18n="work.none">No images on file yet</span>
+      </a>
+    </li>
+  </ul>
+</Base>

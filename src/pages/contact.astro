@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+const description = 'Contact Forma. Book a call, or send a note. No email address is published on this page.';
+---
+<Base title="Contact — Forma" description={description}>
+  <h1 class="page-title" data-i18n="contact.h">Contact</h1>
+  <p class="lead measure" data-i18n="contact.p">A small path. Book a call, or send a note. Mentoring can start here. It is not the front of Forma.</p>
+
+  <section class="block">
+    <a href="#" data-cal-link="pedro-julien" data-cal-config='{"layout":"month_view"}' class="cta">
+      <span data-i18n="contact.book">Book a call</span>
+      <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+    </a>
+  </section>
+
+  <!-- Pedro: create a form at https://formspree.io and replace REPLACE_WITH_FORMSPREE_ID.
+       Use the form id only. Never put an email address here. -->
+  <section class="block measure">
+    <h2 data-i18n="contact.note">Or send a note</h2>
+    <form id="noteForm" class="brief" action="https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID" method="POST" accept-charset="UTF-8">
+      <input type="hidden" name="_subject" value="Note — ffforma.design">
+      <p class="brief-hp" aria-hidden="true">
+        <label>Leave this empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
+      </p>
+      <label>
+        <span data-i18n="brief.name">Name</span>
+        <input type="text" name="name" required autocomplete="name">
+      </label>
+      <label>
+        <span data-i18n="brief.email">Email</span>
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <label>
+        <span data-i18n="brief.message">Note</span>
+        <textarea name="message" required rows="4"></textarea>
+      </label>
+      <button type="submit" class="brief-send">
+        <span data-i18n="brief.send">Send</span>
+        <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </button>
+    </form>
+    <p class="brief-status" id="noteStatus" role="status" hidden></p>
+  </section>
+  <script is:inline src="/js/cal.js"></script>
+</Base>
