@@ -181,6 +181,8 @@ h2 {
   padding: 18px 0;
   border-top: 1px solid var(--line);
 }
+/* Author display beats the hidden attribute, so the filter has to opt out. */
+.lab-item[hidden] { display: none; }
 .lab-item:last-child { border-bottom: 1px solid var(--line); }
 .lab-num, .lab-date, .lab-tags { color: var(--subtler); font-size: 0.72rem; }
 .lab-title { color: var(--fg); }
