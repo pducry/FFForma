@@ -9,6 +9,18 @@ const I18N = {
     'ment.p2': "I help designers sharpen their craft and founders level up their design thinking. If that sounds like you, I'd love to chat.",
     'work.h': "Selected work",
     'footer.meta': "© 2026 FFForma Studio. All rights reserved.",
+    'brief.h': "Or send a brief",
+    'brief.name': "Name",
+    'brief.email': "Email",
+    'brief.role': "I am",
+    'brief.choose': "Choose",
+    'brief.designer': "A designer",
+    'brief.founder': "A founder",
+    'brief.other': "Something else",
+    'brief.message': "What should we talk about?",
+    'brief.send': "Send",
+    'brief.error': "Something went wrong. Book a call instead, or try again.",
+    'brief.unconfigured': "This form is not connected yet. Book a call above.",
     'success.text': "We'll get back to you within 24 hours."
   },
   pt: {
@@ -20,6 +32,18 @@ const I18N = {
     'ment.p2': "Ajudo designers a apurar o ofício e founders a elevar seu design thinking. Se soa como você, adoraria conversar.",
     'work.h': "Trabalhos selecionados",
     'footer.meta': "© 2026 FFForma Studio. Todos os direitos reservados.",
+    'brief.h': "Ou envie um briefing",
+    'brief.name': "Nome",
+    'brief.email': "Email",
+    'brief.role': "Eu sou",
+    'brief.choose': "Escolha",
+    'brief.designer': "Designer",
+    'brief.founder': "Founder",
+    'brief.other': "Outra coisa",
+    'brief.message': "Sobre o que devemos conversar?",
+    'brief.send': "Enviar",
+    'brief.error': "Algo deu errado. Agende uma call, ou tente de novo.",
+    'brief.unconfigured': "Este formulário ainda não está ligado. Agende uma call acima.",
     'success.text': "Retornamos em até 24 horas."
   }
 };

@@ -21,3 +21,9 @@ A build step was considered and skipped. GitHub Pages for this repo publishes th
 **Decision.** `Imagens-antigas-backup/` is deleted in a normal commit so GitHub Pages stops serving it. History is not rewritten.
 
 **Why.** The folder is about 22 MB, nothing on the site links to it, and a public Pages site was serving it anyway. Rewriting history would force a force-push to `main` and is not wanted. The files remain reachable from older commits.
+
+## 2026-11-21 — Mentoring brief goes to Formspree, not to an inbox in the source
+
+**Decision.** Cal.com stays the way to book a call. Under it, a short mentoring brief posts to `https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID`. Pedro replaces that placeholder with a form id from Formspree. The id is not an email address, and no personal email is written into the HTML, CSS, or JS.
+
+**Why.** The older `pducry/FFForma-site` form put a personal address in the page, which any visitor could read. A form endpoint does not. Until the placeholder is replaced, submit does nothing except say the form is not connected and point back at the booking link.

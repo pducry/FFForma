@@ -436,6 +436,88 @@ footer {
   pointer-events: none;
 }
 
+/* ─── Mentoring brief ─── */
+.brief {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.brief label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--subtler);
+  font-size: 0.72rem;
+}
+
+.brief input,
+.brief textarea,
+.brief select {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--fg);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 8px 0;
+  width: 100%;
+}
+
+.brief textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.brief select {
+  cursor: pointer;
+}
+
+.brief input:focus,
+.brief textarea:focus,
+.brief select:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+
+.brief-send {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--fg);
+  background: none;
+  border: none;
+  padding: 8px 0 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+}
+
+.brief-send .arrow-icon { color: var(--subtler); }
+
+.brief-send:hover .arrow-icon,
+.brief-send:focus-visible .arrow-icon { color: var(--fg); }
+
+.brief-send:hover .arrow-icon { transform: translate(2px, -2px); }
+
+.brief-send:disabled { color: var(--subtler); cursor: default; }
+
+.brief-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.brief-status {
+  margin-top: 14px;
+  color: var(--subtle);
+}
+
 /* ─── Small screens: tighter vertical rhythm ─── */
 @media (max-width: 560px) {
   main { padding-top: 40px; }
