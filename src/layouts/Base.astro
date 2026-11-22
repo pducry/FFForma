@@ -1,14 +1,16 @@
 ---
 import '../styles/site.css';
-import Nav from '../components/Nav.astro';
 
 interface Props {
   title: string;
   description: string;
   image?: string;
+  /** Right-hand header label when the page is not the home scroll. */
+  now?: string;
+  nowKey?: string;
 }
 
-const { title, description, image = '/img/og.jpg' } = Astro.props;
+const { title, description, image = '/img/og.jpg', now = '', nowKey = '' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const og = new URL(image, Astro.site);
 const ogSized = image === '/img/og.jpg';
@@ -16,6 +18,10 @@ const en = new URL(canonical);
 const pt = new URL(canonical);
 en.searchParams.set('lang', 'en');
 pt.searchParams.set('lang', 'pt');
+const path = Astro.url.pathname;
+const indexOn = path === '/';
+const researchOn = path.startsWith('/research') || path.startsWith('/experiments');
+const infoOn = path.startsWith('/information') || path.startsWith('/info');
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -42,29 +48,50 @@ pt.searchParams.set('lang', 'pt');
   <meta name="twitter:title" content={title}>
   <meta name="twitter:description" content={description}>
   <meta name="twitter:image" content={og.href}>
-  <meta name="theme-color" content="#0b0a09">
+  <meta name="theme-color" content="#ffffff">
   <link rel="icon" type="image/png" href="/img/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <script is:inline>
-    try {
-      if (localStorage.getItem('ffforma-theme') === 'light') {
-        document.documentElement.dataset.theme = 'light';
-      }
-    } catch (e) {}
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono&family=Inter:wght@400&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="wrap">
-    <Nav />
+  <header class="top">
+    <div class="top-left">
+      <a class="brand" href="/">
+        <img src="/img/favicon.png" alt="">
+        <span>Forma</span>
+      </a>
+    </div>
+    <nav class="top-center" aria-label="Sections">
+      <a class="nav-link" href="/" data-i18n="nav.index" aria-current={indexOn ? 'page' : undefined}>Index</a>
+      <a class="nav-link" href="/research/" data-i18n="nav.research" aria-current={researchOn ? 'page' : undefined}>Research</a>
+      <a class="nav-link" href="/information/" data-i18n="nav.information" aria-current={infoOn ? 'page' : undefined}>Information</a>
+    </nav>
+    <div class="top-right">
+      <p class="now" id="nowLabel" data-i18n={nowKey || undefined}>{now}</p>
+    </div>
+  </header>
+  <main>
     <slot />
-    <footer class="site-foot">
-      <span data-i18n="footer.line">Form Follows Function.</span>
-      <div class="footer-meta" data-i18n="footer.meta">© 2026 Forma.</div>
-    </footer>
-  </div>
-  <slot name="bleed" />
+  </main>
+  <footer class="foot">
+    <div class="foot-left">
+      <span data-i18n="footer.copy">© 2026 Forma</span>
+      <span class="clock"><span class="dot" aria-hidden="true"></span><span data-clock>--:--:--</span></span>
+    </div>
+    <div class="foot-center">
+      <a href="/inquire/" data-i18n="footer.inquire">Inquire</a>
+    </div>
+    <div class="foot-right">
+      <span class="lang" role="group" aria-label="Language">
+        <button class="lang-btn" type="button" data-lang="en">EN</button>
+        <span aria-hidden="true">/</span>
+        <button class="lang-btn" type="button" data-lang="pt">PT</button>
+      </span>
+      <a href="/legal/" data-i18n="footer.legal">Legal</a>
+      <a href="/contact/" data-i18n="footer.contact">Contact</a>
+    </div>
+  </footer>
   <script is:inline src="/js/site.js"></script>
 </body>
 </html>

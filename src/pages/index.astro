@@ -1,54 +1,98 @@
 ---
 import Base from '../layouts/Base.astro';
 import { projects } from '../data/projects';
-import { experiments } from '../data/experiments';
 
-const description = 'Forma is a side project for disruptive visuals, brand systems, and the occasional product.';
+const description = 'Forma. Pedro Julien. Design, Engineered.';
+
+function numberFor(index: number) {
+  return String(index + 1).padStart(3, '0');
+}
+
+type Module =
+  | { kind: 'stage' | 'full'; src: string; media: 'image' | 'video' }
+  | { kind: 'grid'; items: { src: string; media: 'image' | 'video' }[] };
+
+function layout(images: string[], video?: string): Module[] {
+  const stills = images.map((src) => ({ src, media: 'image' as const }));
+  const out: Module[] = [];
+  if (!stills.length && video) {
+    out.push({ kind: 'full', src: video, media: 'video' });
+    return out;
+  }
+  if (!stills.length) return out;
+  out.push({ kind: 'stage', src: stills[0].src, media: 'image' });
+  const rest = stills.slice(1);
+  while (rest.length) {
+    if (rest.length === 1) {
+      out.push({ kind: 'full', src: rest.shift()!.src, media: 'image' });
+    } else {
+      const take = Math.min(3, rest.length);
+      out.push({ kind: 'grid', items: rest.splice(0, take) });
+    }
+  }
+  if (video) out.push({ kind: 'full', src: video, media: 'video' });
+  return out;
+}
 ---
 <Base title="Forma" description={description}>
-  <h1 class="logo"><img src="/img/logo-light.png" alt="Forma"></h1>
-  <p class="signature" data-i18n="home.sig">Forma is a side project for disruptive visuals, brand systems, and the occasional product.</p>
-  <p class="lead" data-i18n="home.lead">Creative resources by Pedro Julien. The cases are the images on file. Process notes are still open.</p>
-
-  <section class="block measure">
-    <h2 data-i18n="home.work">Work</h2>
-    <ul class="index-list">
-      {projects.map((project) => (
-        <li>
-          <a href={`/work/${project.slug}/`}>
-            <span>{project.name}</span>
-            {project.video && project.images.length === 0
-              ? <span class="meta" data-i18n="work.video">1 video on file</span>
-              : <span class="meta" data-i18n="work.count" data-n={String(project.images.length)}>{project.images.length} images on file</span>}
-          </a>
-        </li>
-      ))}
-      <li>
-        <a href="/work/objects/">
-          <span data-i18n="objects.h">Objects</span>
-          <span class="meta" data-i18n="work.none">No images on file yet</span>
-        </a>
-      </li>
-    </ul>
+  <section class="hero">
+    <h1>Forma</h1>
+    <p data-i18n="hero.line">Form Follows Function.</p>
   </section>
 
-  <section class="block measure">
-    <h2><a href="/experiments/" data-i18n="home.lab">Experiments</a></h2>
-    <ul class="index-list">
-      {experiments.map((item) => (
-        <li>
-          <a href={`/experiments/${item.slug}/`}>
-            <span>{item.num} {item.title}</span>
-            <span class="meta">{item.date}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  </section>
-  <div slot="bleed">
-    <div class="ascii-egg" id="asciiEgg" aria-hidden="true">
-      <canvas id="asciiCanvas"></canvas>
+  {projects.map((project, index) => {
+    const num = numberFor(index);
+    const noteKey = project.video && project.images.length === 0 ? 'note.video' : 'note.images';
+    const modules = layout(project.images, project.video);
+    return (
+      <section
+        class="case"
+        id={project.slug}
+        data-index={num}
+        data-name={project.name}
+        data-note-key={noteKey}
+        data-year="2026"
+      >
+        <div class="modules">
+          {modules.map((mod) => {
+            if (mod.kind === 'grid') {
+              return (
+                <div class="module grid3">
+                  {mod.items.map((item) => (
+                    <figure class="tile">
+                      <img src={item.src} alt="" loading="lazy">
+                      <span class="badge">{num}</span>
+                      <span class="cap">{project.name}</span>
+                    </figure>
+                  ))}
+                </div>
+              );
+            }
+            return (
+              <figure class:list={['module', mod.kind]}>
+                {mod.media === 'video'
+                  ? <video src={mod.src} muted playsinline loop controls preload="metadata"></video>
+                  : <img src={mod.src} alt="" loading={index === 0 && mod.kind === 'stage' ? 'eager' : 'lazy'}>}
+                <span class="badge">{num}</span>
+                <span class="cap">{project.name}</span>
+              </figure>
+            );
+          })}
+        </div>
+        {project.external && (
+          <p class="ext">
+            <a href={project.external.href} target="_blank" rel="noopener">{project.external.href.replace('https://', '')}</a>
+          </p>
+        )}
+      </section>
+    );
+  })}
+
+  <section class="case" id="objects" data-index="006" data-name="Objects" data-note-key="note.objects" data-year="2026">
+    <div class="note">
+      <span class="badge">006</span>
+      <strong data-i18n="objects.h">Objects</strong>
+      <span data-i18n="objects.p">No product images are in the repo.</span>
     </div>
-    <script is:inline src="/js/ascii-egg.js"></script>
-  </div>
+  </section>
 </Base>
