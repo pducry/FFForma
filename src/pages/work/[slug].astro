@@ -1,0 +1,14 @@
+---
+import Redirect from '../../components/Redirect.astro';
+import { projects } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { slug: project.slug },
+  }));
+}
+
+const { slug } = Astro.props;
+---
+<Redirect to={`/#${slug}`} />

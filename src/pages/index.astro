@@ -1,0 +1,89 @@
+---
+import Base from '../layouts/Base.astro';
+import { projects } from '../data/projects';
+import { measure, packFrames, type Frame, type Row } from '../lib/frames';
+
+const description = 'Forma. Pedro Julien. Design, Engineered.';
+
+function numberFor(index: number) {
+  return String(index + 1).padStart(3, '0');
+}
+
+function framesFor(images: string[], video?: string): Frame[] {
+  const stills = images.map((src) => measure(src));
+  return video ? [...stills, measure(video, 'video')] : stills;
+}
+
+function rowClass(row: Row) {
+  if (row.kind === 'pair' || row.kind === 'trio' || row.kind === 'justified') return 'row';
+  return row.kind;
+}
+---
+<Base title="Forma" description={description}>
+  <section class="hero">
+    <h1>Forma</h1>
+    <p data-i18n="hero.line">Form Follows Function.</p>
+  </section>
+
+  {projects.map((project, index) => {
+    const num = numberFor(index);
+    const noteKey = project.video && project.images.length === 0 ? 'note.video' : 'note.images';
+    const rows = packFrames(framesFor(project.images, project.video));
+    return (
+      <section
+        class="case"
+        id={project.slug}
+        data-index={num}
+        data-name={project.name}
+        data-note-key={noteKey}
+        data-year="2026"
+      >
+        <div class="modules">
+          {rows.map((row, rowIndex) => (
+            <div class:list={['module', rowClass(row)]}>
+              {row.items.map((item, itemIndex) => (
+                <figure style={`--ar: ${item.w / item.h}`}>
+                  {item.media === 'video' ? (
+                    <video
+                      src={item.src}
+                      width={item.w}
+                      height={item.h}
+                      muted
+                      playsinline
+                      loop
+                      controls
+                      preload="metadata"
+                    />
+                  ) : (
+                    <img
+                      src={item.src}
+                      width={item.w}
+                      height={item.h}
+                      alt=""
+                      loading={index === 0 && rowIndex === 0 && itemIndex === 0 ? 'eager' : 'lazy'}
+                    />
+                  )}
+                  <span class="badge">{num}</span>
+                  <span class="cap">{project.name}</span>
+                </figure>
+              ))}
+            </div>
+          ))}
+        </div>
+        {project.external && (
+          <p class="ext">
+            <a href={project.external.href} target="_blank" rel="noopener">{project.external.href.replace('https://', '')}</a>
+          </p>
+        )}
+      </section>
+    );
+  })}
+
+  <section class="case" id="objects" data-index="006" data-name="Objects" data-note-key="note.objects" data-year="2026">
+    <div class="note">
+      <span class="badge">006</span>
+      <strong data-i18n="objects.h">Objects</strong>
+      <span data-i18n="objects.p">No product images are in the repo.</span>
+    </div>
+  </section>
+</Base>
