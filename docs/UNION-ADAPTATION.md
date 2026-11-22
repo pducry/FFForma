@@ -48,7 +48,7 @@ The header is fixed in three zones: logo and Forma, Index / Research / Informati
 
 ## Image grids
 
-`src/lib/frames.ts` reads each file at build time (`image-size` for stills, `ffprobe` for the video) and writes `width` and `height` on the element so the layout does not jump. Case media does not use `object-fit: cover`, and tiles are not locked to a 4:5 box.
+`src/lib/frames.ts` reads each file at build time (`image-size` for stills, the mp4 track header for the video) and writes `width` and `height` on the element so the layout does not jump. The video size does not depend on ffprobe, which the Pages runner does not have. Case media does not use `object-fit: cover`, and tiles are not locked to a 4:5 box.
 
 The packer looks at the aspect ratio:
 

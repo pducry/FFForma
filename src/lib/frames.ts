@@ -1,4 +1,3 @@
-import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { imageSize } from 'image-size';
@@ -29,17 +28,30 @@ function orient(frame: Frame): Orient {
   return 'portrait';
 }
 
+/** Display size from the mp4 track header. No ffprobe, so CI can build without it. */
+function mp4Size(file: Buffer): { w: number; h: number } | null {
+  let from = 0;
+  while (from < file.length) {
+    const at = file.indexOf('tkhd', from);
+    if (at < 4) break;
+    const size = file.readUInt32BE(at - 4);
+    if (size > 20 && size < 400 && at - 4 + size <= file.length) {
+      const tail = at - 4 + size - 8;
+      const w = file.readUInt32BE(tail) / 65536;
+      const h = file.readUInt32BE(tail + 4) / 65536;
+      if (w > 0 && h > 0) return { w, h };
+    }
+    from = at + 4;
+  }
+  return null;
+}
+
 export function measure(src: string, media: 'image' | 'video' = 'image'): Frame {
   const abs = path.join(publicDir, src.replace(/^\//, ''));
   if (media === 'video') {
-    const out = execFileSync(
-      'ffprobe',
-      ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'csv=p=0', abs],
-      { encoding: 'utf8' },
-    ).trim();
-    const [w, h] = out.split(',').map(Number);
-    if (!w || !h) throw new Error(`No video size for ${src}`);
-    return { src, w, h, media };
+    const dim = mp4Size(readFileSync(abs));
+    if (!dim) throw new Error(`No video size for ${src}`);
+    return { src, w: dim.w, h: dim.h, media };
   }
   const dim = imageSize(readFileSync(abs));
   if (!dim.width || !dim.height) throw new Error(`No image size for ${src}`);
