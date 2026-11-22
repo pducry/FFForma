@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import { experiments, experimentTags } from '../data/experiments';
+
+const description = 'Research. Six experiments already on the Forma site.';
+const blurbs: Record<string, string> = {
+  'exp.001': 'A radial share dial with spring physics, sector highlights and rotary drag.',
+  'exp.002': 'Words light up as you read. The edge is the cursor.',
+  'exp.003': 'A liquid glass lens over old landscapes, with every parameter on a slider.',
+  'exp.004': 'An AI thinking orb, fully parametric, with CSS and React output.',
+  'exp.005': 'Avatars with a magnetic field: spring physics, parallax depth, and a polarity switch.',
+  'exp.006': 'An infinite gallery that bends with your scroll velocity.',
+};
+---
+<Base title="Research — Forma" description={description} now="Research" nowKey="research.h">
+  <article class="page">
+    <h1 data-i18n="research.h">Research</h1>
+    <p class="lead" data-i18n="research.lead">Six experiments already on the site, dated the day they were added.</p>
+    <div class="tagbar" id="tagbar">
+      <button class="tag-btn is-on" type="button" data-tag="all" data-i18n="exp.all">All</button>
+      {experimentTags.map((tag) => (
+        <button class="tag-btn" type="button" data-tag={tag} data-i18n={`tag.${tag}`}>{tag}</button>
+      ))}
+    </div>
+    <ul class="rows">
+      {experiments.map((item) => (
+        <li class="lab-item" data-tags={item.tags.join(' ')}>
+          <a href={`/experiments/${item.slug}/`}>
+            <span>{item.num} {item.title}</span>
+            <span class="meta">{item.date}</span>
+          </a>
+          <p data-i18n={item.blurbKey}>{blurbs[item.blurbKey]}</p>
+        </li>
+      ))}
+    </ul>
+  </article>
+</Base>

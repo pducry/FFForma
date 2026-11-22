@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+const description = 'Inquire. A short form. No email address is published on this page.';
+const services = [
+  { value: 'Creative Direction', key: 'inq.cd', label: 'Creative Direction' },
+  { value: 'Brand', key: 'inq.brand', label: 'Brand' },
+  { value: 'Product', key: 'inq.product', label: 'Product' },
+  { value: 'Website', key: 'inq.website', label: 'Website' },
+  { value: 'Others', key: 'inq.others', label: 'Others' },
+];
+---
+<Base title="Inquire — Forma" description={description} now="Inquire" nowKey="inq.h">
+  <div class="inquire-wrap">
+    <!-- Pedro: replace REPLACE_WITH_FORMSPREE_ID with a Formspree form id. Never an email address. -->
+    <form id="inquire" class="inquire" action="https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID" method="POST" accept-charset="UTF-8">
+      <div class="progress" aria-hidden="true">
+        <span class="on"></span><span></span><span></span><span></span>
+      </div>
+      <p class="step-kicker" id="inquireKicker" data-i18n="inq.step1">Pick services</p>
+      <input type="hidden" name="_subject" value="Inquire — ffforma.design">
+      <p class="hp" aria-hidden="true"><label>Leave empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></p>
+
+      <div data-step="1">
+        {services.map((service) => (
+          <label class="svc">
+            <span data-i18n={service.key}>{service.label}</span>
+            <input type="checkbox" name="services" value={service.value}>
+          </label>
+        ))}
+      </div>
+      <div data-step="2" hidden>
+        <label class="field"><span data-i18n="inq.name">Name</span><input type="text" name="name" autocomplete="name"></label>
+        <label class="field"><span data-i18n="inq.email">Email</span><input type="email" name="email" autocomplete="email"></label>
+      </div>
+      <div data-step="3" hidden>
+        <label class="field"><span data-i18n="inq.budget">Budget</span><input type="text" name="budget" autocomplete="off"></label>
+        <label class="field"><span data-i18n="inq.timeline">Timeline</span><input type="text" name="timeline" autocomplete="off"></label>
+      </div>
+      <div data-step="4" hidden>
+        <label class="field"><span data-i18n="inq.message">Message</span><textarea name="message" rows="4"></textarea></label>
+      </div>
+
+      <div class="step-actions">
+        <button class="back" id="inquireBack" type="button" data-i18n="inq.back" hidden>Back</button>
+        <button class="next" id="inquireNext" type="button" disabled data-i18n="inq.next">Next →</button>
+      </div>
+      <p class="status" id="inquireStatus" role="status" hidden></p>
+    </form>
+  </div>
+</Base>
